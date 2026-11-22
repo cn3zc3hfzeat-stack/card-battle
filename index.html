@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#0b1726">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<title>DREI KAMPF（仮）｜Ver.0.7 α</title>
+<title>DREI KAMPF（仮）｜Ver.0.8 α</title>
 <style>
 :root{--bg:#0b1726;--panel:#152c40;--line:#406477;--text:#f3f7fa;--muted:#bdd1dd;--gold:#f6d494;--cyan:#81e2e3;--red:#ff9fba;--good:#9cf0b9}
 *{box-sizing:border-box}html,body{width:100%;height:100%;margin:0;background:#07101d;color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Noto Sans JP",sans-serif;-webkit-tap-highlight-color:transparent}button{font:inherit;cursor:pointer;touch-action:manipulation;color:inherit}button:disabled{cursor:default;opacity:.45}button:focus-visible,[role=button]:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
@@ -113,6 +113,42 @@ body[data-screen="result"] .resultScreen{display:flex}
 @media(max-width:370px){.titleLogo{font-size:36px}.titleTagline{margin-bottom:44px}.titleTap{font-size:12px;min-width:205px}.titleSigil{margin-top:13px}}
 @media(max-height:620px){.titleSigil{margin-top:8px;margin-bottom:10px}.titleSigil span{height:62px;width:34px}.titleSigil span:nth-child(2){height:79px;width:37px}.titleTagline{margin:16px 0 25px}.titleTap{padding:10px 14px}}
 @media(prefers-reduced-motion:reduce){.titleTap{animation:none}}
+
+/* Ver.0.8 alpha: deck selection and emblem-specific card identity. */
+body[data-screen="select"] #app{display:none}
+.selectScreen{display:none;position:fixed;inset:0;z-index:42;overflow:auto;min-height:100dvh;background:radial-gradient(ellipse at 50% 15%,#294054,#122438 50%,#07121f);color:#f2f6f9;padding:max(20px,env(safe-area-inset-top)) 12px max(16px,env(safe-area-inset-bottom))}
+body[data-screen="select"] .selectScreen{display:flex;align-items:center;justify-content:center}
+.selectInner{width:min(100%,520px);padding:18px 5px 8px}
+.selectInner h2{font-size:24px;margin:12px 0 5px;color:#f3e4bf}
+.selectInner p{font-size:12px;color:#bad0dc;line-height:1.5;margin:5px 0 10px}
+.selectInner .selectedOwn{min-height:17px;color:#f4dca9;font-weight:850}
+.deckGrid{display:grid;grid-template-columns:1fr;gap:9px}
+.deckOption{background:#163149;border:1px solid #5a8197;border-radius:13px;display:flex;align-items:center;gap:14px;min-height:86px;text-align:left;padding:10px 12px;box-shadow:inset 3px 0 var(--emblem)}
+.deckOption:active{transform:scale(.99);background:#234259}
+.emblemSymbol{flex:0 0 52px;width:52px;height:55px;border:2px solid var(--emblem);border-radius:9px;display:grid;place-items:center;font-size:28px;font-weight:900;color:#fff;background:color-mix(in srgb,var(--emblem) 40%,#163149)}
+.deckOptionText{display:flex;min-width:0;flex:1;flex-direction:column;gap:4px}.deckOptionText strong{font-size:16px;color:#fff1d6}.deckOptionText small{font-size:11px;color:#b8d4df}
+.deckArrow{font-size:27px;color:#e8d4a7}
+.selectBack{margin-top:15px;width:100%;min-height:42px;border:1px solid #62879c;background:#233f54;color:#fff;border-radius:9px;font-weight:850}
+.selectNote{text-align:center;color:#9bb5c4;font-size:10px;margin-top:13px}
+.unitCard[data-emblem="R"],.handCard[data-emblem="R"]{border-color:#c97874}.unitCard[data-emblem="A"],.handCard[data-emblem="A"]{border-color:#78adcf}.unitCard[data-emblem="W"],.handCard[data-emblem="W"]{border-color:#c8d4db}.unitCard[data-emblem="Y"],.handCard[data-emblem="Y"]{border-color:#ab87cd}
+.unitCard[data-emblem="R"] .cardArt,.handCard[data-emblem="R"] .cardArt{background:linear-gradient(135deg,#71383c,#523a39)}
+.unitCard[data-emblem="A"] .cardArt,.handCard[data-emblem="A"] .cardArt{background:linear-gradient(135deg,#1b587d,#1d4260)}
+.unitCard[data-emblem="W"] .cardArt,.handCard[data-emblem="W"] .cardArt{background:linear-gradient(135deg,#697d8e,#3c5a73)}
+.unitCard[data-emblem="Y"] .cardArt,.handCard[data-emblem="Y"] .cardArt{background:linear-gradient(135deg,#684a7d,#302d55)}
+.unitCard[data-emblem="R"] .cardCost,.handCard[data-emblem="R"] .cardCost{background:#944c4b}
+.unitCard[data-emblem="Y"] .cardCost,.handCard[data-emblem="Y"] .cardCost{background:#694c80}
+.unitCard[data-emblem="W"] .cardCost,.handCard[data-emblem="W"] .cardCost{background:#6b8494}
+.cardArt span{display:inline-block;filter:drop-shadow(0 2px 2px #0008)}
+.unitCard.hitTarget{border:2px solid #ffdda0;box-shadow:0 0 12px #ffe7a080}
+.handPreview .previewAction.small{padding:6px 7px;min-height:31px;font-size:10px;flex:0 0 auto}
+.pureDesc{border-left:3px solid #e6c583;padding:6px 8px;background:#223e4c;border-radius:4px}
+@media(max-width:370px){.deckOption{min-height:78px}.emblemSymbol{width:47px;flex-basis:47px;height:50px}.deckOptionText strong{font-size:14px}}
+
+
+@media (max-width:430px){
+ .top{gap:3px;padding:2px 4px}.top .brand{font-size:12px}.top .version{display:none}
+ .top-right{gap:3px}.top .phaseChip{font-size:9px;padding:4px 5px}.top .tinyBtn{font-size:9px;padding:4px 5px}
+}
 </style>
 </head>
 <body>
@@ -124,10 +160,21 @@ body[data-screen="result"] .resultScreen{display:flex}
     <div class="titleRule"></div>
     <h1 class="titleLogo">DREI <span>KAMPF</span></h1>
     <div class="titlePronunciation">ドライ・カンプフ</div>
-    <p class="titleTagline">三つの戦場、一つの勝利。</p>
+    <p class="titleTagline">三つの戦場、四つの紋章。</p>
     <div class="titleTap"><span class="titleTapArrow">✦</span> TAP TO START <span class="titleTapArrow">✦</span></div>
   </div>
-  <div class="titleVersion">Ver.0.7 α ・ BALANCE TEST</div>
+  <div class="titleVersion">Ver.0.8 α ・ FOUR EMBLEMS</div>
+</section>
+<section id="selectScreen" class="selectScreen" aria-hidden="true">
+  <div class="selectInner">
+   <div class="titleEyebrow">FOUR EMBLEMS · DECK SELECT</div>
+   <h2 id="chooseTitle">自分の紋章を選ぶ</h2>
+   <p id="chooseSubtitle">4種類の純紋章デッキから選択</p>
+   <p id="selectedOwn" class="selectedOwn"></p>
+   <div id="deckGrid" class="deckGrid"></div>
+   <button id="selectBack" class="selectBack">‹ 戻る</button>
+   <div class="selectNote">カード名・性能は仮。カード80種類 / 各色40枚の試験デッキ</div>
+  </div>
 </section>
 <section id="resultScreen" class="resultScreen" aria-hidden="true">
   <div class="resultInner">
@@ -136,19 +183,19 @@ body[data-screen="result"] .resultScreen{display:flex}
     <p id="resultSub" class="resultSub"></p>
     <div id="resultStats" class="resultStats"></div>
     <div class="resultActions"><button id="resultReplay">⚔ もう一度対戦</button><button id="resultTitleBtn">タイトルへ戻る</button></div>
-    <div class="resultNote">Ver.0.7 α：対戦データはバランス確認用</div>
+    <div class="resultNote">Ver.0.8 α：対戦データはバランス確認用</div>
   </div>
 </section>
 <main id="app">
-  <header class="top"><div class="brand">⚔ DREI KAMPF <span class="version">バランス試験 v0.7 α</span></div><div class="top-right"><span class="phaseChip" id="phaseChip">準備中</span><button class="tinyBtn" id="rulesBtn">ルール</button><button class="tinyBtn" id="restartBtn">タイトル</button></div></header>
-  <section class="playerBar enemy"><div class="playerBadge"><div class="avatar">🤖</div><div><div class="playerName">CPU <span class="version">デッキB</span></div><div class="playerMeta" id="cpuInfo">山札50・手札5</div></div></div><div class="health"><span class="heart">♥</span><span id="cpuHp">10</span><small>/<span id="cpuMaxHp">10</span></small></div></section>
+  <header class="top"><div class="brand">⚔ DREI KAMPF <span class="version">バランス試験 v0.8 α</span></div><div class="top-right"><span class="phaseChip" id="phaseChip">準備中</span><button class="tinyBtn" id="rulesBtn">ルール</button><button class="tinyBtn" id="restartBtn">タイトル</button></div></header>
+  <section class="playerBar enemy"><div class="playerBadge"><div class="avatar">🤖</div><div><div class="playerName">CPU <span class="version" id="cpuDeckName">蒼</span></div><div class="playerMeta" id="cpuInfo">山札40・手札5</div></div></div><div class="health"><span class="heart">♥</span><span id="cpuHp">10</span><small>/<span id="cpuMaxHp">10</span></small></div></section>
   <div class="bus enemyBus" aria-hidden="true"><span></span><span></span><span></span></div>
   <section id="lanes" class="lanes" aria-label="3本の独立したバトルレーン"></section>
   <div class="bus" aria-hidden="true"><span></span><span></span><span></span></div>
-  <section class="playerBar"><div class="playerBadge"><div class="avatar">🙂</div><div><div class="playerName">あなた <span class="version">デッキB</span></div><div class="playerMeta" id="playerInfo">山札50・手札5</div></div></div><div class="health"><span class="heart">♥</span><span id="playerHp">10</span><small>/<span id="playerMaxHp">10</span></small></div></section>
+  <section class="playerBar"><div class="playerBadge"><div class="avatar">🙂</div><div><div class="playerName">あなた <span class="version" id="playerDeckName">朱</span></div><div class="playerMeta" id="playerInfo">山札40・手札5</div></div></div><div class="health"><span class="heart">♥</span><span id="playerHp">10</span><small>/<span id="playerMaxHp">10</span></small></div></section>
   <section class="controls"><div id="hint" class="hint" aria-live="polite">カードを選ぼう</div><button id="cancelBtn" class="cancelBtn">✕ キャンセル</button><button id="inspectBtn" class="modeBtn" aria-pressed="false">🔎 詳細</button><button id="endBtn" class="endBtn">ターン終了 ▶</button></section>
   <section class="handSection"><div class="handHead"><span>🃏 手札 <span id="handCount">0/7</span></span><strong id="mana">💠 0/0</strong></div><div id="handPreview" class="handPreview" aria-live="polite"><div class="previewText"><strong>手札を選んでね</strong><span>7枚すべて表示。選択すると効果がここに出るよ。</span></div></div><div id="hand" class="handScroll" aria-label="自分の手札（横スクロールなし）"></div></section>
-  <footer class="foot"><span id="record">戦績：0勝 0敗 0分</span><span>カード30種・バランス試験</span></footer>
+  <footer class="foot"><span id="record">戦績：0勝 0敗 0分</span><span>カード80種・四大紋章α</span></footer>
 </main>
 <div class="rotateHint"><div><strong>📱 縦向きで遊ぼう</strong><p>3レーン試作版は縦画面向け！<br>スマホを縦にするとバトル画面が表示されるよ。</p></div></div>
 <div class="toast" id="toast"></div>
@@ -168,459 +215,699 @@ body[data-screen="result"] .resultScreen{display:flex}
 <script>
 'use strict';
 (()=>{
-  const MONSTERS=[
-    ['M-01','森の狼',1,1,1,'frenzy',0,'🐺'],
-    ['M-02','灰羽の使い魔',1,1,1,'legacy',1,'🕯️'],
-    ['M-03','盾持ちの従兵',1,0,2,'wallleft',1,'🛡️'],
-    ['M-04','野営の書記',2,1,2,'draw',1,'📖'],
-    ['M-05','双刃の盗賊',2,1,2,'double',0,'🗡️'],
-    ['M-06','呪血の魔剣士',1,2,3,'selfharm',1,'🩸'],
-    ['M-07','従軍治療師',3,2,3,'heal',1,'💚'],
-    ['M-08','火紋の術士',3,2,2,'blast',1,'🔥'],
-    ['M-09','荒野の戦斧兵',3,3,3,'rightatk',1,'🪓'],
-    ['M-10','白銀の双剣士',4,2,3,'double',0,'⚔️'],
-    ['M-11','戦陣の指揮官',4,2,4,'commander',1,'👑'],
-    ['M-12','巨岩の戦士',5,5,6,'',0,'🪨'],
-    ['M-13','識者の召喚士',5,3,3,'draw',2,'📚'],
-    ['M-14','血盟の魔術師',5,3,4,'bloodfront',1,'🔮'],
-    ['M-15','鉄血の巨獣',6,6,7,'',0,'🦏'],
-    ['M-16','破城の炎竜',6,4,5,'blast',2,'🐉'],
-    ['M-17','蒼雷の騎士',7,5,6,'direct',2,'⚡'],
-    ['M-18','古代の巨神',8,8,10,'',0,'🗿'],
-    ['M-19','終焉の竜王',9,4,5,'apocalypse',3,'🌋'],
-    ['M-20','雷霆の剣帝',10,8,8,'tribune',3,'👑']
-  ];
-  const SPELLS=[
-    ['S-01','火球',2,'dmg',2,'🔥'],
-    ['S-02','炎槍',4,'dmg',4,'🔥'],
-    ['S-03','火雨',3,'aoe',1,'🌧️'],
-    ['S-04','焦土',5,'aoe',2,'💥'],
-    ['S-05','戦術補給',2,'draw',2,'📖'],
-    ['S-06','禁書の解読',4,'draw',3,'📚'],
-    ['S-07','治癒の光',2,'heal',2,'💚'],
-    ['S-08','破陣の号令',2,'buff',2,'⚔️'],
-    ['S-09','生贄の儀',3,'sac',2,'🕯️'],
-    ['S-10','魔炎の書',5,'dmgDraw',3,'✨']
-  ];
-  const CARDS={};
-  for(const [id,name,cost,atk,hp,ability,n,icon] of MONSTERS)CARDS[id]={id,name,type:'monster',cost,atk,hp,ability,n,icon};
-  for(const [id,name,cost,ability,n,icon] of SPELLS)CARDS[id]={id,name,type:'spell',cost,ability,n,icon};
-  // 50-card balanced prototype: 32 monsters, 18 spells, all 30 distinct cards represented.
-  const DECK_B={
-    'M-01':3,'M-02':3,'M-03':3,'M-04':2,'M-05':2,'M-06':2,
-    'M-07':2,'M-08':2,'M-09':1,'M-10':2,'M-11':1,'M-12':1,
-    'M-13':1,'M-14':1,'M-15':1,'M-16':1,'M-17':1,'M-18':1,'M-19':1,'M-20':1,
-    'S-01':3,'S-02':2,'S-03':2,'S-04':1,'S-05':3,
-    'S-06':2,'S-07':2,'S-08':1,'S-09':1,'S-10':1
-  };
-  const MAX_HAND=7,LANE_NAMES=['左','中央','右'],RECORD_KEY='drei_kampf_v07_record';
-  if(Object.values(DECK_B).reduce((a,b)=>a+b,0)!==50||Object.keys(DECK_B).length!==30)throw Error('試験用デッキの枚数が不正');
-  const el=id=>document.getElementById(id),other=who=>who==='player'?'cpu':'player',owner=who=>who==='player'?'あなた':'CPU';
-  let g=null,seq=0,session=0,inspect=false,toastTimeout=null,screen='title';
-  const freshStats=()=>({played:0,monster:0,spell:0,direct:0,attacks:0,blockedDraw:0,healed:0,lifeCost:0,maxCost:0,sacrifices:0,removed:0});
-  function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
-  function side(){const deck=[];for(const [id,n] of Object.entries(DECK_B))for(let i=0;i<n;i++)deck.push(id);return {life:10,maxLife:10,deck:shuffle(deck),hand:[],field:[],turns:0,mana:0,maxMana:0,stats:freshStats()}}
-  function setScreen(s){screen=s;document.body.dataset.screen=s;el('titleScreen').setAttribute('aria-hidden',String(s!=='title'));el('resultScreen').setAttribute('aria-hidden',String(s!=='result'))}
-  function pushLog(message){if(!g)return;g.logs.unshift(message);g.logs.length=Math.min(g.logs.length,120);g.status=message}
-  function toast(message){clearTimeout(toastTimeout);el('toast').textContent=message;el('toast').classList.add('show');toastTimeout=setTimeout(()=>el('toast').classList.remove('show'),1450)}
-  function draw(who,n){const s=g[who];let actual=0;for(let i=0;i<n;i++){if(!s.deck.length)break;if(s.hand.length>=MAX_HAND){s.stats.blockedDraw++;continue}s.hand.push(s.deck.pop());actual++}if(actual)pushLog(`${owner(who)}：${actual}枚ドロー`);return actual}
-  function healLife(who,n){const s=g[who],count=Math.min(n,s.maxLife-s.life);s.life+=count;s.stats.healed+=count;if(count)pushLog(`${owner(who)}のライフ＋${count}`);return count}
-  function payCostLife(who,n,permanent=false){const s=g[who];if(s.life<=n||s.maxLife<=n)return false;s.life-=n;s.stats.lifeCost+=n;if(permanent){s.maxLife-=n;s.stats.maxCost+=n}pushLog(`${owner(who)}の${permanent?'ライフ・最大ライフ':'ライフ'}－${n}`);return true}
-  function unitAt(who,lane){return g[who].field.find(u=>u.lane===lane)||null}
-  function canSummon(who,id,lane){return Number.isInteger(lane)&&lane>=0&&lane<3&&CARDS[id]?.type==='monster'&&(!unitAt(who,lane)||id==='M-20')}
-  function canPay(who,c){return g[who].mana>=c.cost&&(!['selfharm','bloodfront'].includes(c.ability)||g[who].life>c.n)}
-  function atk(u){const c=CARDS[u.id];let value=c.atk+u.mod;if(c.ability==='rightatk'&&u.lane===2)value+=c.n;const commander=unitAt(u.owner,1);if(u.lane!==1&&commander&&CARDS[commander.id].ability==='commander')value+=1;return Math.max(0,value)}
-  function directDamage(u){return CARDS[u.id].ability==='direct'||CARDS[u.id].ability==='tribune'?CARDS[u.id].n:1}
-  function maxAttacks(u){return CARDS[u.id].ability==='double'?2:1}
-  function isWall(u){return CARDS[u.id].ability==='wallleft'}
-  function ready(who,u){return !isWall(u)&&g[who].turns>u.summonedTurn&&u.attacksUsed<maxAttacks(u)}
-  function availableAttacks(who,u){return ready(who,u)?Math.max(0,maxAttacks(u)-u.attacksUsed):0}
-  function pendingPlayerAttacks(){return g?.player.field.filter(u=>ready('player',u))||[]}
-  function mandatoryPlayerAttacks(){return pendingPlayerAttacks().filter(u=>CARDS[u.id].ability==='frenzy')}
-  function hideEndConfirm(){el('endConfirmOverlay').classList.remove('show');el('endConfirmOverlay').setAttribute('aria-hidden','true')}
-  function requestEndTurn(){
-    if(!g||g.over||g.turn!=='player')return;
-    const forced=mandatoryPlayerAttacks();
-    if(forced.length){g.selected={kind:'attack',sid:forced[0].sid,lane:forced[0].lane};render();toast(`猛進：${forced.map(u=>LANE_NAMES[u.lane]).join('・')}レーンは攻撃必須！`);return}
-    const pending=pendingPlayerAttacks();if(!pending.length){endTurn();return}
-    const count=pending.reduce((n,u)=>n+availableAttacks('player',u),0);
-    el('endConfirmDescription').textContent=`攻撃できるモンスター${pending.length}体、計${count}回の攻撃が残っています。終了しますか？`;
-    const rows=el('endPendingList');rows.replaceChildren();
-    for(const u of pending){const item=document.createElement('div');item.className='endPendingItem';item.textContent=`${LANE_NAMES[u.lane]}：${CARDS[u.id].name}（残り${availableAttacks('player',u)}回）`;rows.append(item)}
-    el('endConfirmOverlay').classList.add('show');el('endConfirmOverlay').setAttribute('aria-hidden','false');el('endConfirmBack').focus();
-  }
-  function resolveDeaths(){
-    const dead=[];for(const who of ['player','cpu']){const survivors=[];for(const u of g[who].field){if(u.hp<=0)dead.push({who,u});else survivors.push(u)}g[who].field=survivors}
-    for(const {who,u} of dead){g[other(who)].stats.removed++;pushLog(`${owner(who)}の${CARDS[u.id].name}が破壊された`)}
-    for(const {who,u} of dead){const c=CARDS[u.id];if(c.ability==='legacy'){pushLog(`${c.name}の遺志発動`);draw(who,c.n)}}
-    return dead;
-  }
-  function damage(who,n,targetSid=null){let hits=0;for(const u of g[who].field){if(targetSid!==null&&u.sid!==targetSid)continue;u.hp-=n;hits++}if(hits)pushLog(`${owner(who)}の${hits}体に${n}ダメージ`);const dead=resolveDeaths();return dead.filter(x=>x.who===who).length}
-  function sacrifice(who,u){u.hp=0;g[who].stats.sacrifices++;resolveDeaths()}
-  function noCards(who){const s=g[who];return !s.deck.length&&!s.hand.length&&!s.field.length}
-  function hasFutureAttacker(who){const s=g[who];return s.field.some(u=>!isWall(u))||s.hand.some(id=>CARDS[id].type==='monster'&&CARDS[id].ability!=='wallleft')||s.deck.some(id=>CARDS[id].type==='monster'&&CARDS[id].ability!=='wallleft')}
-  function winnerCheck(){
-    if(!g||g.over)return true;
-    if(g.player.life<=0||g.cpu.life<=0){finish(g.player.life<=0&&g.cpu.life<=0?'draw':g.cpu.life<=0?'win':'lose');return true}
-    const a=noCards('player'),b=noCards('cpu');if(a||b){finish(a&&b?'draw':b?'win':'lose');return true}
-    if(!hasFutureAttacker('player')&&!hasFutureAttacker('cpu')){finish('draw');return true}
-    return false;
-  }
-  function summon(who,handIndex,lane,allowTribute=false){
-    if(!g||g.over||g.turn!==who)return false;
-    const s=g[who],id=s.hand[handIndex],c=CARDS[id];if(!c||c.type!=='monster'||!canPay(who,c)||!canSummon(who,id,lane))return false;
-    const occupant=unitAt(who,lane);if(occupant&&!(id==='M-20'&&allowTribute))return false;
-    if(occupant&&id==='M-20')sacrifice(who,occupant);
-    s.hand.splice(handIndex,1);s.mana-=c.cost;s.stats.played++;s.stats.monster++;
-    if(c.ability==='selfharm'||c.ability==='bloodfront')payCostLife(who,c.n,c.ability==='bloodfront');
-    const maxHp=c.hp+(c.ability==='wallleft'&&lane===0?1:0);
-    s.field.push({id,sid:++seq,owner:who,lane,hp:maxHp,maxHp,mod:0,attacksUsed:0,summonedTurn:s.turns});
-    pushLog(`${owner(who)}：${LANE_NAMES[lane]}に${c.name}を召喚`);
-    switch(c.ability){
-      case 'draw':draw(who,c.n);break;
-      case 'heal':healLife(who,c.n);break;
-      case 'blast':damage(other(who),c.n);break;
-      case 'apocalypse':if(damage(other(who),c.n)>0)draw(who,1);break;
-      case 'bloodfront':{const foe=unitAt(other(who),lane);if(foe)damage(other(who),3,foe.sid);break}
-    }
-    g.selected=null;winnerCheck();return true;
-  }
-  const needsTarget=c=>['dmg','dmgDraw','buff','sac'].includes(c.ability);
-  function cast(who,handIndex,targetSid=null){
-    if(!g||g.over||g.turn!==who)return false;
-    const s=g[who],id=s.hand[handIndex],c=CARDS[id];if(!c||c.type!=='spell'||!canPay(who,c))return false;
-    const targetWho=['buff','sac'].includes(c.ability)?who:other(who);
-    const target=needsTarget(c)?g[targetWho].field.find(u=>u.sid===targetSid):null;
-    if(needsTarget(c)&&!target)return false;
-    // Avoid a no-op recovery or no-op draw on purpose. AoE can be used when enemies are present.
-    if(c.ability==='heal'&&s.life>=s.maxLife)return false;
-    if(c.ability==='draw'&&(!s.deck.length||s.hand.length>=MAX_HAND+1))return false;
-    s.hand.splice(handIndex,1);s.mana-=c.cost;s.stats.played++;s.stats.spell++;
-    pushLog(`${owner(who)}が${c.name}を使用`);
-    switch(c.ability){
-      case 'dmg':damage(other(who),c.n,target.sid);break;
-      case 'aoe':damage(other(who),c.n);break;
-      case 'draw':draw(who,c.n);break;
-      case 'heal':healLife(who,c.n);break;
-      case 'buff':target.mod+=c.n;break;
-      case 'sac':sacrifice(who,target);draw(who,c.n);break;
-      case 'dmgDraw':damage(other(who),c.n,target.sid);draw(who,1);break;
-    }
-    g.selected=null;winnerCheck();return true;
-  }
-  function fight(who,sid,targetSid=null){
-    if(!g||g.over||g.turn!==who)return false;
-    const foe=other(who),u=g[who].field.find(x=>x.sid===sid);if(!u||!ready(who,u))return false;
-    const facing=unitAt(foe,u.lane);if(facing&&facing.sid!==targetSid)return false;if(!facing&&targetSid!==null)return false;
-    u.attacksUsed++;g[who].stats.attacks++;
-    if(facing){const a=atk(u),b=atk(facing);u.hp-=b;facing.hp-=a;pushLog(`${LANE_NAMES[u.lane]}：${CARDS[u.id].name}が攻撃 ${a}ダメ／反撃${b}`);resolveDeaths()}
-    else{const n=directDamage(u);g[foe].life=Math.max(0,g[foe].life-n);g[who].stats.direct+=n;pushLog(`${LANE_NAMES[u.lane]}：${CARDS[u.id].name}が直接攻撃！ライフ－${n}`)}
-    g.selected=null;winnerCheck();return true;
-  }
-  function startTurn(who){
-    if(!g||g.over||screen!=='battle')return;
-    g.turn=who;const s=g[who];s.turns++;s.maxMana=Math.min(s.turns,10);s.mana=s.maxMana;
-    for(const u of s.field)u.attacksUsed=0;g.selected=null;pushLog(`── ${owner(who)} ${s.turns}ターン目 ──`);
-    draw(who,1);render();if(winnerCheck())return;
-    if(who==='cpu'){const current=session;setTimeout(()=>cpuPlay(current),450)}
-  }
-  function endTurn(){if(!g||g.over)return;for(const who of ['player','cpu'])for(const u of g[who].field)u.mod=0;g.selected=null;startTurn(other(g.turn))}
-  function handTap(index){
-    if(!g||g.over||g.turn!=='player')return;
-    const c=CARDS[g.player.hand[index]];if(!c)return;
-    if(g.selected?.index===index&&['summon','spell','spellConfirm','handInfo','tributeConfirm'].includes(g.selected.kind)){g.selected=null;render();return}
-    if(!canPay('player',c)){g.selected={kind:'handInfo',index};toast(c.cost>g.player.mana?'マナが足りないよ':'ライフが足りないよ');render();return}
-    if(c.type==='monster'){
-      if(g.player.field.length>=3&&c.id!=='M-20'){g.selected={kind:'handInfo',index};toast('3レーンが埋まっているよ');render();return}
-      g.selected={kind:'summon',index};render();return;
-    }
-    if(needsTarget(c)){
-      const pool=['buff','sac'].includes(c.ability)?g.player.field:g.cpu.field;
-      if(!pool.length){g.selected={kind:'handInfo',index};toast('対象モンスターがいないよ');render();return}
-      g.selected={kind:'spell',index};render();return;
-    }
-    if(c.ability==='heal'&&g.player.life===g.player.maxLife){g.selected={kind:'handInfo',index};toast('ライフは最大だよ');render();return}
-    g.selected={kind:'spellConfirm',index};render();
-  }
-  function confirmSpell(){if(!g||g.over||g.turn!=='player'||g.selected?.kind!=='spellConfirm')return;if(cast('player',g.selected.index))render();else toast('魔法を使えないよ')}
-  function confirmTribute(){if(!g||g.over||g.turn!=='player'||g.selected?.kind!=='tributeConfirm')return;const {index,lane}=g.selected;if(summon('player',index,lane,true))render();else toast('召喚できないよ')}
-  function ownSlotTap(lane){
-    if(!g||g.over||g.turn!=='player')return;
-    const u=unitAt('player',lane),sel=g.selected;
-    if(sel?.kind==='summon'){
-      const c=CARDS[g.player.hand[sel.index]];
-      if(u){if(c?.id==='M-20'){g.selected={kind:'tributeConfirm',index:sel.index,lane};render()}else toast('ここには既に味方がいるよ');return}
-      if(summon('player',sel.index,lane))render();else toast('召喚できないよ');return;
-    }
-    if(sel?.kind==='handInfo'||sel?.kind==='spellConfirm'||sel?.kind==='tributeConfirm'){toast('選択したカードの内容を確認してね');return}
-    if(sel?.kind==='spell'){
-      const c=CARDS[g.player.hand[sel.index]];
-      if(['buff','sac'].includes(c?.ability)&&u){if(cast('player',sel.index,u.sid))render()}
-      else toast('味方モンスターを選んでね');return;
-    }
-    if(!u){toast('手札を選んでから空きレーンをタップ');return}
-    if(!ready('player',u)){toast(isWall(u)?'防壁は攻撃できないよ':g.player.turns<=u.summonedTurn?'召喚酔い中だよ':'このターンは攻撃済み');return}
-    g.selected={kind:'attack',sid:u.sid,lane};render();
-  }
-  function enemySlotTap(lane){
-    if(!g||g.over||g.turn!=='player')return;
-    const u=unitAt('cpu',lane),sel=g.selected;
-    if(sel?.kind==='spell'){
-      const c=CARDS[g.player.hand[sel.index]];
-      if(['buff','sac'].includes(c?.ability)){toast('味方を選んでね');return}
-      if(!u){toast('対象の敵がいないよ');return}
-      if(cast('player',sel.index,u.sid))render();return;
-    }
-    if(sel?.kind==='attack'){
-      if(sel.lane!==lane){toast('正面の同じレーンしか攻撃できないよ');return}
-      if(!fight('player',sel.sid,u?.sid??null))toast('攻撃できないよ');render();return;
-    }
-    toast('先に味方モンスターを選んでね');
-  }
-  function scoreSummon(c,lane){
-    const s=g.cpu,foe=g.player,front=unitAt('player',lane),own=unitAt('cpu',lane);
-    let score=2.4+c.cost*.18;
-    if(front){score+=3.1;score+=Math.min(3,c.hp/Math.max(1,atk(front)))*.7;if(c.atk>=front.hp)score+=1.1}
-    else score+=1.0+(c.ability==='direct'?1.5:0);
-    if(c.ability==='wallleft'){score+=front?2.1:-.8;if(lane===0)score+=1.0}
-    if(c.ability==='rightatk'&&lane===2)score+=1.3;
-    if(c.ability==='commander'&&lane===1)score+=s.field.filter(u=>u.lane!==1).length*1.6;
-    if(c.ability==='frenzy'&&front&&atk(front)>=c.hp)score-=1.7;
-    if(c.ability==='selfharm')score-=s.life<=4?4.5:1.1;
-    if(c.ability==='bloodfront')score+=(front?Math.min(front.hp,3)*.9:0)-(s.life<=4?3:1.5);
-    if(c.ability==='heal')score+=Math.min(c.n,s.maxLife-s.life)*1.1;
-    if(c.ability==='draw')score+=s.hand.length<=4?c.n*.95:.2;
-    if(['blast','apocalypse'].includes(c.ability))score+=foe.field.filter(u=>u.hp<=c.n).length*2.7+foe.field.length*.4;
-    if(c.ability==='tribune'&&own){score-=1.9;if(isWall(own)||own.hp<=1)score+=1.2}
-    return score;
-  }
-  function cpuOptions(){
-    const s=g.cpu,foe=g.player,opts=[];
-    for(let i=0;i<s.hand.length;i++){
-      const c=CARDS[s.hand[i]];if(!canPay('cpu',c))continue;
-      if(c.type==='monster'){
-        for(let lane=0;lane<3;lane++)if(canSummon('cpu',c.id,lane)){
-          const own=unitAt('cpu',lane);opts.push({type:'summon',index:i,lane,tribute:!!own,score:scoreSummon(c,lane)+Math.random()*.02});
-        }
-        continue;
-      }
-      if(c.ability==='draw'){
-        const room=MAX_HAND-(s.hand.length-1),actual=Math.min(c.n,Math.max(0,room),s.deck.length);
-        if(actual<=0)continue;
-        opts.push({type:'spell',index:i,score:actual*1.3+(s.hand.length<=3?2.5:0)-c.cost*.25});continue;
-      }
-      if(c.ability==='heal'){
-        const gain=Math.min(c.n,s.maxLife-s.life);if(gain<=0)continue;
-        opts.push({type:'spell',index:i,score:gain*(s.life<=4?3:1.0)-.3});continue;
-      }
-      if(c.ability==='aoe'){
-        if(!foe.field.length)continue;
-        const kills=foe.field.filter(u=>u.hp<=c.n).length;
-        opts.push({type:'spell',index:i,score:foe.field.length*.85+kills*2.9+(foe.field.length===3?1:0)});continue;
-      }
-      if(c.ability==='dmg'||c.ability==='dmgDraw'){
-        for(const target of foe.field){const kills=target.hp<=c.n;
-          opts.push({type:'spell',index:i,target:target.sid,score:1+Math.min(target.hp,c.n)*.6+(kills?4.4:0)+(c.ability==='dmgDraw'&&s.deck.length&&s.hand.length<=5?1.1:0)});
-        }continue;
-      }
-      if(c.ability==='buff'){
-        for(const u of s.field.filter(u=>ready('cpu',u))){const f=unitAt('player',u.lane);
-          if(!f)continue;const upgraded=atk(u)+c.n;
-          if(upgraded>=f.hp&&atk(u)<f.hp)opts.push({type:'spell',index:i,target:u.sid,score:6.9});
-        }continue;
-      }
-      if(c.ability==='sac'){
-        const possible=s.field.filter(u=>isWall(u)||!ready('cpu',u)||u.hp<=2);
-        for(const u of possible){const room=MAX_HAND-(s.hand.length-1);
-          const useful=Math.min(c.n,Math.max(0,room),s.deck.length);
-          if(useful<1)continue;
-          const heavy=s.hand.some(id=>CARDS[id].type==='monster'&&CARDS[id].cost>=5&&CARDS[id].id!==c.id);
-          const score=useful*1.45+(isWall(u)?1.3:0)+(s.field.length===3&&heavy?2.4:0)-2.2-(u.hp>3?1.5:0);
-          if(score>1)opts.push({type:'spell',index:i,target:u.sid,score});
-        }continue;
-      }
-    }
-    return opts.sort((a,b)=>b.score-a.score);
-  }
-  function cpuBestAttack(){
-    let best=null;
-    for(const u of g.cpu.field.filter(u=>ready('cpu',u))){
-      const f=unitAt('player',u.lane),forced=CARDS[u.id].ability==='frenzy';let score;
-      if(!f)score=7+directDamage(u)*3+(g.player.life<=directDamage(u)?99:0);
-      else{
-        const myAtk=atk(u),theirAtk=atk(f),iDie=theirAtk>=u.hp,theyDie=myAtk>=f.hp;
-        if(theyDie&&!iDie)score=8+CARDS[f.id].cost*.3;
-        else if(theyDie&&iDie)score=1.4+(CARDS[f.id].cost-CARDS[u.id].cost)*.5+(CARDS[f.id].ability==='tribune'?3:0);
-        else if(iDie&&!theyDie)score=-10+(f.hp-myAtk<=2?1.5:0);
-        else score=.7+myAtk*.14-theirAtk*.23+(f.hp<=myAtk*2?1:0);
-      }
-      if(forced)score=Math.max(score,1); // must attack even into a losing trade.
-      if(score>0&&(!best||score>best.score))best={sid:u.sid,target:f?.sid??null,score};
-    }
-    return best;
-  }
-  const sleep=ms=>new Promise(resolve=>setTimeout(resolve,ms));
-  async function cpuPlay(current){
-    if(current!==session||!g||g.over||g.turn!=='cpu'||screen!=='battle')return;
-    let n=0;
-    while(n++<18&&current===session&&!g.over&&screen==='battle'){
-      const options=cpuOptions();if(!options.length||options[0].score<1.8)break;
-      const a=options[0],ok=a.type==='summon'?summon('cpu',a.index,a.lane,a.tribute):cast('cpu',a.index,a.target);
-      if(!ok)break;render();toast(g.status);await sleep(320);
-    }
-    n=0;
-    while(n++<8&&current===session&&!g.over&&screen==='battle'){
-      const a=cpuBestAttack();if(!a)break;
-      if(!fight('cpu',a.sid,a.target))break;
-      render();toast(g.status);await sleep(440);
-    }
-    if(current===session&&!g.over&&g.turn==='cpu'&&screen==='battle'){await sleep(270);if(current===session&&!g.over&&screen==='battle')endTurn()}
-  }
-  function abilityName(c){
-    const a=c.ability;
-    if(c.type==='spell')return ({dmg:`単体${c.n}ダメ`,aoe:`全体${c.n}ダメ`,draw:`ドロー${c.n}`,heal:`回復${c.n}`,buff:`ATK＋${c.n}`,sac:'生贄・2ドロー',dmgDraw:'3ダメ＋1ドロー'})[a];
-    return ({'':'能力なし',frenzy:'猛進',legacy:`遺志${c.n}`,wallleft:'防壁・左強化',draw:`ドロー${c.n}`,double:'連撃',selfharm:`代償${c.n}`,heal:`治癒${c.n}`,blast:`爆炎${c.n}`,rightatk:'右翼強化',commander:'中央指揮',bloodfront:'血の契約1',direct:'直接攻撃2',apocalypse:'終焉の爆炎',tribune:'直接攻撃3・献身召喚'})[a];
-  }
-  function abilityDesc(c){
-    if(c.type==='spell')return ({dmg:`敵モンスター1体に${c.n}ダメージ（レーン不問）。`,aoe:`敵の全モンスターに${c.n}ダメージ。`,draw:`カードを${c.n}枚ドロー（手札上限7）。`,heal:`自分のライフを${c.n}回復。現在の最大ライフを超えない。`,buff:`味方モンスター1体のATKをこのターン中${c.n}上げる。`,sac:'味方モンスター1体を破壊して、カードを2枚ドロー。遺志も発動する。',dmgDraw:'敵モンスター1体に3ダメージを与え、1枚ドローする。'})[c.ability];
-    return ({
-      '':'特殊能力なし。',
-      frenzy:'猛進：攻撃可能なら、ターン終了までに必ず攻撃しなければならない。',
-      legacy:`遺志：破壊されたとき、自分は${c.n}枚ドローする。`,
-      wallleft:'防壁：敵もプレイヤーも一切攻撃できない。左レーンに召喚すると最大HPとHPが1増える。',
-      draw:`召喚時、カードを${c.n}枚ドローする。`,
-      double:'連撃：1ターンに2回攻撃できる。敵を倒せば次の攻撃で直接攻撃も可能。',
-      selfharm:'代償1：召喚時、自分の現在ライフを1失う（最大ライフは減らない）。ライフ1以下では召喚不可。',
-      heal:'召喚時、自分のライフを1回復する。',
-      blast:`召喚時、敵の全モンスターに${c.n}ダメージ。`,
-      rightatk:'右レーンにいる間、ATK＋1。',
-      commander:'中央レーンにいる間、左右の味方モンスターはATK＋1。',
-      bloodfront:'血の契約1：召喚時に現在ライフと最大ライフを1ずつ失う（対戦終了まで回復不能）。正面の敵モンスターに3ダメージ。ライフ1以下では召喚不可。',
-      direct:'正面が空いているレーンから直接攻撃すると、ライフに2ダメージ。',
-      apocalypse:'召喚時、敵の全モンスターに3ダメージ。この効果で1体以上破壊した場合、1枚ドロー。',
-      tribune:'直接攻撃は3ダメージ。既に味方がいるレーンにも、その味方を生贄として破壊し召喚できる（確認あり）。召喚酔いは通常どおり。'
-    })[c.ability];
-  }
-  function cardName(id){return CARDS[id]?.name||id}
-  const escapeHTML=s=>String(s).replace(/[&<>"']/g,x=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[x]));
-  function artIcon(c){return c.id==='M-01'?'<img src="assets/m01_art.webp" alt="森の狼">':c.icon}
-  function ownAttackStatus(u){if(!g||g.over||g.turn!=='player')return null;if(isWall(u))return {kind:'spent',text:'🛡 防壁'};if(g.player.turns<=u.summonedTurn)return {kind:'sick',text:'💤 召喚酔い'};if(ready('player',u))return {kind:'can',text:maxAttacks(u)>1?`⚔ あと${availableAttacks('player',u)}回`:'⚔ 攻撃可'};return {kind:'spent',text:'✓ 攻撃済'}}
-  function cardHTML(c,u,who,selected=false){
-    const hand=!u,sp=c.type==='spell',disabled=hand&&!canPay('player',c),status=u&&who==='player'?ownAttackStatus(u):null;
-    const cls=[hand?'handCard':'unitCard',sp?'spell':'',who==='cpu'?'enemyCard':'',selected?'selected':'',disabled?'disabled':'',u&&!ready(who,u)?'notReady':'',u&&ready(who,u)?'ready':'',status?'own'+(status.kind==='can'?'Ready':status.kind==='sick'?'Sick':'Spent'):''].filter(Boolean).join(' ');
-    const stats=sp?'<div class="cardStats" style="font-size:10px;color:#f1dbad">✦ 魔法</div>':`<div class="cardStats"><span class="atk">⚔${u?atk(u):c.atk}</span><span class="hp ${u&&u.hp<u.maxHp?'damaged':''}">♥${u?u.hp:c.hp}</span></div>`;
-    return `<div class="${cls}" tabindex="0" role="button" aria-label="${escapeHTML(c.name+' '+abilityName(c))}。長押しで詳細"><div class="cardTop"><span class="cardId">${c.id}</span><span class="cardCost">${c.cost}</span></div><div class="cardArt">${artIcon(c)}</div>${status?`<div class="unitStatus ${status.kind}">${status.text}</div>`:''}<div class="cardName">${escapeHTML(c.name)}</div><div class="cardAbility ${c.ability?'':'none'}">${escapeHTML(abilityName(c))}</div>${stats}${u&&u.attacksUsed?`<span class="attackMark">残${availableAttacks(who,u)}</span>`:''}</div>`;
-  }
-  function showDetail(c,u,where){
-    el('detailTitle').textContent=`${c.name}｜${c.id}`;
-    el('detailArt').innerHTML=artIcon(c);
-    const lane=u?`<span class="pill">${LANE_NAMES[u.lane]}レーン</span>`:'';
-    const basic=c.type==='monster'?`<span class="pill">⚔ ATK ${u?atk(u):c.atk}</span><span class="pill">♥ HP ${u?u.hp:c.hp}/${u?u.maxHp:c.hp}</span>`:'<span class="pill">✦ 魔法</span>';
-    const acts=u?`<p>攻撃：${isWall(u)?'不可（防壁）':ready(where,u)?'可能':'不可'}／残り${availableAttacks(where,u)}回</p>`:'';
-    el('detailInfo').innerHTML=`<p><strong>${where==='hand'?'自分の手札':where==='cpu'?'CPUの場':'自分の場'}</strong></p><span class="pill">💠 コスト ${c.cost}</span>${lane}${basic}<p><strong>${escapeHTML(abilityName(c))}</strong></p><p>${escapeHTML(abilityDesc(c))}</p>${acts}`;
-    el('detailOverlay').classList.add('show');el('detailOverlay').setAttribute('aria-hidden','false');
-  }
-  function hideDetail(){el('detailOverlay').classList.remove('show');el('detailOverlay').setAttribute('aria-hidden','true')}
-  function bindCard(node,onTap,onHold){
-    let timer=null,start=null,held=false,moved=false;
-    const clear=()=>{if(timer!==null){clearTimeout(timer);timer=null}};
-    node.addEventListener('pointerdown',e=>{if(e.button!==0)return;held=false;moved=false;node.dataset.suppressClick='0';start={x:e.clientX,y:e.clientY,id:e.pointerId};clear();timer=setTimeout(()=>{timer=null;if(start&&!moved){held=true;onHold()}},520)});
-    node.addEventListener('pointermove',e=>{if(!start||start.id!==e.pointerId)return;if(Math.hypot(e.clientX-start.x,e.clientY-start.y)>11){moved=true;clear()}});
-    node.addEventListener('pointerup',e=>{clear();if(held){e.preventDefault();node.dataset.suppressClick='1'}start=null});
-    node.addEventListener('pointercancel',()=>{clear();start=null});node.addEventListener('contextmenu',e=>e.preventDefault());
-    node.addEventListener('click',e=>{if(node.dataset.suppressClick==='1'||held){e.preventDefault();node.dataset.suppressClick='0';held=false;return}if(inspect)onHold();else onTap()});
-    node.addEventListener('keydown',e=>{if(e.key==='i'||e.key==='I'){e.preventDefault();onHold()}});
-  }
-  function makeCell(who,lane){
-    const cell=document.createElement('div');cell.className='zoneCell';const u=unitAt(who,lane);
-    if(u){const c=CARDS[u.id],chosen=who==='player'&&g.selected?.kind==='attack'&&g.selected.sid===u.sid;cell.innerHTML=cardHTML(c,u,who,chosen);bindCard(cell.firstChild,()=>who==='player'?ownSlotTap(lane):enemySlotTap(lane),()=>showDetail(c,u,who))}
-    else{
-      let hint='空き',special='';
-      if(who==='player'&&g.turn==='player'&&g.selected?.kind==='summon'){hint='＋ ここに召喚';special='available'}
-      else if(who==='cpu'&&g.turn==='player'&&g.selected?.kind==='attack'&&g.selected.lane===lane){hint='♥ 直接攻撃';special='attackHere'}
-      else if(who==='player')hint='＋ 空き';
-      const box=document.createElement('div');box.className=`emptySlot ${special}`;box.innerHTML=`<div class="plus">${special==='attackHere'?'♥':'＋'}</div><div>${escapeHTML(hint)}</div>`;
-      box.setAttribute('role','button');box.tabIndex=0;box.setAttribute('aria-label',`${LANE_NAMES[lane]}レーン ${hint}`);
-      box.addEventListener('click',()=>who==='player'?ownSlotTap(lane):enemySlotTap(lane));box.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();box.click()}});cell.append(box);
-    }
-    return cell;
-  }
-  function readRecord(){let r={win:0,lose:0,draw:0};try{r={...r,...JSON.parse(localStorage.getItem(RECORD_KEY)||'{}')}}catch{}return r}
-  function updateRecord(){const r=readRecord();el('record').textContent=`α版戦績：${r.win||0}勝 ${r.lose||0}敗 ${r.draw||0}分`}
-  function render(){
-    if(!g)return;
-    el('phaseChip').textContent=g.over?'対戦終了':g.turn==='player'?'🟢 自分の番':'🟣 CPUの番';
-    el('cpuHp').textContent=g.cpu.life;el('playerHp').textContent=g.player.life;el('cpuMaxHp').textContent=g.cpu.maxLife;el('playerMaxHp').textContent=g.player.maxLife;
-    el('cpuInfo').textContent=`山札${g.cpu.deck.length}・手札${g.cpu.hand.length}`;
-    el('playerInfo').textContent=`山札${g.player.deck.length}・手札${g.player.hand.length}`;
-    el('handCount').textContent=`${g.player.hand.length}/${MAX_HAND}`;el('mana').textContent=`💠 ${g.player.mana}/${g.player.maxMana}`;
-    el('endBtn').disabled=g.turn!=='player'||g.over;el('endBtn').classList.toggle('pendingAttacks',g.turn==='player'&&!g.over&&pendingPlayerAttacks().length>0);
-    el('cancelBtn').disabled=!g.selected;el('inspectBtn').classList.toggle('active',inspect);el('inspectBtn').setAttribute('aria-pressed',String(inspect));el('inspectBtn').textContent=inspect?'✓ 操作へ':'🔎 詳細';
-    let message=pendingPlayerAttacks().length&&g.turn==='player'?'⚔ 攻撃可能な味方がいるよ':'手札からカードを選ぶか、味方をタップ';
-    if(g.over)message='対戦終了';else if(inspect)message='詳細モード：タップでカード情報';else if(g.turn==='cpu')message=g.status||'CPUの番';
-    else if(g.selected?.kind==='summon')message='召喚先のレーンをタップ';
-    else if(g.selected?.kind==='attack')message=`${LANE_NAMES[g.selected.lane]}レーンの正面をタップして攻撃`;
-    else if(g.selected?.kind==='spell')message=['buff','sac'].includes(CARDS[g.player.hand[g.selected.index]]?.ability)?'対象の味方をタップ':'対象の敵をタップ';
-    else if(g.selected?.kind==='spellConfirm')message='「魔法を使用」で確定';
-    else if(g.selected?.kind==='tributeConfirm')message='味方を犠牲にするか確認';
-    else if(g.selected?.kind==='handInfo')message='このカードは今は使えません';
-    el('hint').textContent=message;
-    const lanes=document.createDocumentFragment();for(let lane=0;lane<3;lane++){
-      const track=document.createElement('div');track.className='laneTrack';const title=document.createElement('div');title.className='laneTitle';title.innerHTML=`<span class="laneNumber">${lane+1}</span>${LANE_NAMES[lane]}レーン`;
-      track.append(title,makeCell('cpu',lane));const mid=document.createElement('div');mid.className='laneCenter';mid.innerHTML='<span>⇅</span>';track.append(mid,makeCell('player',lane));lanes.append(track);
-    }el('lanes').replaceChildren(lanes);
-    const preview=el('handPreview');preview.classList.toggle('confirming',['spellConfirm','tributeConfirm'].includes(g.selected?.kind));
-    let html='<div class="previewText"><strong>手札を選んでね</strong><span>7枚を一覧表示。タップで選択、長押しで詳細。</span></div>';
-    if(g.selected?.index!==undefined&&['summon','spell','spellConfirm','handInfo','tributeConfirm'].includes(g.selected.kind)){
-      const c=CARDS[g.player.hand[g.selected.index]];
-      if(c){const postfix=g.selected.kind==='tributeConfirm'?`／${LANE_NAMES[g.selected.lane]}の味方を生贄にする`:'';
-        html=`<div class="previewText"><strong>${escapeHTML(c.name)}｜${c.id} 💠${c.cost} ${c.type==='monster'?`⚔${c.atk} ♥${c.hp}`:'✦魔法'}</strong><span>${escapeHTML(abilityDesc(c))}${escapeHTML(postfix)}</span></div>`;
-        if(g.selected.kind==='spellConfirm')html+='<button type="button" class="previewAction" id="spellConfirmBtn">魔法を使用</button>';
-        if(g.selected.kind==='tributeConfirm')html+='<button type="button" class="previewAction" id="tributeConfirmBtn">犠牲にして召喚</button>';
-      }
-    }else if(g.selected?.kind==='attack'){
-      const u=g.player.field.find(x=>x.sid===g.selected.sid);if(u)html=`<div class="previewText"><strong>${escapeHTML(cardName(u.id))}｜攻撃選択中</strong><span>${LANE_NAMES[u.lane]}レーンの正面をタップ。キャンセル可能。</span></div>`;
-    }
-    preview.innerHTML=html;el('spellConfirmBtn')?.addEventListener('click',confirmSpell);el('tributeConfirmBtn')?.addEventListener('click',confirmTribute);
-    const hand=document.createDocumentFragment();g.player.hand.forEach((id,index)=>{const c=CARDS[id],chosen=g.selected?.index===index&&['summon','spell','spellConfirm','handInfo','tributeConfirm'].includes(g.selected.kind);const wrap=document.createElement('div');wrap.innerHTML=cardHTML(c,null,'hand',chosen);const card=wrap.firstChild;bindCard(card,()=>handTap(index),()=>showDetail(c,null,'hand'));hand.append(card)});el('hand').replaceChildren(hand);updateRecord();
-  }
-  function showModal(title,content,action=null){el('modalTitle').textContent=title;el('modalBody').innerHTML=content;el('modalReplay').style.display=action?'inline-block':'none';el('modalReplay').textContent=action?.label||'確認';el('modalReplay').onclick=action?.run||null;el('modal').classList.add('show')}
-  function hideModal(){el('modal').classList.remove('show')}
-  function finish(result){
-    g.over=true;g.result=result;pushLog(result==='win'?'あなたの勝利！':result==='lose'?'CPUの勝利！':'引き分け！');
-    const r=readRecord();r[result]=(r[result]||0)+1;try{localStorage.setItem(RECORD_KEY,JSON.stringify(r))}catch{}
-    const p=g.player.stats,c=g.cpu.stats;
-    el('resultTitle').textContent=result==='win'?'勝利！':result==='lose'?'敗北…':'引き分け';
-    el('resultTitle').className='resultTitle '+(result==='win'?'victory':result==='lose'?'defeat':'');
-    el('resultSub').textContent=result==='win'?'戦いはあなたの勝利で終わった。':result==='lose'?'次の一戦で取り返そう。':'両者、決着つかず。';
-    el('resultStats').innerHTML=`<div>ターン数 <b>${g.player.turns} / ${g.cpu.turns}</b><small>自分 / CPU</small></div><div>残りライフ <b>${g.player.life}/${g.player.maxLife} ・ ${g.cpu.life}/${g.cpu.maxLife}</b><small>自分 ・ CPU</small></div><div>カード使用 <b>${p.played} / ${c.played}</b><small>自分 / CPU</small></div><div>直接攻撃ダメージ <b>${p.direct} / ${c.direct}</b><small>自分 / CPU</small></div><div>手札上限でドロー不可 <b>${p.blockedDraw} / ${c.blockedDraw}</b><small>自分 / CPU</small></div><div>最大ライフ減少 <b>${p.maxCost} / ${c.maxCost}</b><small>自分 / CPU</small></div>`;
-    hideEndConfirm();hideDetail();hideModal();setScreen('result');updateRecord();
-  }
-  function newGame(){
-    session++;hideDetail();hideModal();hideEndConfirm();inspect=false;seq=0;
-    g={player:side(),cpu:side(),turn:null,selected:null,over:false,result:null,status:'',logs:[]};
-    draw('player',5);draw('cpu',5);pushLog('3レーン戦術バトル開始！');setScreen('battle');startTurn(Math.random()<.5?'player':'cpu');
-  }
-  function returnTitle(){session++;g=null;hideEndConfirm();hideDetail();hideModal();clearTimeout(toastTimeout);el('toast').classList.remove('show');setScreen('title')}
-  function showRules(){showModal('📘 Ver.0.7 α ルール',`<ul><li>独立した左・中央・右の<b>3レーン</b>で、各プレイヤー最大3体を配置。召喚後の移動不可。</li><li>モンスター同士は同じレーンの正面の敵と戦い、攻撃側・防御側が同時にATK分のダメージを受ける。HPは持ち越し。</li><li>正面が空いていればプレイヤーに直接攻撃。基本1ダメージ、一部カードは2〜3ダメージ。</li><li>召喚酔いあり、原則1ターン1回攻撃。連撃は2回。<b>防壁</b>は攻撃不可。<b>猛進</b>は攻撃可能なら攻撃必須。</li><li>ライフ初期10。血の契約は現在ライフと<b>最大ライフ</b>を減らし、上限は元に戻らない。自傷・契約は残りライフ1以下では使用不可。</li><li>M-20は味方がいるレーンでも、その味方を犠牲にして召喚可能。プレイヤー操作では使用前に確認する。</li><li>初期手札5、上限7、各自ターン開始に1ドロー。マナは毎ターン最大値＋1で上限10。</li><li>魔法は自分のターンのみ使用。相手ライフへの直接バーンはない。</li><li>手札タップで選択・再タップで解除、長押しで詳細。対象不要の魔法は確定ボタンで使用する。</li><li>ライフ0、または山札・手札・場がすべて空なら敗北。山札切れのみでは敗北しない。</li><li>この版はバランス試験用。カード数値・CPU思考は今後調整予定。</li></ul>`)}
-  el('titleScreen').addEventListener('click',()=>{if(screen==='title')newGame()});
-  el('titleScreen').addEventListener('keydown',e=>{if((e.key==='Enter'||e.key===' ')&&screen==='title'){e.preventDefault();newGame()}});
-  el('rulesBtn').addEventListener('click',showRules);
-  el('restartBtn').addEventListener('click',()=>showModal('タイトルへ戻る？','<p>現在の対戦は中断され、戦績には記録されません。</p>',{label:'タイトルへ',run:returnTitle}));
-  el('modalClose').addEventListener('click',hideModal);
-  el('resultReplay').addEventListener('click',newGame);el('resultTitleBtn').addEventListener('click',returnTitle);
-  el('detailClose').addEventListener('click',hideDetail);el('detailOverlay').addEventListener('click',e=>{if(e.target===el('detailOverlay'))hideDetail()});
-  document.addEventListener('keydown',e=>{if(e.key==='Escape'){hideDetail();hideModal();hideEndConfirm()}});
-  el('inspectBtn').addEventListener('click',()=>{inspect=!inspect;g.selected=null;render()});
-  el('cancelBtn').addEventListener('click',()=>{g.selected=null;render()});
-  el('endBtn').addEventListener('click',requestEndTurn);el('endConfirmBack').addEventListener('click',hideEndConfirm);
-  el('endConfirmGo').addEventListener('click',()=>{hideEndConfirm();if(!g.over&&g.turn==='player')requestEndTurnFromConfirm()});
-  function requestEndTurnFromConfirm(){if(mandatoryPlayerAttacks().length){requestEndTurn();return}endTurn()}
-  el('endConfirmOverlay').addEventListener('click',e=>{if(e.target===el('endConfirmOverlay'))hideEndConfirm()});
-  setScreen('title');
-  window.__LANE_TEST__={getScreen:()=>screen,getState:()=>g?JSON.parse(JSON.stringify(g)):null,getMutableState:()=>g,cards:CARDS,deck:DECK_B,newGame,returnTitle,summon,cast,fight,ready,unitAt,startTurn,endTurn,cpuPlay,render,handTap,ownSlotTap,enemySlotTap,atk,directDamage,requestEndTurn,resolveDeaths,cardName};
-})();
+// 第1弾カード80種類。カード名・数値・効果は試験用の仮設定。
+const CARD_ROWS = String.raw`
+R-01|荒野の山犬|1|2|1|獣|🐺|【猛進】攻撃可能な場合、可能な限り攻撃しなければならない。|
+R-02|群れを導く灰狼|2|1|2|獣|🐺|自分の場にほかの獣がいる間、ATK＋1。|【純朱】登場時、自身の最大HP・現在HP＋1。
+R-03|牙冠の狩猟王|3|2|3|獣|🦁|敵モンスターを攻撃する際、ほかの味方の獣がいれば、その戦闘中ATK＋1。|
+R-04|暴嵐の巨獣|6|4|6|獣|🦬|攻撃による戦闘で敵モンスターを破壊し、自身が生き残った場合、敵プレイヤーに1ダメージ。|
+R-05|棘針の甲虫|1|1|1|昆虫|🪲|【登場時】敵モンスター1体に1ダメージを与えてよい。|
+R-06|蜂群の先導者|2|1|2|昆虫|🐝|【破壊時】敵モンスター1体に1ダメージ。ほかの味方の昆虫がいれば、代わりに2ダメージ。|
+R-07|断頭の大鎌虫|4|2|3|昆虫|🦗|敵モンスターを攻撃する戦闘中、ATK＋2。|
+R-08|駆け根の蔦獣|2|1|2|植物|🌿|攻撃したターンの終了時、生存していれば最大HP・現在HP＋1（合計2回まで）。|
+R-09|裂芽の大花|4|2|4|植物|🌺|【登場時】ほかの味方1体のATKをこのターン中＋1。植物なら＋2。|【純朱】この登場時効果のATK上昇値をさらに＋1。
+R-10|風切り燕|1|1|1|鳥|🕊️|【登場時】ほかの味方1体のATKをこのターン中＋1してよい。|
+R-11|断空の大鷲|3|2|3|鳥|🦅|攻撃時、正面に加えて左右隣の敵モンスターも攻撃可能。直接攻撃は正面が空のときだけ。|
+R-12|森林の追跡者|2|2|2|人|🏹|既にHPが減っている敵モンスターを攻撃する戦闘中、ATK＋1。|
+R-13|山野の戦旗手|4|2|3|人|🚩|ほかの味方モンスターが敵モンスターを攻撃する際、その戦闘中ATK＋1。|
+R-14|原初の地竜|8|5|7|竜|🐉|【登場時】敵モンスター1体に2ダメージ。|【純朱】登場時ダメージを3に変更。
+R-15|野生の牙|1|-|-|魔法|🦷|味方1体のATKをこのターン中＋1。獣なら代わりに＋2。|
+R-16|石礫の一撃|1|-|-|魔法|🪨|敵モンスター1体に1ダメージ。|
+R-17|群れの号令|2|-|-|魔法|📣|味方モンスターを最大2体選び、それぞれのATKをこのターン中＋1。|
+R-18|防壁砕き|3|-|-|魔法|🔨|敵の【防壁】を持つモンスター1体に4ダメージ。防壁がなければ使用不可。|
+R-19|弱点狩り|3|-|-|魔法|🎯|敵モンスター1体に2ダメージ。対象が既に負傷していれば3ダメージ。|
+R-20|野生の追撃|4|-|-|魔法|⚡|味方1体はこのターン合計2回まで攻撃可能（既に1回攻撃していてもよい）。召喚酔いは無視しない。|
+A-01|泡刃の小魚|1|1|2|水棲|🐟|敵モンスター攻撃時、このターン魔法を使用済みなら、その戦闘中ATK＋1。|
+A-02|潮読みの海蛇|2|1|3|水棲|🐍|【登場時】敵1体のATKを相手の次のターン終了まで－1（最低0）。|【純蒼】ほかの味方の水棲がいれば減少値を－2に変更。
+A-03|深潮の巨触手|5|3|5|水棲|🐙|【登場時】敵1体を、その敵に隣接する空きレーンへ移動させてよい。|
+A-04|魔導観測機|1|0|2|機械|📡|自分のターンに最初の魔法を使ったとき、ターン終了までATK＋1。|
+A-05|演算機巧兵|3|2|3|機械|🤖|【登場時】このターンに魔法を使っていたらカードを1枚引く。|
+A-06|蒼光の精霊|2|1|2|精霊|💠|魔法を使うたび、このターン中ATK＋1（1ターン最大2回）。|
+A-07|知恵紡ぎの精霊|3|1|3|精霊|✨|1ターンに1回、自分が魔法を使うとカードを1枚引く。|【純蒼】発動時に自身のHPを1回復（上限は最大HP）。
+A-08|惑わしの幻影|2|1|1|幻影|👻|【登場時】敵1体は相手の次のターンに攻撃できない。|
+A-09|霞影の渡り手|4|2|3|幻影|🌫️|このターン魔法を使っていれば、正面に敵がいても直接攻撃を選べる。|
+A-10|蒼書院の見習い|2|1|2|人|📘|【登場時】手札が3枚以下ならカードを1枚引く。|
+A-11|深謀の術師|4|2|3|人|🧙|1ターンに1回、魔法を使ったとき、敵モンスター1体に1ダメージを与えてよい。|
+A-12|星海の魔導竜|7|4|6|竜|🐉|【登場時】敵1体を次の相手ターン攻撃禁止にする。その後、カードを1枚引く。|【純蒼】登場時のドローを2枚に変更。
+A-13|魔力の探求|1|-|-|魔法|📖|カードを1枚引く。|
+A-14|衰弱の霧|1|-|-|魔法|🌫️|敵1体のATKを相手の次のターン終了まで－1（最低0）。|
+A-15|水刃の術式|2|-|-|魔法|💧|敵1体に1ダメージ、その後カードを1枚引く。|
+A-16|転位魔法|2|-|-|魔法|🔁|味方1体を自分の空いている別のレーンへ移動。召喚酔いや残り攻撃回数は変わらない。|
+A-17|氷結の槍|3|-|-|魔法|❄️|敵1体に2ダメージ。生き残ったら相手の次のターン終了までATK－1。|
+A-18|深層知識|3|-|-|魔法|📚|カードを2枚引く。|
+A-19|蒼霧の氾濫|4|-|-|魔法|🌊|敵全員に1ダメージ。生き残った敵のATKを次の相手ターン終了まで－1。|
+A-20|時縛の結界|5|-|-|魔法|⏳|敵を最大2体選び、相手の次のターンの攻撃を禁止。その後、カードを1枚引く。|
+W-01|黎明の小天使|1|1|2|天使|🪽|【登場時】自分のライフが5以下なら1回復。|
+W-02|慈愛の守護天使|2|1|3|天使|😇|【登場時】味方1体のHPを1回復してよい。|【純白】回復量を2に変更。
+W-03|白翼の結界天使|3|1|4|天使|🪽|左右に隣接する味方が敵との戦闘で受けるダメージを1軽減。同種の軽減は重複しない。|
+W-04|聖鐘の大天使|5|3|5|天使|🔔|【登場時】ライフを1回復。ほかの味方の天使がいればさらに1回復。|
+W-05|古城の石巨人|1|0|3|巨人|🗿|【防壁】自分から攻撃できず反撃ダメージ0。|
+W-06|鉄壁の門番巨人|3|1|5|巨人|🛡️|【防壁】自分から攻撃できない。攻撃された場合はATK1で反撃。|
+W-07|山脈の守護巨人|6|4|7|巨人|⛰️|敵モンスターから攻撃された戦闘中ATK＋2。|
+W-08|白銀の一角獣|2|2|2|幻獣|🦄|攻撃で敵を破壊し自身が生き残ればライフを1回復（1ターン1回）。|
+W-09|聖森の金獅子|4|2|5|幻獣|🦁|自分の場にほかの【防壁】がいればATK＋1。|【純白】登場時、ほかの味方の防壁がいれば自分のライフを1回復。
+W-10|星灯の使徒|2|1|3|天星|🌟|1ターンに1回、味方のHPが実際に回復したとき、そのターン中ATK＋1。|
+W-11|天穹の星守|4|2|4|天星|⭐|左右隣のほかの味方のATK＋1（このカードが場を離れると失われる）。|
+W-12|城塞の盾兵|2|2|2|人|🛡️|敵から攻撃された戦闘中ATK＋1。|
+W-13|白誓の騎士団長|4|3|4|人|⚜️|【登場時】ほかの味方1体の最大HP・現在HPを＋1してよい。|
+W-14|天護の聖竜|8|5|8|竜|🐉|【登場時】ライフ2回復。ほかの味方全員の最大HP・現在HP＋1。|【純白】場にいる間、左右隣のほかの味方のATK＋1。
+W-15|癒やしの光|1|-|-|魔法|💚|ライフを1回復、または味方1体のHPを2回復。|
+W-16|生命の加護|1|-|-|魔法|🌱|味方1体の最大HP・現在HPを永続的に＋1。|
+W-17|白刃の祝福|2|-|-|魔法|✨|味方1体のATKをこのターン中＋1、HPを1回復。|
+W-18|鉄壁の祈り|2|-|-|魔法|🛡️|次の相手ターン終了まで、味方1体が次に受ける戦闘ダメージを2軽減。軽減後消える。|
+W-19|守護の恩恵|3|-|-|魔法|🙏|ライフ1回復、カードを1枚引く。自分の場に防壁がいればライフ回復量2。|
+W-20|聖域の鐘声|4|-|-|魔法|🔔|ライフ2回復、味方全員の最大HP・現在HPを永続的に＋1。|
+Y-01|灰墓の従兵|1|1|1|不死|💀|【破壊時】カードを1枚引く。|
+Y-02|墓守りの亡者|2|1|3|不死|🪦|自分のターン中にほかの味方が破壊されると、1ターンに1回ATK＋1。|【純宵】登場時、ほかの味方の不死がいれば最大HP・現在HP＋1。
+Y-03|呪骨の騎士|3|2|3|不死|☠️|【破壊時】敵1体に1ダメージ。敵がいなければ1枚引く。|
+Y-04|屍王の執行者|6|4|5|不死|⚰️|【登場時】ほかの味方1体を破壊してもよい。破壊したならライフを1回復し敵1体に2ダメージを与えてよい。|
+Y-05|契約の小悪魔|1|2|2|悪魔|😈|【召喚時の代償】マナとは別に自分のライフを1支払う。|
+Y-06|血宴の魔将|3|2|3|悪魔|👹|【登場時】ほかの味方1体を破壊してもよい。破壊したら敵1体に2ダメージ。|
+Y-07|深紅の魔公|5|4|5|悪魔|🦇|【登場時】ライフを2支払ってカードを2枚引いてもよい。|【純宵】登場時に支払うライフは1になる。
+Y-08|毒牙の影蛇|2|1|3|蛇|🐍|負傷している敵モンスターを攻撃する戦闘中ATK＋2。|
+Y-09|禍鱗の大蛇|4|2|4|蛇|🐍|【登場時】敵1体に1ダメージ。既にHPが減っていれば代わりに2ダメージ。|
+Y-10|宵血の吸血鬼|2|2|2|吸血鬼|🧛|直接攻撃が成功したらライフを1回復（1ターン1回）。|
+Y-11|血月の貴族|4|2|4|吸血鬼|🩸|1ターンに1回、自分のカード・召喚条件でライフを支払ったとき敵1体に1ダメージを与えてよい。|
+Y-12|禁呪の祭司|3|2|3|人|🧙|【登場時】ほかの味方1体を破壊してもよい。破壊したら1枚引きライフを1回復。|
+Y-13|終焉の黒竜|8|6|7|竜|🐲|【登場時】ほかの味方1体を破壊してもよい。破壊したら敵全員に2ダメージ。|【純宵】破壊した場合さらに敵プレイヤーに1ダメージ。
+Y-14|血染めの刃|1|-|-|魔法|🗡️|ライフ1を支払い敵1体に2ダメージ。|
+Y-15|衰毒の霧|2|-|-|魔法|☣️|敵1体に1ダメージ、次の相手ターン終了までATK－1。|
+Y-16|骸の取引|2|-|-|魔法|📜|味方1体を破壊し、カードを2枚引く。|
+Y-17|禁術の代価|2|-|-|魔法|📕|ライフ1を支払い、カードを2枚引く。|
+Y-18|吸魂の一撃|3|-|-|魔法|💜|敵1体に2ダメージ。この効果で破壊したらライフを1回復。|
+Y-19|魂の献上|3|-|-|魔法|🕯️|味方1体を破壊、その後敵1体に3ダメージ。|
+Y-20|絶命の呪詛|5|-|-|魔法|💀|ライフ2を支払い、敵1体を破壊。|
+`;
+const EMBLEMS={R:{name:'朱',color:'#b94b46',plan:'野生速攻',style:'自然・野生・速攻'},A:{name:'蒼',color:'#397fb0',plan:'魔導制御',style:'魔法・知略・制御'},W:{name:'白',color:'#aebdc9',plan:'聖域守護',style:'守護・回復・反撃'},Y:{name:'宵',color:'#71538f',plan:'血盟の代償',style:'犠牲・代償・破壊'}};
+const MON_COUNT={R:14,A:12,W:14,Y:13};
+const CARDS={};
+for(const ln of CARD_ROWS.trim().split('\n')){
+ const [id,name,cost,atk,hp,tribe,icon,desc,pure='']=ln.split('|');
+ if(CARDS[id])throw Error('カードID重複 '+id);
+ const emblem=id[0],num=Number(id.slice(2));
+ CARDS[id]={id,name,cost:Number(cost),atk:atk==='-'?null:Number(atk),hp:hp==='-'?null:Number(hp),tribe,icon,desc,pure,emblem,type:num<=MON_COUNT[emblem]?'monster':'spell'};
+}
+if(Object.keys(CARDS).length!==80)throw Error('カード80種類ではありません');
+const DECKS={
+ R:{'R-01':3,'R-02':3,'R-03':3,'R-04':1,'R-05':3,'R-06':2,'R-07':1,'R-08':1,'R-09':1,'R-10':3,'R-11':2,'R-12':2,'R-13':0,'R-14':1,'R-15':3,'R-16':3,'R-17':3,'R-18':1,'R-19':2,'R-20':2},
+ A:{'A-01':2,'A-02':2,'A-03':1,'A-04':2,'A-05':2,'A-06':3,'A-07':3,'A-08':2,'A-09':1,'A-10':2,'A-11':1,'A-12':1,'A-13':3,'A-14':2,'A-15':3,'A-16':2,'A-17':2,'A-18':3,'A-19':2,'A-20':1},
+ W:{'W-01':3,'W-02':3,'W-03':2,'W-04':1,'W-05':2,'W-06':2,'W-07':1,'W-08':3,'W-09':2,'W-10':2,'W-11':2,'W-12':2,'W-13':1,'W-14':1,'W-15':3,'W-16':2,'W-17':2,'W-18':2,'W-19':2,'W-20':2},
+ Y:{'Y-01':3,'Y-02':2,'Y-03':3,'Y-04':1,'Y-05':3,'Y-06':2,'Y-07':1,'Y-08':2,'Y-09':1,'Y-10':3,'Y-11':2,'Y-12':2,'Y-13':1,'Y-14':3,'Y-15':2,'Y-16':2,'Y-17':3,'Y-18':2,'Y-19':1,'Y-20':1}
+};
+function validateDeck(deck){
+ const ids=Object.keys(deck).filter(id=>deck[id]>0),count=ids.reduce((n,id)=>n+deck[id],0);
+ const flags={};for(const id of ids){if(!CARDS[id]||!Number.isInteger(deck[id])||deck[id]<1||deck[id]>3)throw Error('不正な採用枚数 '+id);flags[CARDS[id].emblem]=(flags[CARDS[id].emblem]||0)+deck[id]}
+ if(count!==40)throw Error('40枚ではありません: '+count);
+ if(Object.keys(flags).length>2)throw Error('最大2紋章');
+ if(Object.keys(flags).length===2&&!Object.values(flags).every(v=>v>=15&&v<=25))throw Error('混色比率が不正');
+ return {count,pure:Object.keys(flags).length===1?Object.keys(flags)[0]:null,flags};
+}
+for(const [code,deck] of Object.entries(DECKS)){const v=validateDeck(deck);if(v.pure!==code)throw Error('初期単色デッキ不正 '+code)}
 
+const el=id=>document.getElementById(id);
+const MAX_HAND=7, LANE_NAMES=['左','中央','右'], RECORD_KEY='drei_kampf_v08_record';
+const opponent=who=>who==='player'?'cpu':'player',owner=who=>who==='player'?'あなた':'CPU';
+let g=null,screen='title',inspect=false,session=0,seq=0,timeoutToast=null,flushing=false;
+let playerChoice='R',cpuChoice='A';
+const freshStats=()=>({played:0,monster:0,spell:0,direct:0,attacks:0,blockedDraw:0,healed:0,lifeCost:0,sacrifices:0,removed:0});
+function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function makeSide(code){const list=[];for(const [id,n] of Object.entries(DECKS[code]))for(let k=0;k<n;k++)list.push(id);return {code,pure:validateDeck(DECKS[code]).pure,life:10,maxLife:10,deck:shuffle(list),hand:[],field:[],turns:0,maxMana:0,mana:0,spellsThisTurn:0,stats:freshStats()}}
+function unitAt(who,lane){return g[who].field.find(u=>u.lane===lane)||null}
+function unitBySid(sid){for(const side of ['player','cpu']){const u=g[side].field.find(x=>x.sid===sid);if(u)return u}return null}
+function field(who){return g[who].field}
+function isWall(u){return u&&['W-05','W-06'].includes(u.id)}
+function purity(who){return g[who].pure===g[who].code}
+function otherTribe(who,exceptSid,tribe){return field(who).some(u=>u.sid!==exceptSid&&CARDS[u.id].tribe===tribe)}
+function log(msg){if(!g)return;g.status=msg;g.logs.unshift(msg);g.logs.length=Math.min(g.logs.length,140)}
+function toast(msg){clearTimeout(timeoutToast);el('toast').textContent=msg;el('toast').classList.add('show');timeoutToast=setTimeout(()=>el('toast').classList.remove('show'),1450)}
+function draw(who,num){const s=g[who];let n=0;for(let i=0;i<num;i++){if(!s.deck.length)break;if(s.hand.length>=MAX_HAND){s.stats.blockedDraw++;continue}s.hand.push(s.deck.pop());n++}if(n)log(`${owner(who)}：${n}枚ドロー`);return n}
+function changedLife(who,delta){const s=g[who],old=s.life;s.life=Math.min(s.maxLife,Math.max(0,s.life+delta));const actual=s.life-old;if(actual>0){s.stats.healed+=actual;log(`${owner(who)}のライフ＋${actual}`)}else if(actual<0)log(`${owner(who)}のライフ${actual}`);return actual}
+function payLife(who,n){if(g[who].life<=n)return false;changedLife(who,-n);g[who].stats.lifeCost+=n;for(const u of [...field(who)])if(u.id==='Y-11'&&!triggered(u,'blood')){markTrigger(u,'blood');queueTarget(who,'敵1体に1ダメージ（血月の貴族）','enemy',x=>true,t=>damageUnit(t,1),true)}return true}
+function healUnit(u,n){if(!unitBySid(u.sid))return 0;const actual=Math.min(n,u.maxHp-u.hp);u.hp+=actual;if(actual>0){log(`${CARDS[u.id].name}のHP＋${actual}`);for(const star of [...field(u.owner)])if(star.id==='W-10'&&!triggered(star,'heal')){markTrigger(star,'heal');addTemp(star,1,g.turn);log('星灯の使徒：ATK＋1')}}return actual}
+function boostHp(u,n){u.maxHp+=n;u.hp+=n;log(`${CARDS[u.id].name}の最大HP・HP＋${n}`)}
+function addTemp(u,n,who){u.effects.push({kind:'atkPlus',n,expireWho:who,expireTurn:g[who].turns})}
+function addDebuff(u,n){u.effects.push({kind:'atkMinus',n,expireWho:u.owner,expireTurn:g[u.owner].turns+1})}
+function freeze(u){u.effects.push({kind:'freeze',expireWho:u.owner,expireTurn:g[u.owner].turns+1})}
+function shield(u,n){const foe=opponent(u.owner);u.effects.push({kind:'shield',n,expireWho:foe,expireTurn:g[foe].turns+1})}
+function triggered(u,name){return u.procs[name]===g.turnSerial}
+function markTrigger(u,name){u.procs[name]=g.turnSerial}
+function atk(u,context={}){
+ const c=CARDS[u.id];let n=c.atk+(u.effects||[]).reduce((z,e)=>z+(e.kind==='atkPlus'?e.n:e.kind==='atkMinus'?-e.n:0),0);
+ if(u.id==='R-02'&&otherTribe(u.owner,u.sid,'獣'))n++;
+ if(u.id==='W-09'&&field(u.owner).some(x=>x.sid!==u.sid&&isWall(x)))n++;
+ if(u.id==='Y-02'&&u.bonusAtk)n+=u.bonusAtk;
+ if(u.id==='W-11'){} // aura applies to other friendly units only
+ for(const a of field(u.owner))if(a.sid!==u.sid&&Math.abs(a.lane-u.lane)===1){if(a.id==='W-11')n++;if(a.id==='W-14'&&purity(u.owner))n++}
+ if(context.attacking&&context.target){
+   if(u.id==='R-03'&&otherTribe(u.owner,u.sid,'獣'))n++;
+   if(u.id==='R-07')n+=2;
+   if(u.id==='R-12'&&context.target.hp<context.target.maxHp)n++;
+   if(u.id==='Y-08'&&context.target.hp<context.target.maxHp)n+=2;
+   if(u.id==='A-01'&&g[u.owner].spellsThisTurn)n++;
+   if(u.id==='R-13'){} 
+   if(field(u.owner).some(a=>a.id==='R-13'&&a.sid!==u.sid))n++;
+ }
+ if(context.defending){if(u.id==='W-07')n+=2;if(u.id==='W-12')n++}
+ return Math.max(0,n);
+}
+function maxAttacks(u){return u.doubleUntil===g[u.owner].turns?2:1}
+function ready(who,u){return !isWall(u)&&g[who].turns>u.summonedTurn&&!u.effects.some(e=>e.kind==='freeze')&&u.attacksUsed<maxAttacks(u)}
+function availableAttacks(who,u){return ready(who,u)?maxAttacks(u)-u.attacksUsed:0}
+function attackTargets(who,u){if(!ready(who,u))return [];const foe=opponent(who),face=unitAt(foe,u.lane),opts=[];
+ if(u.id==='R-11'){for(const t of field(foe))if(Math.abs(t.lane-u.lane)<=1)opts.push({sid:t.sid,lane:t.lane,kind:'unit'})}
+ if(u.id!=='R-11'&&face)opts.push({sid:face.sid,lane:face.lane,kind:'unit'});
+ if(!face||(u.id==='A-09'&&g[who].spellsThisTurn>0))opts.push({sid:null,lane:u.lane,kind:'direct'});
+ return opts;
+}
+function canPay(who,c){return g[who].mana>=c.cost&&g[who].life>lifeCost(c.id,who)}
+function lifeCost(id,who){return ({'Y-05':1,'Y-14':1,'Y-17':1,'Y-20':2})[id]||0}
+function canSummon(who,id,lane){return Number.isInteger(lane)&&lane>=0&&lane<3&&CARDS[id]?.type==='monster'&&(!unitAt(who,lane)||isWall(unitAt(who,lane)))}
+function enemyTargetable(who){return field(opponent(who))}
+function spellTargetMode(id){if(['R-15','R-17','R-20','A-16','W-16','W-17','W-18','Y-16','Y-19'].includes(id))return 'ally';if(['R-16','R-18','R-19','A-14','A-15','A-17','A-20','Y-14','Y-15','Y-18','Y-20'].includes(id))return 'enemy';return null}
+function spellTargets(who,id){const mode=spellTargetMode(id);if(!mode)return [];
+ let choices=field(mode==='ally'?who:opponent(who));
+ if(id==='R-18')choices=choices.filter(isWall);
+ if(id==='A-16'&&field(who).length>=3)choices=[];
+ if(id==='Y-19'&&(!field(who).length||!enemyTargetable(who).length))choices=[];
+ return choices;
+}
+function playableSpell(who,id){if(!canPay(who,CARDS[id]))return false;
+ if(spellTargetMode(id)&&!spellTargets(who,id).length)return false;
+ if(id==='W-15'&&g[who].life===g[who].maxLife&&!field(who).some(u=>u.hp<u.maxHp))return false;
+ if(id==='A-16'&&field(who).length>=3)return false;
+ return true;
+}
+function damageUnit(u,n){if(!u||!unitBySid(u.sid)||n<=0)return 0;u.hp-=n;log(`${CARDS[u.id].name}に${n}ダメージ`);resolveDeaths();return n}
+function damageAll(who,n){for(const u of [...field(who)])u.hp-=n;if(field(who).length)log(`${owner(who)}の全モンスターに${n}ダメージ`);resolveDeaths()}
+function destroy(u){if(!u||!unitBySid(u.sid))return;u.hp=0;g[u.owner].stats.sacrifices++;resolveDeaths()}
+function resolveDeaths(){let loops=0;
+ while(loops++<30){const killed=[];
+ for(const who of ['player','cpu']){const live=[];for(const u of field(who)){if(u.hp<=0)killed.push(u);else live.push(u)}g[who].field=live}
+ if(!killed.length)break;
+ for(const u of killed){g[opponent(u.owner)].stats.removed++;log(`${owner(u.owner)}の${CARDS[u.id].name}が破壊された`)}
+ for(const u of killed){const who=u.owner;
+   if(u.id==='Y-01')draw(who,1);
+   if(u.id==='Y-03'){if(field(opponent(who)).length)queueTarget(who,'呪骨の騎士：敵1体に1ダメージ','enemy',x=>true,t=>damageUnit(t,1),false);else draw(who,1)}
+   if(u.id==='R-06'&&field(opponent(who)).length){const d=otherTribe(who,u.sid,'昆虫')?2:1;queueTarget(who,`蜂群の先導者：敵1体に${d}ダメージ`,'enemy',x=>true,t=>damageUnit(t,d),false)}
+   for(const another of field(who))if(another.id==='Y-02'&&g.turn===who&&!triggered(another,'deadAlly')){markTrigger(another,'deadAlly');another.bonusAtk++;log('墓守りの亡者：ATK＋1')}
+ }
+ }
+}
+function combatReduction(u,raw){let n=raw;
+ const protecting=field(u.owner).some(a=>a.sid!==u.sid&&a.id==='W-03'&&Math.abs(a.lane-u.lane)===1);
+ if(protecting)n=Math.max(0,n-1);
+ const s=u.effects.find(e=>e.kind==='shield');if(s&&raw>0){n=Math.max(0,n-s.n);u.effects=u.effects.filter(e=>e!==s);log('鉄壁の祈り：ダメージ軽減')}
+ return n;
+}
+function fight(who,sid,targetSid=null){if(!g||g.over||g.turn!==who||g.pending)return false;
+ const u=field(who).find(x=>x.sid===sid);if(!u)return false;
+ const opt=attackTargets(who,u).find(x=>x.sid===targetSid);if(!opt)return false;
+ u.attacksUsed++;u.attackedThisTurn=true;g[who].stats.attacks++;
+ if(opt.kind==='direct'){
+   changedLife(opponent(who),-1);g[who].stats.direct++;log(`${CARDS[u.id].name}が直接攻撃！`);
+   if(u.id==='Y-10'&&!triggered(u,'vampire')){markTrigger(u,'vampire');changedLife(who,1)}
+ }else{
+   const foe=unitBySid(opt.sid);const a=atk(u,{attacking:true,target:foe}),b=atk(foe,{defending:true,target:u});
+   const myDamage=combatReduction(u,b),foeDamage=combatReduction(foe,a);
+   u.hp-=myDamage;foe.hp-=foeDamage;
+   log(`${CARDS[u.id].name}が攻撃（${a} / 反撃${b}）`);
+   const enemyDead=foe.hp<=0,attackerLives=u.hp>0;
+   resolveDeaths();
+   if(enemyDead&&attackerLives&&unitBySid(u.sid)){
+     if(u.id==='R-04'){changedLife(opponent(who),-1);g[who].stats.direct++}
+     if(u.id==='W-08'&&!triggered(u,'unicorn')){markTrigger(u,'unicorn');changedLife(who,1)}
+   }
+ }
+ g.selected=null;checkWinner();if(screen==='battle')render();return true;
+}
+// Choices: callbacks run only after a valid selection. Triggered choices may chain.
+function queueTarget(who,prompt,kind,filter,run,optional=true){g.queue.push({who,prompt,kind,options:()=>field(kind==='enemy'?opponent(who):who).filter(filter).map(u=>({sid:u.sid,lane:u.lane,label:`${LANE_NAMES[u.lane]}：${CARDS[u.id].name}`})),run:chosen=>{const unit=unitBySid(chosen.sid);if(unit)run(unit)},optional});pumpQueue()}
+function queueLane(who,prompt,filter,run){g.queue.push({who,prompt,kind:'lane',options:()=>[0,1,2].filter(filter).map(lane=>({lane,label:`${LANE_NAMES[lane]}レーン`})),run,optional:false});pumpQueue()}
+function queueOption(who,prompt,choices,run){g.queue.push({who,prompt,kind:'options',options:()=>choices.map((label,i)=>({choice:i,label})),run,optional:false});pumpQueue()}
+function chooseCPU(task,opts){if(task.kind==='options'){
+ const pay=task.prompt.includes('ライフ');if(pay&&g.cpu.life<=4)return opts[opts.length-1];return opts[0]
+ }
+ if(task.kind==='lane'){const better=opts.slice().sort((a,b)=>Number(!unitAt('player',a.lane))-Number(!unitAt('player',b.lane)));return better[0]}
+ if(task.kind==='enemy')return opts.slice().sort((a,b)=>{
+   const x=unitBySid(a.sid),y=unitBySid(b.sid);
+   const score=u=>u?(u.hp<=2?10:0)+CARDS[u.id].cost+atk(u)*1.3:0;
+   return score(y)-score(x);
+ })[0];
+ return opts.slice().sort((a,b)=>{
+   const va=unitBySid(a.sid),vb=unitBySid(b.sid),sac=task.prompt.includes('破壊')||task.prompt.includes('生贄')||task.prompt.includes('骸');
+   const value=u=>{if(!u)return 0;return sac?(u.id==='Y-01'?15:0)+(u.id==='Y-03'?10:0)+(isWall(u)?5:0)-CARDS[u.id].cost*1.1+(u.hp===1?1:0):atk(u)*2+(u.hp<u.maxHp?2:0)+(u.id==='A-06'?2:0)};
+   return value(vb)-value(va);
+ })[0];
+}
+function pumpQueue(){if(flushing||!g||g.over)return;flushing=true;
+ let count=0;
+ while(g.queue.length&&!g.pending&&!g.over&&count++<80){
+  const task=g.queue.shift();const opts=task.options();if(!opts.length)continue;
+  if(task.who==='cpu'){const selection=chooseCPU(task,opts);if(selection)task.run(selection);continue}
+  g.pending={...task,choices:opts};
+ }
+ flushing=false;
+ if(!g.over&&screen==='battle')render();
+}
+function choosePending(value){if(!g?.pending)return false;const p=g.pending,cho=p.choices.find(x=>(value.sid!==undefined&&x.sid===value.sid)||(value.lane!==undefined&&p.kind==='lane'&&x.lane===value.lane)||(value.choice!==undefined&&p.kind==='options'&&x.choice===value.choice));if(!cho)return false;g.pending=null;p.run(cho);checkWinner();pumpQueue();if(screen==='battle')render();return true}
+function skipPending(){if(g?.pending?.optional){g.pending=null;pumpQueue();if(screen==='battle')render()}}
+function buffsFromSpell(who){const s=g[who];const first=s.spellsThisTurn===0;s.spellsThisTurn++;
+ for(const u of [...field(who)]){
+  if(u.id==='A-04'&&first)addTemp(u,1,who);
+  if(u.id==='A-06'&&u.magicUsed<2){u.magicUsed++;addTemp(u,1,who)}
+  if(u.id==='A-07'&&!triggered(u,'magicDraw')){markTrigger(u,'magicDraw');draw(who,1);if(purity(who))healUnit(u,1)}
+  if(u.id==='A-11'&&!triggered(u,'magicPing')&&field(opponent(who)).length){markTrigger(u,'magicPing');queueTarget(who,'深謀の術師：敵1体に1ダメージ','enemy',x=>true,t=>damageUnit(t,1),true)}
+ }
+}
+function summon(who,handIndex,lane){if(!g||g.over||g.pending||g.turn!==who)return false;
+ const s=g[who],id=s.hand[handIndex],c=CARDS[id];if(!c||c.type!=='monster'||!canPay(who,c)||!canSummon(who,id,lane))return false;
+ const old=unitAt(who,lane);
+ // Friendly walls may be retired; retirement is never a destruction event.
+ if(old&&isWall(old)){s.field=s.field.filter(u=>u.sid!==old.sid);log(`${CARDS[old.id].name}を撤去し、召喚場所を確保`)}
+ s.hand.splice(handIndex,1);s.mana-=c.cost;s.stats.monster++;s.stats.played++;
+ if(id==='Y-05')payLife(who,1);
+ const u={sid:++seq,id,owner:who,lane,hp:c.hp,maxHp:c.hp,effects:[],procs:{},bonusAtk:0,attacksUsed:0,summonedTurn:s.turns,doubleUntil:-1,magicUsed:0,growth:0,attackedThisTurn:false};
+ s.field.push(u);log(`${owner(who)}：${LANE_NAMES[lane]}に${c.name}召喚`);
+ const pure=purity(who);
+ if(id==='R-02'&&pure)boostHp(u,1);
+ if(id==='A-02'){const d=pure&&otherTribe(who,u.sid,'水棲')?2:1;queueTarget(who,`潮読みの海蛇：敵のATK－${d}`,'enemy',x=>true,t=>addDebuff(t,d),false)}
+ if(id==='Y-02'&&pure&&otherTribe(who,u.sid,'不死'))boostHp(u,1);
+ switch(id){
+ case 'R-05':queueTarget(who,'棘針の甲虫：敵1体に1ダメージ','enemy',x=>true,t=>damageUnit(t,1),true);break;
+ case 'R-09':queueTarget(who,'裂芽の大花：ほかの味方を強化','ally',x=>x.sid!==u.sid,t=>addTemp(t,(CARDS[t.id].tribe==='植物'?2:1)+(pure?1:0),who),true);break;
+ case 'R-10':queueTarget(who,'風切り燕：ほかの味方のATK＋1','ally',x=>x.sid!==u.sid,t=>addTemp(t,1,who),true);break;
+ case 'R-14':queueTarget(who,`原初の地竜：敵に${pure?3:2}ダメージ`,'enemy',x=>true,t=>damageUnit(t,pure?3:2),false);break;
+ case 'A-03':queueTarget(who,'深潮の巨触手：動かす敵を選ぶ','enemy',x=>[x.lane-1,x.lane+1].some(l=>l>=0&&l<3&&!unitAt(opponent(who),l)),t=>{
+    const targetSid=t.sid;queueLane(who,'敵の移動先を選ぶ',l=>l>=0&&l<3&&Math.abs(l-t.lane)===1&&!unitAt(opponent(who),l),choice=>{const movable=unitBySid(targetSid);if(movable){movable.lane=choice.lane;log('深潮の巨触手：敵を移動')}})},true);break;
+ case 'A-05':if(s.spellsThisTurn>0)draw(who,1);break;
+ case 'A-08':queueTarget(who,'惑わしの幻影：敵1体を攻撃禁止','enemy',x=>true,t=>freeze(t),false);break;
+ case 'A-10':if(s.hand.length<=3)draw(who,1);break;
+ case 'A-12':queueTarget(who,'星海の魔導竜：敵1体を攻撃禁止','enemy',x=>true,t=>freeze(t),false);draw(who,pure?2:1);break;
+ case 'W-01':if(s.life<=5)changedLife(who,1);break;
+ case 'W-02':queueTarget(who,'慈愛の守護天使：味方のHP回復','ally',x=>x.hp<x.maxHp,t=>healUnit(t,pure?2:1),true);break;
+ case 'W-04':changedLife(who,otherTribe(who,u.sid,'天使')?2:1);break;
+ case 'W-09':if(pure&&field(who).some(x=>x.sid!==u.sid&&isWall(x)))changedLife(who,1);break;
+ case 'W-13':queueTarget(who,'白誓の騎士団長：ほかの味方の最大HP＋1','ally',x=>x.sid!==u.sid,t=>boostHp(t,1),true);break;
+ case 'W-14':changedLife(who,2);for(const t of [...field(who)])if(t.sid!==u.sid)boostHp(t,1);break;
+ case 'Y-04':queueSacrificeETB(who,u,id);break;
+ case 'Y-06':queueSacrificeETB(who,u,id);break;
+ case 'Y-07':{const n=pure?1:2;if(s.life>n)queueOption(who,`深紅の魔公：ライフ${n}を支払い2枚引く？`,['支払って2枚引く','支払わない'],opt=>{if(opt.choice===0&&payLife(who,n))draw(who,2)});break}
+ case 'Y-09':queueTarget(who,'禍鱗の大蛇：敵1体にダメージ','enemy',x=>true,t=>damageUnit(t,t.hp<t.maxHp?2:1),false);break;
+ case 'Y-12':queueSacrificeETB(who,u,id);break;
+ case 'Y-13':queueSacrificeETB(who,u,id);break;
+ }
+ g.selected=null;checkWinner();pumpQueue();if(screen==='battle')render();return true;
+}
+function queueSacrificeETB(who,source,id){
+ const hasVictim=field(who).some(x=>x.sid!==source.sid);
+ if(!hasVictim)return;
+ if(id==='Y-06'&&!field(opponent(who)).length)return;
+ queueTarget(who,`${CARDS[id].name}：破壊する味方を選ぶ`,'ally',x=>x.sid!==source.sid,t=>{
+   const u=unitBySid(t.sid);if(!u)return;destroy(u);
+   if(id==='Y-04'){changedLife(who,1);queueTarget(who,'屍王の執行者：敵1体に2ダメージ','enemy',x=>true,e=>damageUnit(e,2),true)}
+   if(id==='Y-06')queueTarget(who,'血宴の魔将：敵1体に2ダメージ','enemy',x=>true,e=>damageUnit(e,2),false);
+   if(id==='Y-12'){draw(who,1);changedLife(who,1)}
+   if(id==='Y-13'){damageAll(opponent(who),2);if(purity(who)){changedLife(opponent(who),-1);g[who].stats.direct++}}
+ },true);
+}
+function cast(who,handIndex,targetSid=null,mode=null){if(!g||g.over||g.pending||g.turn!==who)return false;
+ const s=g[who],id=s.hand[handIndex],c=CARDS[id];if(!c||c.type!=='spell'||!playableSpell(who,id))return false;
+ const targetMode=spellTargetMode(id),target=targetMode?spellTargets(who,id).find(u=>u.sid===targetSid):id==='W-15'&&mode==='unit'?field(who).find(u=>u.sid===targetSid):null;
+ if(targetMode&&!target)return false;
+ if(id==='W-15'&&mode!=='life'&&mode!=='unit')return false;
+ if(id==='W-15'&&mode==='unit'&&(!target||target.owner!==who||target.hp>=target.maxHp))return false;
+ if(id==='W-15'&&mode==='life'&&s.life>=s.maxLife)return false;
+ if(id==='A-16'&&field(who).length>=3)return false;
+ s.hand.splice(handIndex,1);s.mana-=c.cost;s.stats.played++;s.stats.spell++;
+ const lc=lifeCost(id,who);if(lc)payLife(who,lc);
+ log(`${owner(who)}が${c.name}を使用`);
+ switch(id){
+ case 'R-15':addTemp(target,CARDS[target.id].tribe==='獣'?2:1,who);break;
+ case 'R-16':damageUnit(target,1);break;
+ case 'R-17':addTemp(target,1,who);queueTarget(who,'群れの号令：別の味方もATK＋1（任意）','ally',u=>u.sid!==target.sid,t=>addTemp(t,1,who),true);break;
+ case 'R-18':damageUnit(target,4);break;
+ case 'R-19':damageUnit(target,target.hp<target.maxHp?3:2);break;
+ case 'R-20':target.doubleUntil=s.turns;break;
+ case 'A-13':draw(who,1);break;
+ case 'A-14':addDebuff(target,1);break;
+ case 'A-15':damageUnit(target,1);draw(who,1);break;
+ case 'A-16':{const sid=target.sid;queueLane(who,'転位魔法：移動先を選ぶ',lane=>!unitAt(who,lane)&&lane!==target.lane,chosen=>{const moving=unitBySid(sid);if(moving){moving.lane=chosen.lane;log(`${CARDS[moving.id].name}が移動`)}});break}
+ case 'A-17':damageUnit(target,2);if(unitBySid(target.sid))addDebuff(target,1);break;
+ case 'A-18':draw(who,2);break;
+ case 'A-19':{damageAll(opponent(who),1);for(const u of [...field(opponent(who))])addDebuff(u,1);break}
+ case 'A-20':freeze(target);queueTarget(who,'時縛の結界：別の敵も攻撃禁止（任意）','enemy',u=>u.sid!==target.sid,t=>freeze(t),true);draw(who,1);break;
+ case 'W-15':if(mode==='life')changedLife(who,1);else healUnit(target,2);break;
+ case 'W-16':boostHp(target,1);break;
+ case 'W-17':addTemp(target,1,who);healUnit(target,1);break;
+ case 'W-18':shield(target,2);break;
+ case 'W-19':changedLife(who,field(who).some(isWall)?2:1);draw(who,1);break;
+ case 'W-20':changedLife(who,2);for(const u of [...field(who)])boostHp(u,1);break;
+ case 'Y-14':damageUnit(target,2);break;
+ case 'Y-15':damageUnit(target,1);if(unitBySid(target.sid))addDebuff(target,1);break;
+ case 'Y-16':destroy(target);draw(who,2);break;
+ case 'Y-17':draw(who,2);break;
+ case 'Y-18':{const was=target.hp<=2;damageUnit(target,2);if(was&&!unitBySid(target.sid))changedLife(who,1);break}
+ case 'Y-19':{destroy(target);queueTarget(who,'魂の献上：敵1体に3ダメージ','enemy',x=>true,t=>damageUnit(t,3),false);break}
+ case 'Y-20':destroyEnemy(target);break;
+ default:throw Error('未実装の魔法 '+id);
+ }
+ buffsFromSpell(who);g.selected=null;checkWinner();pumpQueue();if(screen==='battle')render();return true;
+}
+function destroyEnemy(u){if(!u||!unitBySid(u.sid))return;u.hp=0;resolveDeaths()}
+function checkWinner(){if(!g||g.over)return true;
+ if(g.player.life<=0||g.cpu.life<=0){finish(g.player.life<=0&&g.cpu.life<=0?'draw':g.cpu.life<=0?'win':'lose');return true}
+ const empty=who=>!g[who].deck.length&&!g[who].hand.length&&!field(who).length;
+ if(empty('player')||empty('cpu')){finish(empty('player')&&empty('cpu')?'draw':empty('cpu')?'win':'lose');return true}
+ const future=who=>field(who).some(u=>!isWall(u))||g[who].hand.some(id=>CARDS[id].type==='monster'&&!['W-05','W-06'].includes(id))||g[who].deck.some(id=>CARDS[id].type==='monster'&&!['W-05','W-06'].includes(id));
+ if(!future('player')&&!future('cpu')){finish('draw');return true}
+ if(g.player.turns+g.cpu.turns>=160){finish('draw');return true}
+ return false;
+}
+function startTurn(who){if(!g||g.over||screen!=='battle')return;
+ g.turn=who;g.turnSerial++;const s=g[who];s.turns++;s.maxMana=Math.min(10,s.turns);s.mana=s.maxMana;s.spellsThisTurn=0;
+ for(const u of field(who)){u.attacksUsed=0;u.attackedThisTurn=false;u.magicUsed=0;u.bonusAtk=0}
+ g.selected=null;log(`── ${owner(who)} ${s.turns}ターン目 ──`);draw(who,1);checkWinner();if(screen!=='battle')return;render();if(who==='cpu')scheduleCPU();
+}
+function endTurn(){if(!g||g.over||g.pending)return;
+ const who=g.turn,s=g[who];
+ for(const u of [...field(who)])if(u.id==='R-08'&&u.attackedThisTurn&&u.growth<2&&u.hp>0){u.growth++;boostHp(u,1)}
+ for(const otherSide of ['player','cpu'])for(const u of field(otherSide))u.effects=u.effects.filter(e=>!(e.expireWho===who&&e.expireTurn<=s.turns));
+ g.selected=null;startTurn(opponent(who));
+}
+function pendingPlayerAttacks(){return g?.player.field.filter(u=>ready('player',u)&&attackTargets('player',u).length)||[]}
+function mandatoryPlayerAttacks(){return pendingPlayerAttacks().filter(u=>u.id==='R-01')}
+function requestEndTurn(){if(!g||g.over||g.pending||g.turn!=='player')return;
+ const forced=mandatoryPlayerAttacks();if(forced.length){g.selected={kind:'attack',sid:forced[0].sid};render();toast('猛進のモンスターは攻撃必須！');return}
+ const pending=pendingPlayerAttacks();if(!pending.length){endTurn();return}
+ const n=pending.reduce((z,u)=>z+availableAttacks('player',u),0);
+ el('endConfirmDescription').textContent=`攻撃できる味方${pending.length}体、合計${n}回の攻撃が残っています。終了しますか？`;
+ el('endPendingList').innerHTML=pending.map(u=>`<div class="endPendingItem">${LANE_NAMES[u.lane]}：${esc(CARDS[u.id].name)}（残${availableAttacks('player',u)}回）</div>`).join('');
+ el('endConfirmOverlay').classList.add('show');el('endConfirmOverlay').setAttribute('aria-hidden','false');
+}
+function hideEndConfirm(){el('endConfirmOverlay').classList.remove('show');el('endConfirmOverlay').setAttribute('aria-hidden','true')}
+
+function spellScore(who,id){const s=g[who],foe=g[opponent(who)],allies=field(who),enemies=field(opponent(who));
+ if(!playableSpell(who,id))return -100;
+ const draws=id==='A-13'?1:['A-18','Y-17'].includes(id)?2:0;
+ if(draws)return Math.max(0,Math.min(draws,MAX_HAND-s.hand.length+1,s.deck.length))*2.2+(s.hand.length<=3?2:0)-CARDS[id].cost*.25-(id==='Y-17'&&s.life<=4?6:0);
+ if(id==='Y-14'&&s.life<=3)return -20;if(id==='Y-20'&&s.life<=4)return -10;
+ if(id==='W-15')return (s.life<=6?3:0)+(allies.some(u=>u.hp<u.maxHp)?2:0);
+ if(id==='W-19')return (s.life<=7?2:0)+(s.hand.length<=4?3:1);
+ if(id==='W-20')return (allies.length>=2?7:3)+(s.life<=6?2:0);
+ if(['W-16','W-17','W-18','R-15','R-17'].includes(id))return allies.length?(allies.some(u=>ready(who,u))?5:2.7):0;
+ if(id==='R-20')return allies.some(u=>!isWall(u)&&s.turns>u.summonedTurn&&u.attacksUsed<2)?7:0;
+ if(id==='A-16')return allies.some(u=>ready(who,u)&&unitAt(opponent(who),u.lane))?6:2.2;
+ if(['R-18'].includes(id))return enemies.some(isWall)?9:0;
+ if(['A-20'].includes(id))return enemies.length?(enemies.some(u=>atk(u)>=3)?7:4):0;
+ if(['Y-16','Y-19'].includes(id))return allies.some(u=>['Y-01','Y-03','R-06'].includes(u.id))?7:allies.length>=3?4.6:1.2;
+ if(['R-16','R-19','A-14','A-15','A-17','A-19','Y-15','Y-18','Y-20','Y-14'].includes(id))return enemies.length?4.4+enemies.filter(u=>u.hp<=2).length*2+(id==='A-19'&&enemies.length>=2?2:0):0;
+ return 3.4;
+}
+function scoreSummon(who,id,lane){const c=CARDS[id],s=g[who],foe=unitAt(opponent(who),lane),old=unitAt(who,lane),allies=field(who);
+ let score=3.3+c.cost*.28+(foe?1.9:1.3)+(c.hp>=3?.3:0);
+ if(foe&&c.atk>=foe.hp)score+=.8;
+ if(old&&isWall(old))score-=1.8;
+ if(c.id==='Y-05'&&s.life<=4)score-=6;
+ if(isWall({id:c.id})){score-=foe?-.6:2.9;if(allies.filter(isWall).length>0)score-=2.2}
+ if(c.id==='R-02'&&allies.some(u=>CARDS[u.id].tribe==='獣'))score+=2;
+ if(c.id==='W-09'&&allies.some(isWall))score+=2;
+ if(c.id==='A-05'&&s.spellsThisTurn)score+=1.5;
+ if(c.id==='A-06'&&s.hand.some(id=>CARDS[id].type==='spell'))score+=1.1;
+ if(['Y-04','Y-06','Y-12','Y-13'].includes(id)&&allies.some(u=>u.id==='Y-01'||u.id==='Y-03'))score+=2;
+ if(['W-03','W-11','W-14'].includes(id)&&lane===1)score+=1.6;
+ if(['R-05','R-14','A-02','A-08','Y-09'].includes(id)&&field(opponent(who)).length)score+=1.1;
+ if(['W-01','W-04','W-14'].includes(id)&&s.life<=5)score+=1.0;
+ if(s.hand.length>=6)score+=.5;
+ return score+Math.random()*.08;
+}
+function cpuOptions(){const who='cpu',s=g.cpu,options=[];
+ for(let i=0;i<s.hand.length;i++){
+  const c=CARDS[s.hand[i]];if(!canPay(who,c))continue;
+  if(c.type==='monster'){
+    for(let lane=0;lane<3;lane++)if(canSummon(who,c.id,lane))options.push({kind:'summon',index:i,lane,score:scoreSummon(who,c.id,lane)});
+  }else if(playableSpell(who,c.id)){
+    const sc=spellScore(who,c.id);if(sc>1)options.push({kind:'spell',index:i,score:sc+Math.random()*.08});
+  }
+ }
+ return options.sort((a,b)=>b.score-a.score);
+}
+function cpuBestAttack(){let best=null;
+ for(const u of field('cpu'))for(const option of attackTargets('cpu',u)){
+   let score=0;
+   if(option.kind==='direct')score=8+(g.player.life<=1?100:0);
+   else{
+    const t=unitBySid(option.sid),damage=atk(u,{attacking:true,target:t}),counter=atk(t,{defending:true,target:u});
+    const kills=damage>=t.hp,dies=counter>=u.hp;
+    score=kills&&!dies?10+CARDS[t.id].cost*.3:kills&&dies?4+(CARDS[t.id].cost-CARDS[u.id].cost)*.3:!kills&&dies?-8:2+damage*.25-counter*.1;
+    if(isWall(t)&&!kills)score-=3;
+   }
+   if(u.id==='R-01')score=Math.max(score,1.4);
+   if(score>0&&(!best||score>best.score))best={sid:u.sid,target:option.sid,score};
+ }
+ return best;
+}
+const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+async function cpuPlay(current){if(current!==session||!g||g.over||g.turn!=='cpu'||screen!=='battle')return;
+ let actions=0;
+ while(current===session&&!g.over&&g.turn==='cpu'&&actions++<20){
+   if(g.pending){await sleep(150);continue}
+   const opts=cpuOptions();if(!opts.length||opts[0].score<2.4)break;
+   const act=opts[0];let ok=false;
+   if(act.kind==='summon')ok=summon('cpu',act.index,act.lane);
+   else{
+     const id=g.cpu.hand[act.index];
+     if(id==='W-15'){
+       const wounded=field('cpu').find(u=>u.hp<u.maxHp);const mode=g.cpu.life<=7||!wounded?'life':'unit';
+       const target=mode==='unit'?wounded:null;
+       ok=cast('cpu',act.index,target?.sid??null,target?'unit':'life');
+     }else{
+       const targets=spellTargets('cpu',id),target=targets.length?chooseCPU({kind:spellTargetMode(id),prompt:id==='Y-16'||id==='Y-19'?'生贄のため破壊':'対象'},targets.map(u=>({sid:u.sid,lane:u.lane}))):null;
+       ok=cast('cpu',act.index,target?.sid??null);
+     }
+   }
+   if(!ok)break;
+   if(g.pending)continue;
+   if(screen==='battle')render();await sleep(155);
+ }
+ actions=0;
+ while(current===session&&!g.over&&g.turn==='cpu'&&actions++<10){
+   if(g.pending){await sleep(160);continue}
+   const a=cpuBestAttack();if(!a)break;
+   if(!fight('cpu',a.sid,a.target))break;
+   if(screen==='battle')render();await sleep(230);
+ }
+ if(current===session&&!g.over&&g.turn==='cpu'&&screen==='battle'){
+  while(g.pending&&current===session&&screen==='battle')await sleep(170);
+  if(current===session&&!g.over&&g.turn==='cpu'&&screen==='battle'){await sleep(160);endTurn()}
+ }
+}
+function scheduleCPU(){const cur=session;setTimeout(()=>cpuPlay(cur),260)}
+function setScreen(value){screen=value;document.body.dataset.screen=value;el('titleScreen').setAttribute('aria-hidden',String(value!=='title'));el('resultScreen').setAttribute('aria-hidden',String(value!=='result'));el('selectScreen').setAttribute('aria-hidden',String(value!=='select'))}
+function renderSelect(){const title=el('chooseTitle'),sub=el('chooseSubtitle');
+ title.textContent=playerChoiceStep==='player'?'自分の紋章を選ぶ':'CPUの紋章を選ぶ';
+ sub.textContent=playerChoiceStep==='player'?'4種類の純紋章デッキから選択':'対戦したい相手デッキを選ぼう。同じ紋章でもOK！';
+ el('selectedOwn').textContent=playerChoiceStep==='cpu'?`あなた：${EMBLEMS[playerChoice].name}・${EMBLEMS[playerChoice].plan}`:'';
+ const root=el('deckGrid');root.replaceChildren();
+ for(const [code,v] of Object.entries(EMBLEMS)){
+   const b=document.createElement('button');b.className='deckOption';b.style.setProperty('--emblem',v.color);
+   b.innerHTML=`<span class="emblemSymbol">${esc(v.name)}</span><span class="deckOptionText"><strong>${esc(v.plan)}</strong><small>${esc(v.style)}</small><small>40枚・純${esc(v.name)}能力 有効</small></span><span class="deckArrow">›</span>`;
+   b.addEventListener('click',()=>{if(playerChoiceStep==='player'){playerChoice=code;playerChoiceStep='cpu';renderSelect()}else{cpuChoice=code;newGame()}});root.append(b)
+ }
+}
+let playerChoiceStep='player';
+function toSelect(){playerChoiceStep='player';setScreen('select');renderSelect()}
+function newGame(){session++;hideDetail();hideModal();hideEndConfirm();inspect=false;seq=0;flushing=false;
+ g={player:makeSide(playerChoice),cpu:makeSide(cpuChoice),turn:null,selected:null,pending:null,queue:[],over:false,result:null,status:'',logs:[],turnSerial:0};
+ draw('player',5);draw('cpu',5);log('四大紋章バトル、開戦！');setScreen('battle');startTurn(Math.random()<.5?'player':'cpu');
+}
+function returnTitle(){session++;g=null;clearTimeout(timeoutToast);el('toast').classList.remove('show');hideDetail();hideModal();hideEndConfirm();setScreen('title')}
+function readRecord(){try{return {...{win:0,lose:0,draw:0},...JSON.parse(localStorage.getItem(RECORD_KEY)||'{}')}}catch{return {win:0,lose:0,draw:0}}}
+function updateRecord(){const r=readRecord();el('record').textContent=`α版戦績：${r.win}勝 ${r.lose}敗 ${r.draw}分`}
+function finish(result){if(!g||g.over)return;g.over=true;g.result=result;g.pending=null;g.queue=[];log(result==='win'?'勝利！':result==='lose'?'敗北…':'引き分け');
+ const rec=readRecord();rec[result]++;try{localStorage.setItem(RECORD_KEY,JSON.stringify(rec))}catch{}
+ const p=g.player.stats,c=g.cpu.stats;
+ el('resultTitle').textContent=result==='win'?'勝利！':result==='lose'?'敗北…':'引き分け';el('resultTitle').className='resultTitle '+(result==='win'?'victory':result==='lose'?'defeat':'');
+ el('resultSub').textContent=`${EMBLEMS[g.player.code].name}・${EMBLEMS[g.player.code].plan} VS ${EMBLEMS[g.cpu.code].name}・${EMBLEMS[g.cpu.code].plan}`;
+ el('resultStats').innerHTML=`<div>ターン数 <b>${g.player.turns} / ${g.cpu.turns}</b><small>自分 / CPU</small></div><div>残りライフ <b>${g.player.life} ・ ${g.cpu.life}</b><small>自分 / CPU</small></div><div>カード使用 <b>${p.played} / ${c.played}</b><small>自分 / CPU</small></div><div>直接攻撃ダメージ <b>${p.direct} / ${c.direct}</b><small>自分 / CPU</small></div><div>手札上限でドロー不可 <b>${p.blockedDraw} / ${c.blockedDraw}</b><small>自分 / CPU</small></div><div>ライフ支払い <b>${p.lifeCost} / ${c.lifeCost}</b><small>自分 / CPU</small></div>`;
+ hideEndConfirm();hideDetail();hideModal();setScreen('result');updateRecord();
+}
+function esc(s){return String(s).replace(/[&<>"']/g,x=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[x]))}
+function artIcon(c){return `<span aria-hidden="true">${c.icon}</span>`}
+function ownAttackStatus(u){if(!g||g.over||g.turn!=='player')return null;if(isWall(u))return {kind:'spent',text:'🛡 防壁'};
+ if(u.effects.some(e=>e.kind==='freeze'))return {kind:'spent',text:'❄ 攻撃禁止'};
+ if(g.player.turns<=u.summonedTurn)return {kind:'sick',text:'💤 召喚酔い'};
+ if(ready('player',u))return {kind:'can',text:maxAttacks(u)>1?`⚔ あと${availableAttacks('player',u)}回`:'⚔ 攻撃可'};
+ return {kind:'spent',text:'✓ 攻撃済'};
+}
+function cardHTML(c,u,who,chosen=false){const inHand=!u,sp=c.type==='spell',disabled=inHand&&!canPay('player',c),status=u&&who==='player'?ownAttackStatus(u):null;
+ const cls=[inHand?'handCard':'unitCard',sp?'spell':'',who==='cpu'?'enemyCard':'',chosen?'selected':'',disabled?'disabled':'',u&&!ready(who,u)?'notReady':'',u&&ready(who,u)?'ready':'',status?'own'+(status.kind==='can'?'Ready':status.kind==='sick'?'Sick':'Spent'):''].filter(Boolean).join(' ');
+ const stats=sp?'<div class="cardStats" style="font-size:10px;color:#f1dbad">✦ 魔法</div>':`<div class="cardStats"><span class="atk">⚔${u?atk(u):c.atk}</span><span class="hp ${u&&u.hp<u.maxHp?'damaged':''}">♥${u?u.hp:c.hp}</span></div>`;
+ return `<div class="${cls}" data-emblem="${c.emblem}" style="--card-color:${EMBLEMS[c.emblem].color}" tabindex="0" role="button" aria-label="${esc(c.name)}。長押しで詳細"><div class="cardTop"><span class="cardId">${c.id}</span><span class="cardCost">${c.cost}</span></div><div class="cardArt">${artIcon(c)}</div>${status?`<div class="unitStatus ${status.kind}">${status.text}</div>`:''}<div class="cardName">${esc(c.name)}</div><div class="cardAbility">${c.pure?'✦ ':''}${esc(c.tribe)}</div>${stats}${u&&u.attacksUsed?`<span class="attackMark">残${availableAttacks(who,u)}</span>`:''}</div>`;
+}
+function showDetail(c,u,where){el('detailTitle').textContent=`${c.name}｜${c.id}`;el('detailArt').innerHTML=artIcon(c);el('detailArt').style.borderColor=EMBLEMS[c.emblem].color;
+ const basic=c.type==='monster'?`<span class="pill">⚔ ATK ${u?atk(u):c.atk}</span><span class="pill">♥ HP ${u?u.hp:c.hp}/${u?u.maxHp:c.hp}</span>`:'<span class="pill">✦ 魔法</span>';
+ const lane=u?`<span class="pill">${LANE_NAMES[u.lane]}レーン</span>`:'';
+ const atkStatus=u?`<p>攻撃：${isWall(u)?'不可（防壁）':ready(where,u)?'可能':'現在は不可'}／残り${availableAttacks(where,u)}回</p>`:'';
+ el('detailInfo').innerHTML=`<p><strong>${where==='hand'?'自分の手札':where==='cpu'?'CPUの場':'自分の場'}</strong></p><span class="pill">${esc(EMBLEMS[c.emblem].name)}の紋章</span><span class="pill">${esc(c.tribe)}</span><span class="pill">💠 ${c.cost}</span>${lane}${basic}<p>${esc(c.desc)}</p>${c.pure?`<p class="pureDesc">${esc(c.pure)} ${where==='hand'&&g.player.pure===c.emblem?'（この対戦では有効）':''}</p>`:''}${atkStatus}`;
+ el('detailOverlay').classList.add('show');el('detailOverlay').setAttribute('aria-hidden','false');
+}
+function hideDetail(){el('detailOverlay').classList.remove('show');el('detailOverlay').setAttribute('aria-hidden','true')}
+function bindCard(node,onTap,onHold){let timer=null,start=null,held=false,moved=false;const clear=()=>{if(timer!==null){clearTimeout(timer);timer=null}};
+ node.addEventListener('pointerdown',e=>{if(e.button!==0)return;held=false;moved=false;node.dataset.suppressClick='0';start={x:e.clientX,y:e.clientY,id:e.pointerId};clear();timer=setTimeout(()=>{timer=null;if(start&&!moved){held=true;onHold()}},520)});
+ node.addEventListener('pointermove',e=>{if(!start||start.id!==e.pointerId)return;if(Math.hypot(e.clientX-start.x,e.clientY-start.y)>11){moved=true;clear()}});
+ node.addEventListener('pointerup',e=>{clear();if(held){e.preventDefault();node.dataset.suppressClick='1'}start=null});
+ node.addEventListener('pointercancel',()=>{clear();start=null});node.addEventListener('contextmenu',e=>e.preventDefault());
+ node.addEventListener('click',e=>{if(node.dataset.suppressClick==='1'||held){e.preventDefault();node.dataset.suppressClick='0';held=false;return}if(inspect&&!g?.pending)onHold();else onTap()});
+ node.addEventListener('keydown',e=>{if(e.key==='i'||e.key==='I'){e.preventDefault();onHold()}});
+}
+function pickCell(who,lane){const p=g?.pending;if(!p)return false;
+ if(p.kind==='lane'&&p.who===who)return choosePending({lane});
+ if(p.kind==='enemy'&&opponent(p.who)===who){const u=unitAt(who,lane);return u?choosePending({sid:u.sid}):false}
+ if(p.kind==='ally'&&p.who===who){const u=unitAt(who,lane);return u?choosePending({sid:u.sid}):false}
+ return false;
+}
+function ownSlotTap(lane){if(!g||g.over)return;
+ if(g.pending){if(!pickCell('player',lane))toast('指定された対象を選んでね');return}
+ if(g.turn!=='player')return;
+ const u=unitAt('player',lane),sel=g.selected;
+ if(sel?.kind==='summon'){
+  if(u&&isWall(u)){g.selected={kind:'replace',index:sel.index,lane};render();return}
+  if(u){toast('そのレーンは埋まっているよ');return}
+  if(summon('player',sel.index,lane))render();return;
+ }
+ if(sel?.kind==='spell'&&sel.side==='ally'){
+  if(u&&spellTargets('player',g.player.hand[sel.index]).some(x=>x.sid===u.sid))cast('player',sel.index,u.sid);else toast('対象にできないよ');return;
+ }
+ if(sel?.kind==='spellModeUnit'){
+  if(u&&u.hp<u.maxHp)cast('player',sel.index,u.sid,'unit');else toast('負傷している味方を選んでね');return;
+ }
+ if(!u){toast('手札を選んでから空きレーンをタップ');return}
+ if(!ready('player',u)){toast(isWall(u)?'防壁は自分から攻撃できないよ':u.effects.some(e=>e.kind==='freeze')?'攻撃禁止中だよ':g.player.turns<=u.summonedTurn?'召喚酔い中だよ':'攻撃済みだよ');return}
+ g.selected={kind:'attack',sid:u.sid};render();
+}
+function enemySlotTap(lane){if(!g||g.over)return;
+ if(g.pending){if(!pickCell('cpu',lane))toast('指定された対象を選んでね');return}
+ if(g.turn!=='player')return;
+ const foe=unitAt('cpu',lane),sel=g.selected;
+ if(sel?.kind==='spell'&&sel.side==='enemy'){
+  if(foe&&spellTargets('player',g.player.hand[sel.index]).some(x=>x.sid===foe.sid))cast('player',sel.index,foe.sid);else toast('対象にできないよ');return;
+ }
+ if(sel?.kind==='attack'){
+  const u=unitBySid(sel.sid),possible=u?attackTargets('player',u):[];
+  const match=possible.find(x=>x.lane===lane&&x.sid===(foe?.sid??null));
+  if(match)fight('player',u.sid,match.sid);else toast('ここは攻撃できないよ');return;
+ }
+ toast('先に手札か味方モンスターを選んでね');
+}
+function handTap(index){if(!g||g.over||g.pending||g.turn!=='player')return;
+ const c=CARDS[g.player.hand[index]];if(!c)return;
+ if(g.selected?.index===index){g.selected=null;render();return}
+ if(!canPay('player',c)){g.selected={kind:'handInfo',index};toast(c.cost>g.player.mana?'マナが足りないよ':'ライフが足りないよ');render();return}
+ if(c.type==='monster'){
+  if(field('player').length>=3&&!field('player').some(isWall)){g.selected={kind:'handInfo',index};toast('場がいっぱいだよ');render();return}
+  g.selected={kind:'summon',index};render();return;
+ }
+ if(!playableSpell('player',c.id)){g.selected={kind:'handInfo',index};toast('今は対象がいない・使用できないよ');render();return}
+ if(c.id==='W-15'){g.selected={kind:'spellMode',index};render();return}
+ const mode=spellTargetMode(c.id);g.selected=mode?{kind:'spell',side:mode,index}:{kind:'spellConfirm',index};render();
+}
+function confirmSelected(){if(!g||g.over||g.pending||g.turn!=='player')return;const sel=g.selected;if(!sel)return;
+ if(sel.kind==='spellConfirm')cast('player',sel.index);
+ else if(sel.kind==='replace')summon('player',sel.index,sel.lane);
+ else if(sel.kind==='direct'){fight('player',sel.sid,null)}
+ else if(sel.kind==='spellMode'){
+  if(g.player.life<g.player.maxLife)cast('player',sel.index,null,'life');
+  else{g.selected={kind:'spellModeUnit',index:sel.index};render()}
+ }
+}
+function makeCell(who,lane){const cell=document.createElement('div');cell.className='zoneCell';const u=unitAt(who,lane);
+ const attack=g.selected?.kind==='attack'?unitBySid(g.selected.sid):null;
+ const targeted=g.pending?.choices.some(ch=>ch.sid===u?.sid)||(g.pending?.kind==='lane'&&g.pending.who===who&&g.pending.choices.some(ch=>ch.lane===lane));
+ if(u){const c=CARDS[u.id],chosen=who==='player'&&attack?.sid===u.sid;cell.innerHTML=cardHTML(c,u,who,chosen);const card=cell.firstChild;
+  if(targeted)card.classList.add('hitTarget');
+  if(attack&&who==='cpu'&&attackTargets('player',attack).some(t=>t.sid===u.sid))card.classList.add('hitTarget');
+  if(who==='player'&&g.selected?.kind==='summon'&&isWall(u))card.classList.add('hitTarget');
+  bindCard(card,()=>who==='player'?ownSlotTap(lane):enemySlotTap(lane),()=>showDetail(c,u,who));
+ }else{
+  let hint='空き',special='';
+  if(g.pending?.kind==='lane'&&g.pending.who===who&&g.pending.choices.some(c=>c.lane===lane)){hint='＋ 移動先';special='available'}
+  else if(who==='player'&&g.turn==='player'&&g.selected?.kind==='summon'){hint='＋ 召喚';special='available'}
+  else if(who==='cpu'&&attack&&attackTargets('player',attack).some(t=>t.kind==='direct'&&t.lane===lane)){hint='♥ 直接攻撃';special='attackHere'}
+  else if(who==='player')hint='＋ 空き';
+  const b=document.createElement('div');b.className=`emptySlot ${special}`;b.innerHTML=`<div class="plus">${special==='attackHere'?'♥':'＋'}</div><div>${esc(hint)}</div>`;
+  b.tabIndex=0;b.setAttribute('role','button');b.setAttribute('aria-label',`${LANE_NAMES[lane]}レーン ${hint}`);
+  b.addEventListener('click',()=>who==='player'?ownSlotTap(lane):enemySlotTap(lane));b.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();b.click()}});cell.append(b);
+ }
+ return cell;
+}
+function render(){if(!g||screen!=='battle')return;
+ el('phaseChip').textContent=g.turn==='player'?'🟢 自分の番':'🟣 CPUの番';
+ el('cpuHp').textContent=g.cpu.life;el('cpuMaxHp').textContent=g.cpu.maxLife;el('playerHp').textContent=g.player.life;el('playerMaxHp').textContent=g.player.maxLife;
+ el('cpuInfo').textContent=`${EMBLEMS[g.cpu.code].plan}｜山札${g.cpu.deck.length}・手札${g.cpu.hand.length}`;
+ el('playerInfo').textContent=`${EMBLEMS[g.player.code].plan}｜山札${g.player.deck.length}・手札${g.player.hand.length}`;
+ el('playerDeckName').textContent=EMBLEMS[g.player.code].name;el('cpuDeckName').textContent=EMBLEMS[g.cpu.code].name;
+ el('handCount').textContent=`${g.player.hand.length}/${MAX_HAND}`;el('mana').textContent=`💠 ${g.player.mana}/${g.player.maxMana}`;
+ el('endBtn').disabled=g.turn!=='player'||!!g.pending;el('endBtn').classList.toggle('pendingAttacks',g.turn==='player'&&pendingPlayerAttacks().length>0);
+ el('cancelBtn').disabled=!(g.selected||g.pending?.optional);el('cancelBtn').textContent=g.pending?.optional?'✕ 効果を見送る':'✕ キャンセル';
+ el('inspectBtn').classList.toggle('active',inspect);el('inspectBtn').setAttribute('aria-pressed',String(inspect));el('inspectBtn').textContent=inspect?'✓ 操作へ':'🔎 詳細';
+ let message=g.turn==='cpu'?'CPUが考え中…':'手札からカードを選ぶか、味方をタップ';
+ if(pendingPlayerAttacks().length&&g.turn==='player')message='⚔ 攻撃可能な味方がいるよ';
+ if(inspect)message='詳細モード：タップでカード情報';
+ if(g.selected?.kind==='summon')message='空きレーンか自分の防壁をタップ';
+ if(g.selected?.kind==='attack')message='攻撃する敵または直接攻撃先をタップ';
+ if(g.selected?.kind==='spell')message=g.selected.side==='ally'?'効果の対象となる味方をタップ':'効果の対象となる敵をタップ';
+ if(g.selected?.kind==='spellModeUnit')message='負傷した味方をタップ';
+ if(g.pending)message=g.pending.prompt;
+ el('hint').textContent=message;
+ const lanes=document.createDocumentFragment();for(let lane=0;lane<3;lane++){
+  const track=document.createElement('div');track.className='laneTrack';const title=document.createElement('div');title.className='laneTitle';title.innerHTML=`<span class="laneNumber">${lane+1}</span>${LANE_NAMES[lane]}レーン`;
+  track.append(title,makeCell('cpu',lane));const mid=document.createElement('div');mid.className='laneCenter';mid.innerHTML='<span>⇅</span>';track.append(mid,makeCell('player',lane));lanes.append(track);
+ }el('lanes').replaceChildren(lanes);
+ const preview=el('handPreview');preview.classList.toggle('confirming',!!g.pending||['spellConfirm','replace','spellMode','direct'].includes(g.selected?.kind));
+ let html='<div class="previewText"><strong>手札を選んでね</strong><span>7枚を一覧表示。タップで選択、長押しで詳細。</span></div>';
+ if(g.pending){html=`<div class="previewText"><strong>✨ ${esc(g.pending.prompt)}</strong><span>${g.pending.kind==='options'?'下のボタンから選択':g.pending.kind==='lane'?'空きレーンをタップ':'光っているカードをタップ'}${g.pending.optional?'（見送りも可能）':''}</span></div>`;
+ if(g.pending.kind==='options')html+=g.pending.choices.map(ch=>`<button class="previewAction small" data-choice="${ch.choice}">${esc(ch.label)}</button>`).join('');
+ }else if(g.selected?.index!==undefined){const c=CARDS[g.player.hand[g.selected.index]];
+ if(c){html=`<div class="previewText"><strong>${esc(c.name)} ｜ ${c.id} 💠${c.cost} ${c.type==='monster'?`⚔${c.atk} ♥${c.hp}`:'✦魔法'}</strong><span>${esc(c.desc)}</span></div>`;
+ if(g.selected.kind==='spellConfirm')html+='<button class="previewAction" id="actionConfirm">魔法を使用</button>';
+ if(g.selected.kind==='replace')html+='<button class="previewAction" id="actionConfirm">防壁を上書き</button>';
+ if(g.selected.kind==='spellMode')html+='<button class="previewAction small" id="actionLife">ライフ回復</button><button class="previewAction small" id="actionUnit">味方HP回復</button>';
+ }
+ }else if(g.selected?.kind==='attack'){
+  const u=unitBySid(g.selected.sid);if(u){html=`<div class="previewText"><strong>⚔ ${esc(CARDS[u.id].name)}｜攻撃選択</strong><span>攻撃対象をタップして確定</span></div>`;
+   if(u.id==='A-09'&&g.player.spellsThisTurn&&unitAt('cpu',u.lane))html+='<button class="previewAction small" id="directBypass">♥ 直接攻撃</button>';
+  }
+ }
+ preview.innerHTML=html;
+ preview.querySelectorAll('[data-choice]').forEach(b=>b.addEventListener('click',()=>choosePending({choice:Number(b.dataset.choice)})));
+ el('actionConfirm')?.addEventListener('click',confirmSelected);
+ el('actionLife')?.addEventListener('click',()=>{if(g.player.life<g.player.maxLife)cast('player',g.selected.index,null,'life');else toast('ライフは満タンだよ')});
+ el('actionUnit')?.addEventListener('click',()=>{if(field('player').some(u=>u.hp<u.maxHp)){g.selected={kind:'spellModeUnit',index:g.selected.index};render()}else toast('回復できる味方がいないよ')});
+ el('directBypass')?.addEventListener('click',()=>fight('player',g.selected.sid,null));
+ const hand=document.createDocumentFragment();g.player.hand.forEach((id,index)=>{const c=CARDS[id],chosen=g.selected?.index===index;
+  const wrap=document.createElement('div');wrap.innerHTML=cardHTML(c,null,'hand',chosen);const card=wrap.firstChild;bindCard(card,()=>handTap(index),()=>showDetail(c,null,'hand'));hand.append(card);
+ });el('hand').replaceChildren(hand);updateRecord();
+}
+function showModal(title,content,action=null){el('modalTitle').textContent=title;el('modalBody').innerHTML=content;el('modalReplay').style.display=action?'inline-block':'none';el('modalReplay').textContent=action?.label||'確認';el('modalReplay').onclick=action?.run||null;el('modal').classList.add('show')}
+function hideModal(){el('modal').classList.remove('show')}
+function showRules(){showModal('📘 Ver.0.8 α ルール',`<ul><li>3レーンの各マスに味方・敵がそれぞれ最大1体。攻撃は原則同じレーンに限る。一部カードは隣レーンへの攻撃や直接攻撃の例外あり。</li><li>戦闘では双方が同時にATK分のダメージを与え、HPは持ち越し。直接攻撃は基本1ライフダメージ。</li><li>召喚酔いあり、原則1ターンに1回攻撃。猛進は可能な攻撃が必須。防壁は攻撃不可だがATKがあれば反撃できる。</li><li>自分の防壁が置かれたレーンには、通常モンスターを上書き召喚可能。撤去される防壁は「破壊」扱いにならず、破壊時効果も発動しない。</li><li>40枚デッキ、同名最大3枚。単色または2色（25:15〜20:20）。今回の試作では4つの単色固定デッキを選択。</li><li>純紋章能力は試合開始時の元デッキ40枚がすべて同じ紋章の場合のみ有効。試合中に変わらない。</li><li>初期ライフ10、初手5枚、手札上限7。各ターン開始に1枚ドロー、マナは毎ターン全回復し最大値が1ずつ増加（最大10）。</li><li>ライフの支払いは、支払った結果ライフ0以下になる場合は不可。最大ライフの変更は今回のカードにはなし。</li><li>自分のターンにカード使用。登場時の対象選択や生贄、レーン移動は画面に従って選ぶ。効果の見送りが許される場合はキャンセル可能。</li><li>手札タップで選択、長押し・詳細モードでカード全文。山札切れだけでは負けない。ライフ0または山札・手札・場が全て空になると敗北。両者が攻撃手段を失った場合は引き分け。</li><li>80種類のカード名・性能・CPU判断は試作。CPUの思考やバランスは今後調整。</li></ul>`)}
+el('titleScreen').addEventListener('click',()=>{if(screen==='title')toSelect()});
+el('titleScreen').addEventListener('keydown',e=>{if((e.key==='Enter'||e.key===' ')&&screen==='title'){e.preventDefault();toSelect()}});
+el('selectBack').addEventListener('click',()=>{if(playerChoiceStep==='cpu'){playerChoiceStep='player';renderSelect()}else returnTitle()});
+el('rulesBtn').addEventListener('click',showRules);
+el('restartBtn').addEventListener('click',()=>showModal('タイトルへ戻る？','<p>現在の対戦は中断され、戦績には記録されません。</p>',{label:'タイトルへ',run:returnTitle}));
+el('modalClose').addEventListener('click',hideModal);el('resultReplay').addEventListener('click',newGame);el('resultTitleBtn').addEventListener('click',returnTitle);
+el('detailClose').addEventListener('click',hideDetail);el('detailOverlay').addEventListener('click',e=>{if(e.target===el('detailOverlay'))hideDetail()});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){hideDetail();hideModal();hideEndConfirm()}});
+el('inspectBtn').addEventListener('click',()=>{inspect=!inspect;g.selected=null;render()});
+el('cancelBtn').addEventListener('click',()=>{if(g.pending){skipPending();return}g.selected=null;render()});
+el('endBtn').addEventListener('click',requestEndTurn);el('endConfirmBack').addEventListener('click',hideEndConfirm);
+el('endConfirmGo').addEventListener('click',()=>{hideEndConfirm();if(!g?.over&&g.turn==='player'){if(mandatoryPlayerAttacks().length)requestEndTurn();else endTurn()}});
+el('endConfirmOverlay').addEventListener('click',e=>{if(e.target===el('endConfirmOverlay'))hideEndConfirm()});
+setScreen('title');
+window.__LANE_TEST__={getScreen:()=>screen,getState:()=>g?JSON.parse(JSON.stringify(g)):null,getMutableState:()=>g,cards:CARDS,decks:DECKS,emblems:EMBLEMS,validateDeck,newGame,returnTitle,summon,cast,fight,ready,unitAt,startTurn,endTurn,cpuPlay,render,handTap,ownSlotTap,enemySlotTap,atk,attackTargets,requestEndTurn,resolveDeaths,choosePending,skipPending,draw,boostHp,damageUnit,playerSelect:(p,c)=>{playerChoice=p;cpuChoice=c},setScreen,toSelect,payLife};
+
+})();
 </script>
 </body>
 </html>
