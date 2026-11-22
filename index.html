@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#0b1726">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<title>DREI KAMPF（仮）｜UI試作 Ver.0.6</title>
+<title>DREI KAMPF（仮）｜UI試作 Ver.0.6.1</title>
 <style>
 :root{--bg:#0b1726;--panel:#152c40;--line:#406477;--text:#f3f7fa;--muted:#bdd1dd;--gold:#f6d494;--cyan:#81e2e3;--red:#ff9fba;--good:#9cf0b9}
 *{box-sizing:border-box}html,body{width:100%;height:100%;margin:0;background:#07101d;color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Noto Sans JP",sans-serif;-webkit-tap-highlight-color:transparent}button{font:inherit;cursor:pointer;touch-action:manipulation;color:inherit}button:disabled{cursor:default;opacity:.45}button:focus-visible,[role=button]:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
@@ -49,11 +49,34 @@
 @media(max-height:720px) and (orientation:portrait){.handPreview{flex-basis:41px}.previewText span{font-size:9px}}
 @media(min-width:600px) and (orientation:portrait){.handPreview{flex-basis:57px;padding:7px 10px}.previewText strong{font-size:14px}.previewText span{font-size:12px}.handScroll{gap:6px}.handScroll .handCard{padding:5px;gap:2px}.handScroll .cardTop{min-height:20px}.handScroll .cardId{font-size:11px}.handScroll .cardCost{width:21px;height:21px;flex-basis:21px;font-size:12px}.handScroll .cardStats{font-size:14px;min-height:19px}.handScroll .cardArt{font-size:27px}.handScroll .handCard.spell .cardStats{font-size:11px!important}}
 
+
+/* v0.6.1: readable attack status + explicit end-turn warning */
+.unitCard.ownReady:not(.selected){border:2px solid #9de8b1;box-shadow:0 0 0 1px #94e7ac45,0 0 13px #56dc9765}
+.unitCard.ownSick:not(.selected){border-color:#9baac8}
+.unitCard.ownSpent:not(.selected){border-color:#7f929e;filter:saturate(.72)}
+.unitStatus{position:absolute;z-index:3;top:22px;left:3px;right:3px;min-height:17px;display:flex;align-items:center;justify-content:center;border-radius:4px;padding:2px 2px;font-size:9px;font-weight:950;line-height:1.1;white-space:nowrap;letter-spacing:-.02em;pointer-events:none;box-shadow:0 1px 5px #0009;border:1px solid transparent}
+.unitStatus.can{background:#164536ec;color:#b7ffcf;border-color:#8ee6ae}
+.unitStatus.sick{background:#293b58ec;color:#dbe6ff;border-color:#829fcb}
+.unitStatus.spent{background:#28343df0;color:#d1dce2;border-color:#8396a3}
+.endBtn.pendingAttacks{box-shadow:0 0 0 2px #f4cb83a6}
+.endConfirmDialog{width:min(400px,95vw)}
+.endConfirmDialog h2{font-size:18px;color:#ffe2a3}
+.endConfirmDialog p{margin:4px 0 12px}
+.endPendingList{border:1px solid #52758a;background:#102a3d;border-radius:9px;padding:9px 12px;display:flex;flex-direction:column;gap:6px}
+.endPendingItem{font-size:12px;line-height:1.35;color:#edf6fa}
+.endPendingItem strong{color:#a8f3c6}
+.endConfirmActions{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:14px}
+.endConfirmActions button{min-height:44px;padding:9px 7px;font-size:12px;font-weight:900;border-radius:8px}
+.endConfirmBack{border:1px solid #88bfa6;background:#b1ead0;color:#11362e}
+.endConfirmGo{border:1px solid #8d99a8;background:#31465a;color:#e8f2f8}
+@media(max-width:370px){.unitStatus{top:20px;min-height:15px;font-size:8px;padding:1px}}
+@media(min-width:600px) and (orientation:portrait){.unitStatus{top:28px;min-height:22px;font-size:12px}.endConfirmDialog h2{font-size:20px}}
+
 </style>
 </head>
 <body>
 <main id="app">
-  <header class="top"><div class="brand">⚔ DREI KAMPF <span class="version">UI試作 v0.6</span></div><div class="top-right"><span class="phaseChip" id="phaseChip">準備中</span><button class="tinyBtn" id="rulesBtn">ルール</button><button class="tinyBtn" id="restartBtn">再戦</button></div></header>
+  <header class="top"><div class="brand">⚔ DREI KAMPF <span class="version">UI試作 v0.6.1</span></div><div class="top-right"><span class="phaseChip" id="phaseChip">準備中</span><button class="tinyBtn" id="rulesBtn">ルール</button><button class="tinyBtn" id="restartBtn">再戦</button></div></header>
   <section class="playerBar enemy"><div class="playerBadge"><div class="avatar">🤖</div><div><div class="playerName">CPU <span class="version">デッキB</span></div><div class="playerMeta" id="cpuInfo">山札50・手札5</div></div></div><div class="health"><span class="heart">♥</span><span id="cpuHp">10</span><small>/10</small></div></section>
   <div class="bus enemyBus" aria-hidden="true"><span></span><span></span><span></span></div>
   <section id="lanes" class="lanes" aria-label="3本の独立したバトルレーン"></section>
@@ -66,6 +89,17 @@
 <div class="rotateHint"><div><strong>📱 縦向きで遊ぼう</strong><p>3レーン試作版は縦画面向け！<br>スマホを縦にするとバトル画面が表示されるよ。</p></div></div>
 <div class="toast" id="toast"></div>
 <div class="overlay" id="modal"><div class="dialog"><h2 id="modalTitle"></h2><div id="modalBody"></div><button class="dialogBtn" id="modalClose">閉じる</button><button class="dialogBtn secondary" id="modalReplay" style="display:none">新しく対戦</button></div></div>
+<div class="overlay" id="endConfirmOverlay" role="dialog" aria-modal="true" aria-label="攻撃を残してターン終了する確認" aria-hidden="true">
+  <div class="dialog endConfirmDialog">
+    <h2>⚠️ まだ攻撃できます！</h2>
+    <p id="endConfirmDescription"></p>
+    <div id="endPendingList" class="endPendingList"></div>
+    <div class="endConfirmActions">
+      <button id="endConfirmBack" class="endConfirmBack">攻撃に戻る</button>
+      <button id="endConfirmGo" class="endConfirmGo">そのまま終了</button>
+    </div>
+  </div>
+</div>
 <div class="overlay" id="detailOverlay" role="dialog" aria-label="カード詳細" aria-hidden="true"><div class="detail"><div class="detailHead"><h2 id="detailTitle">カード詳細</h2><button id="detailClose" class="tinyBtn">✕ 閉じる</button></div><div class="detailBody"><div id="detailArt" class="detailArt"></div><div id="detailInfo" class="detailInfo"></div></div></div></div>
 <script>
 'use strict';
@@ -98,6 +132,30 @@
   function maxAttacks(u){return CARDS[u.id].ability==='double'?2:1}
   function ready(who,u){return g[who].turns>u.summonedTurn&&u.attacksUsed<maxAttacks(u)}
   function availableAttacks(who,u){return Math.max(0,maxAttacks(u)-u.attacksUsed)}
+  function ownAttackStatus(u){
+    // Only show actionable states for the player on their own turn.
+    if(g.over||g.turn!=='player')return null;
+    if(g.player.turns<=u.summonedTurn)return {kind:'sick',text:'💤 召喚酔い'};
+    if(ready('player',u))return {kind:'can',text:maxAttacks(u)>1?`⚔ あと${availableAttacks('player',u)}回`:'⚔ 攻撃可'};
+    return {kind:'spent',text:'✓ 攻撃済'};
+  }
+  function pendingPlayerAttacks(){return g.player.field.filter(u=>ready('player',u))}
+  function hideEndConfirm(){el('endConfirmOverlay').classList.remove('show');el('endConfirmOverlay').setAttribute('aria-hidden','true')}
+  function requestEndTurn(){
+    if(g.over||g.turn!=='player')return;
+    const pending=pendingPlayerAttacks();
+    if(!pending.length){endTurn();return}
+    const total=pending.reduce((n,u)=>n+availableAttacks('player',u),0);
+    el('endConfirmDescription').textContent=`攻撃できるモンスターが${pending.length}体、攻撃が合計${total}回残っています。このままターンを終了しますか？`;
+    const rows=el('endPendingList');rows.replaceChildren();
+    for(const u of pending){
+      const line=document.createElement('div');line.className='endPendingItem';
+      const name=document.createElement('strong');name.textContent=`${LANE_NAMES[u.lane]}レーン：${cardName(u.id)}`;
+      line.append(name,document.createTextNode(`（あと${availableAttacks('player',u)}回）`));rows.append(line);
+    }
+    el('endConfirmOverlay').classList.add('show');el('endConfirmOverlay').setAttribute('aria-hidden','false');
+    el('endConfirmBack').focus();
+  }
   function resolveDeaths(){const dead=[];for(const who of ['player','cpu']){const living=[];for(const u of g[who].field){if(u.hp<=0)dead.push({who,u});else living.push(u)}g[who].field=living}for(const {who,u} of dead)pushLog(`${owner(who)}の${u.id}が破壊された`);for(const {who,u} of dead){const c=CARDS[u.id];if(c.ability==='legacy'){pushLog(`${u.id}の遺志${c.n}が発動`);draw(who,c.n)}}}
   function damage(who,n,targetSid=null){const targets=g[who].field.filter(u=>targetSid===null||u.sid===targetSid);for(const u of targets)u.hp-=n;if(targets.length)pushLog(`${owner(who)}の${targets.length}体に${n}ダメージ`);resolveDeaths()}
   function noCards(who){const s=g[who];return s.deck.length===0&&s.hand.length===0&&s.field.length===0}
@@ -153,13 +211,13 @@
   function abilityIcon(c){return c.type==='spell'?({dmg:'🔥',aoe:'💥',draw:'📖',heal:'💚',buff:'⬆️',debuff:'⬇️',dmgDraw:'✨'})[c.ability]:({'':'◇',legacy:'🕯',draw:'📖',double:'⚔',heal:'💚',blast:'🔥'})[c.ability]}
   const escapeHTML=s=>String(s).replace(/[&<>"']/g,x=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[x]));
   function cardName(id){return id==='M-01'?'森の狼':id}
-  function cardHTML(c,u,who,selected=false){const isHand=!u,ability=abilityName(c),sp=c.type==='spell';const disabled=isHand&&g.player.mana<c.cost;const cls=[isHand?'handCard':'unitCard',sp?'spell':'',who==='cpu'?'enemyCard':'',selected?'selected':'',disabled?'disabled':'',u&&!ready(who,u)?'notReady':'',u&&ready(who,u)?'ready':''].filter(Boolean).join(' ');const art=c.id==='M-01'?'<img src="assets/m01_art.webp" alt="森の狼">':artIcon(c);const stats=sp?(isHand?'<div class="cardStats" style="font-size:10px;color:#f1dbad">✦ 魔法</div>':'<div class="cardStats" style="font-size:10px;color:#f1dbad">✦ 魔法カード</div>'):`<div class="cardStats"><span class="atk">⚔${u?atk(u):c.atk}</span><span class="hp ${u&&u.hp<c.hp?'damaged':''}">♥${u?u.hp:c.hp}</span></div>`;return `<div class="${cls}" tabindex="0" role="button" aria-label="${escapeHTML(c.id+' '+ability)}。長押しで詳細"><div class="cardTop"><span class="cardId">${c.id}</span><span class="cardCost">${c.cost}</span></div><div class="cardArt">${art}</div><div class="cardName">${cardName(c.id)}</div><div class="cardAbility ${c.ability?'':'none'}">${abilityIcon(c)} ${escapeHTML(ability)}</div>${stats}${u&&u.attacksUsed?`<span class="attackMark">残${availableAttacks(who,u)}</span>`:''}</div>`}
+  function cardHTML(c,u,who,selected=false){const isHand=!u,ability=abilityName(c),sp=c.type==='spell';const disabled=isHand&&g.player.mana<c.cost;const attackStatus=u&&who==='player'?ownAttackStatus(u):null;const cls=[isHand?'handCard':'unitCard',sp?'spell':'',who==='cpu'?'enemyCard':'',selected?'selected':'',disabled?'disabled':'',u&&!ready(who,u)?'notReady':'',u&&ready(who,u)?'ready':'',attackStatus?'own'+(attackStatus.kind==='can'?'Ready':attackStatus.kind==='sick'?'Sick':'Spent'):''].filter(Boolean).join(' ');const art=c.id==='M-01'?'<img src="assets/m01_art.webp" alt="森の狼">':artIcon(c);const stats=sp?(isHand?'<div class="cardStats" style="font-size:10px;color:#f1dbad">✦ 魔法</div>':'<div class="cardStats" style="font-size:10px;color:#f1dbad">✦ 魔法カード</div>'):`<div class="cardStats"><span class="atk">⚔${u?atk(u):c.atk}</span><span class="hp ${u&&u.hp<c.hp?'damaged':''}">♥${u?u.hp:c.hp}</span></div>`;return `<div class="${cls}" tabindex="0" role="button" aria-label="${escapeHTML(c.id+' '+ability)}。長押しで詳細"><div class="cardTop"><span class="cardId">${c.id}</span><span class="cardCost">${c.cost}</span></div><div class="cardArt">${art}</div>${attackStatus?`<div class="unitStatus ${attackStatus.kind}">${attackStatus.text}</div>`:''}<div class="cardName">${cardName(c.id)}</div><div class="cardAbility ${c.ability?'':'none'}">${abilityIcon(c)} ${escapeHTML(ability)}</div>${stats}${u&&u.attacksUsed?`<span class="attackMark">残${availableAttacks(who,u)}</span>`:''}</div>`}
   function showDetail(c,u,where){el('detailTitle').textContent=`${cardName(c.id)}｜${c.id}`;el('detailArt').innerHTML=c.id==='M-01'?'<img src="assets/m01_art.webp" alt="森の狼のイラスト">':artIcon(c);const lane=u?`<span class="pill">${LANE_NAMES[u.lane]}レーン</span>`:'';const basic=c.type==='monster'?`<span class="pill">⚔ ATK ${u?atk(u):c.atk}</span><span class="pill">♥ HP ${u?u.hp:c.hp}/${c.hp}</span>`:'<span class="pill">✦ 魔法</span>';const acts=u?`<p>攻撃：${ready(where,u)?'可能':'不可'}／残り${availableAttacks(where,u)}回</p>`:'';el('detailInfo').innerHTML=`<p><strong>${where==='hand'?'自分の手札':where==='cpu'?'CPUの場':'自分の場'}</strong></p><span class="pill">💠 コスト ${c.cost}</span>${lane}${basic}<p><strong>${escapeHTML(abilityName(c))}</strong></p><p>${escapeHTML(abilityDesc(c))}</p>${acts}${c.id==='M-01'||c.id==='M-03'?'<p style="color:#ecd8a2">※ブロッカー廃止に伴い、今は能力なしとして試験中。</p>':''}`;el('detailOverlay').classList.add('show');el('detailOverlay').setAttribute('aria-hidden','false')}
   function hideDetail(){el('detailOverlay').classList.remove('show');el('detailOverlay').setAttribute('aria-hidden','true')}
   function bindCard(node,onTap,onHold){let timer=null,start=null,held=false,moved=false;const clear=()=>{if(timer!==null){clearTimeout(timer);timer=null}};node.addEventListener('pointerdown',e=>{if(e.button!==0)return;held=false;moved=false;node.dataset.suppressClick='0';start={x:e.clientX,y:e.clientY,id:e.pointerId};clear();timer=setTimeout(()=>{timer=null;if(start&&!moved){held=true;onHold()}},520)});node.addEventListener('pointermove',e=>{if(!start||start.id!==e.pointerId)return;if(Math.hypot(e.clientX-start.x,e.clientY-start.y)>11){moved=true;clear()}});node.addEventListener('pointerup',e=>{clear();if(held){e.preventDefault();node.dataset.suppressClick='1'}start=null});node.addEventListener('pointercancel',()=>{clear();start=null});node.addEventListener('contextmenu',e=>e.preventDefault());node.addEventListener('click',e=>{if(node.dataset.suppressClick==='1'||held){e.preventDefault();node.dataset.suppressClick='0';held=false;return}if(inspect)onHold();else onTap()});node.addEventListener('keydown',e=>{if(e.key==='i'||e.key==='I'){e.preventDefault();onHold()}})}
   function makeCell(who,lane){const cell=document.createElement('div');cell.className='zoneCell';const u=unitAt(who,lane);if(u){const c=CARDS[u.id];const chosen=who==='player'&&g.selected?.kind==='attack'&&g.selected.sid===u.sid;cell.innerHTML=cardHTML(c,u,who,chosen);bindCard(cell.firstChild,()=>who==='player'?ownSlotTap(lane):enemySlotTap(lane),()=>showDetail(c,u,who))}else{let hint='空き';let special='';if(who==='player'&&g.turn==='player'&&g.selected?.kind==='summon'){hint='＋ ここに召喚';special='available'}else if(who==='cpu'&&g.turn==='player'&&g.selected?.kind==='attack'&&g.selected.lane===lane){hint='♥ 直接攻撃';special='attackHere'}else if(who==='player')hint='＋ 空き';const box=document.createElement('div');box.className=`emptySlot ${special}`;box.innerHTML=`<div class="plus">${special==='attackHere'?'♥':'＋'}</div><div>${escapeHTML(hint)}</div>`;box.setAttribute('role','button');box.tabIndex=0;box.setAttribute('aria-label',`${LANE_NAMES[lane]}レーン ${hint}`);box.addEventListener('click',()=>who==='player'?ownSlotTap(lane):enemySlotTap(lane));box.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();box.click()}});cell.append(box)}return cell}
   function updateRecord(){let r={win:0,lose:0,draw:0};try{r={...r,...JSON.parse(localStorage.getItem('bvb_3lane_record_v1')||'{}')}}catch{}el('record').textContent=`戦績：${r.win||0}勝 ${r.lose||0}敗 ${r.draw||0}分`}
-  function render(){if(!g)return;el('phaseChip').textContent=g.over?'対戦終了':g.turn==='player'?'🟢 自分の番':'🟣 CPUの番';el('cpuHp').textContent=g.cpu.life;el('playerHp').textContent=g.player.life;el('cpuInfo').textContent=`山札${g.cpu.deck.length}・手札${g.cpu.hand.length}`;el('playerInfo').textContent=`山札${g.player.deck.length}・手札${g.player.hand.length}`;el('handCount').textContent=`${g.player.hand.length}/${MAX_HAND}`;el('mana').textContent=`💠 ${g.player.mana}/${g.player.maxMana}`;el('endBtn').disabled=g.turn!=='player'||g.over;el('cancelBtn').disabled=!g.selected;el('inspectBtn').classList.toggle('active',inspect);el('inspectBtn').setAttribute('aria-pressed',String(inspect));el('inspectBtn').textContent=inspect?'✓ 操作へ':'🔎 詳細';let message='手札からカードを選ぶか、味方をタップ';if(g.over)message='対戦終了！再戦で新しい試合へ';else if(inspect)message='詳細モード：カードをタップして確認';else if(g.turn==='cpu')message=g.status||'CPUが考え中…';else if(g.selected?.kind==='summon')message='召喚先の空きレーンをタップ';else if(g.selected?.kind==='attack')message=`${LANE_NAMES[g.selected.lane]}レーンの正面をタップして攻撃`;else if(g.selected?.kind==='spell')message=CARDS[g.player.hand[g.selected.index]]?.ability==='buff'?'強化する味方をタップ':'魔法を使う敵をタップ';else if(g.selected?.kind==='spellConfirm')message='内容を確認して「魔法を使用」をタップ';else if(g.selected?.kind==='handInfo')message='このカードは今は使えません';el('hint').textContent=message;
+  function render(){if(!g)return;el('phaseChip').textContent=g.over?'対戦終了':g.turn==='player'?'🟢 自分の番':'🟣 CPUの番';el('cpuHp').textContent=g.cpu.life;el('playerHp').textContent=g.player.life;el('cpuInfo').textContent=`山札${g.cpu.deck.length}・手札${g.cpu.hand.length}`;el('playerInfo').textContent=`山札${g.player.deck.length}・手札${g.player.hand.length}`;el('handCount').textContent=`${g.player.hand.length}/${MAX_HAND}`;el('mana').textContent=`💠 ${g.player.mana}/${g.player.maxMana}`;el('endBtn').disabled=g.turn!=='player'||g.over;el('endBtn').classList.toggle('pendingAttacks',g.turn==='player'&&!g.over&&pendingPlayerAttacks().length>0);el('cancelBtn').disabled=!g.selected;el('inspectBtn').classList.toggle('active',inspect);el('inspectBtn').setAttribute('aria-pressed',String(inspect));el('inspectBtn').textContent=inspect?'✓ 操作へ':'🔎 詳細';let message=pendingPlayerAttacks().length&&g.turn==='player'?'⚔ 攻撃可能な味方がいるよ':'手札からカードを選ぶか、味方をタップ';if(g.over)message='対戦終了！再戦で新しい試合へ';else if(inspect)message='詳細モード：カードをタップして確認';else if(g.turn==='cpu')message=g.status||'CPUが考え中…';else if(g.selected?.kind==='summon')message='召喚先の空きレーンをタップ';else if(g.selected?.kind==='attack')message=`${LANE_NAMES[g.selected.lane]}レーンの正面をタップして攻撃`;else if(g.selected?.kind==='spell')message=CARDS[g.player.hand[g.selected.index]]?.ability==='buff'?'強化する味方をタップ':'魔法を使う敵をタップ';else if(g.selected?.kind==='spellConfirm')message='内容を確認して「魔法を使用」をタップ';else if(g.selected?.kind==='handInfo')message='このカードは今は使えません';el('hint').textContent=message;
     const lanes=document.createDocumentFragment();for(let lane=0;lane<3;lane++){const track=document.createElement('div');track.className='laneTrack';const title=document.createElement('div');title.className='laneTitle';title.innerHTML=`<span class="laneNumber">${lane+1}</span>${LANE_NAMES[lane]}レーン`;track.append(title,makeCell('cpu',lane));const mid=document.createElement('div');mid.className='laneCenter';mid.innerHTML='<span>⇅</span>';track.append(mid,makeCell('player',lane));lanes.append(track)}el('lanes').replaceChildren(lanes);
     const preview=el('handPreview');
     preview.classList.toggle('confirming',g.selected?.kind==='spellConfirm');
@@ -180,12 +238,15 @@
   function showModal(title,content,replay=false){el('modalTitle').textContent=title;el('modalBody').innerHTML=content;el('modalReplay').style.display=replay?'inline-block':'none';el('modal').classList.add('show')}
   function hideModal(){el('modal').classList.remove('show')}
   function finish(result){g.over=true;g.result=result;pushLog(result==='win'?'あなたの勝利！':result==='lose'?'CPUの勝利！':'引き分け！');let r={win:0,lose:0,draw:0};try{r={...r,...JSON.parse(localStorage.getItem('bvb_3lane_record_v1')||'{}')}}catch{}r[result]=(r[result]||0)+1;try{localStorage.setItem('bvb_3lane_record_v1',JSON.stringify(r))}catch{}render();showModal(result==='win'?'🎉 勝利！':result==='lose'?'💫 敗北！':'🤝 引き分け',`<p>あなた：ライフ${g.player.life}／CPU：ライフ${g.cpu.life}</p><p>3本の独立したレーンで戦う、新しいルールの試作版だよ。</p>`,true)}
-  function newGame(){session++;hideDetail();hideModal();inspect=false;seq=0;g={player:side(),cpu:side(),turn:null,selected:null,over:false,result:null,status:'',logs:[]};draw('player',5);draw('cpu',5);pushLog('3レーン制の対戦開始！');startTurn(Math.random()<.5?'player':'cpu')}
-  el('rulesBtn').addEventListener('click',()=>showModal('📘 3レーン試作版のルール',`<ul><li>フィールドは独立した<b>左・中央・右の3本のレーン</b>。各プレイヤーは各レーンに1体ずつ、計3体まで召喚可能。</li><li>召喚時に空いているレーンを選ぶ。<b>召喚した後は移動できない。</b></li><li>攻撃できる相手は<b>同じレーンの正面の敵1体のみ</b>。敵がいなければ、そのレーンから共通のCPU／プレイヤーライフへ直接攻撃でき、1ダメージを与える。</li><li>各プレイヤーは1人ずつ、ライフは<b>3レーン共通の10</b>。敵のライフを0にすれば勝利。</li><li>ブロッカー能力は廃止。M-01/M-03は今のところ能力なし。攻防は全モンスターが自分のレーンで担当する。</li><li>召喚したターンは攻撃不可。通常は1ターン1回、連撃は2回攻撃可能。連撃で正面の敵を倒したら、同じターンの残りの攻撃で直接攻撃できる（仮ルール）。</li><li>戦闘時はお互いのATK分のダメージを同時に与え、HPは自動回復しない。HP0以下で破壊。</li><li>魔法は自分のターンのみ使用。単体魔法はどのレーンの対象でも選べる。範囲魔法は敵の全レーンが対象。</li><li>デッキBは従来と同じ50枚。初期手札5枚、手札上限7枚。毎自ターン開始時1枚ドロー。マナは自ターンごとに1ずつ増えて最大10。</li><li>山札切れだけでは負けない。山札・手札・場がすべて空なら敗北。両者とも今後ライフを減らせるモンスターがなくなった場合は引き分け。</li><li>カードは<b>短くタップで操作、長押しで詳細</b>。手札7枚は横一列で表示し、同じカードの再タップか「キャンセル」で選択解除できる。対象を取らない魔法は「魔法を使用」で発動する。詳細モード中のタップではカードを使用しない。</li></ul>`));
+  function newGame(){session++;hideDetail();hideModal();hideEndConfirm();inspect=false;seq=0;g={player:side(),cpu:side(),turn:null,selected:null,over:false,result:null,status:'',logs:[]};draw('player',5);draw('cpu',5);pushLog('3レーン制の対戦開始！');startTurn(Math.random()<.5?'player':'cpu')}
+  el('rulesBtn').addEventListener('click',()=>showModal('📘 3レーン試作版のルール',`<ul><li>フィールドは独立した<b>左・中央・右の3本のレーン</b>。各プレイヤーは各レーンに1体ずつ、計3体まで召喚可能。</li><li>召喚時に空いているレーンを選ぶ。<b>召喚した後は移動できない。</b></li><li>攻撃できる相手は<b>同じレーンの正面の敵1体のみ</b>。敵がいなければ、そのレーンから共通のCPU／プレイヤーライフへ直接攻撃でき、1ダメージを与える。</li><li>各プレイヤーは1人ずつ、ライフは<b>3レーン共通の10</b>。敵のライフを0にすれば勝利。</li><li>ブロッカー能力は廃止。M-01/M-03は今のところ能力なし。攻防は全モンスターが自分のレーンで担当する。</li><li>召喚したターンは攻撃不可。通常は1ターン1回、連撃は2回攻撃可能。連撃で正面の敵を倒したら、同じターンの残りの攻撃で直接攻撃できる（仮ルール）。</li><li>戦闘時はお互いのATK分のダメージを同時に与え、HPは自動回復しない。HP0以下で破壊。</li><li>魔法は自分のターンのみ使用。単体魔法はどのレーンの対象でも選べる。範囲魔法は敵の全レーンが対象。</li><li>デッキBは従来と同じ50枚。初期手札5枚、手札上限7枚。毎自ターン開始時1枚ドロー。マナは自ターンごとに1ずつ増えて最大10。</li><li>山札切れだけでは負けない。山札・手札・場がすべて空なら敗北。両者とも今後ライフを減らせるモンスターがなくなった場合は引き分け。</li><li>カードは<b>短くタップで操作、長押しで詳細</b>。手札7枚は横一列で表示し、同じカードの再タップか「キャンセル」で選択解除できる。対象を取らない魔法は「魔法を使用」で発動する。詳細モード中のタップではカードを使用しない。自分の場のカードには攻撃可・召喚酔い・攻撃済みを表示。攻撃回数が残っているときにターン終了を押すと確認する。</li></ul>`));
   el('restartBtn').addEventListener('click',()=>showModal('🔄 最初から対戦する？','<p>今の対戦を終了して、デッキをシャッフルして始めるよ。</p>',true));
   el('modalClose').addEventListener('click',hideModal);el('modalReplay').addEventListener('click',newGame);
-  el('detailClose').addEventListener('click',hideDetail);el('detailOverlay').addEventListener('click',e=>{if(e.target===el('detailOverlay'))hideDetail()});document.addEventListener('keydown',e=>{if(e.key==='Escape'){hideDetail();hideModal()}});
-  el('inspectBtn').addEventListener('click',()=>{inspect=!inspect;g.selected=null;render()});el('cancelBtn').addEventListener('click',()=>{g.selected=null;render()});el('endBtn').addEventListener('click',()=>{if(!g.over&&g.turn==='player')endTurn()});
+  el('detailClose').addEventListener('click',hideDetail);el('detailOverlay').addEventListener('click',e=>{if(e.target===el('detailOverlay'))hideDetail()});document.addEventListener('keydown',e=>{if(e.key==='Escape'){hideDetail();hideModal();hideEndConfirm()}});
+  el('inspectBtn').addEventListener('click',()=>{inspect=!inspect;g.selected=null;render()});el('cancelBtn').addEventListener('click',()=>{g.selected=null;render()});el('endBtn').addEventListener('click',requestEndTurn);
+  el('endConfirmBack').addEventListener('click',hideEndConfirm);
+  el('endConfirmGo').addEventListener('click',()=>{hideEndConfirm();if(!g.over&&g.turn==='player')endTurn()});
+  el('endConfirmOverlay').addEventListener('click',e=>{if(e.target===el('endConfirmOverlay'))hideEndConfirm()});
   newGame();
   window.__LANE_TEST__={getState:()=>JSON.parse(JSON.stringify(g)),getMutableState:()=>g,cards:CARDS,deck:DECK_B,newGame,summon,cast,fight,ready,unitAt,startTurn,endTurn,cpuPlay,render,handTap,ownSlotTap,enemySlotTap};
 })();
