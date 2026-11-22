@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#0b1726">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<title>DREI KAMPF（仮）｜Ver.0.8.2 α</title>
+<title>DREI KAMPF（仮）｜Ver.0.8.3 α</title>
 <style>
 :root{--bg:#0b1726;--panel:#152c40;--line:#406477;--text:#f3f7fa;--muted:#bdd1dd;--gold:#f6d494;--cyan:#81e2e3;--red:#ff9fba;--good:#9cf0b9}
 *{box-sizing:border-box}html,body{width:100%;height:100%;margin:0;background:#07101d;color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Noto Sans JP",sans-serif;-webkit-tap-highlight-color:transparent}button{font:inherit;cursor:pointer;touch-action:manipulation;color:inherit}button:disabled{cursor:default;opacity:.45}button:focus-visible,[role=button]:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
@@ -149,7 +149,7 @@ body[data-screen="select"] .selectScreen{display:flex;align-items:center;justify
  .top{gap:3px;padding:2px 4px}.top .brand{font-size:12px}.top .version{display:none}
  .top-right{gap:3px}.top .phaseChip{font-size:9px;padding:4px 5px}.top .tinyBtn{font-size:9px;padding:4px 5px}
 }
-/* Ver.0.8.2: readable battle tempo, event cues and combat history */
+/* Ver.0.8.3: readable battle tempo, event cues and combat history */
 #app{position:relative}
 .battleActivity{display:flex;align-items:center;min-width:0;gap:5px;background:#152c40;border:1px solid #487184;border-radius:8px;padding:3px 5px;min-height:30px}
 .activityDot{font-size:11px;color:#f9d48f;flex:0 0 auto}
@@ -184,7 +184,7 @@ body[data-screen="select"] .selectScreen{display:flex;align-items:center;justify
 @media(min-width:600px){.battleActivity{padding:5px 10px}.activityText{font-size:13px}.activityButton{font-size:12px;padding:6px 10px}.battleCue{top:41%}}
 @media(prefers-reduced-motion:reduce){.battleCue{transition:none}}
 
-/* Ver.0.8.2 alpha: improve text hierarchy without shrinking the battlefield. */
+/* Ver.0.8.3 alpha: improve text hierarchy without shrinking the battlefield. */
 .playerBadge>div{min-width:0}
 .playerName{font-size:14px;line-height:1.2}
 .playerName .version{font-size:11px;font-weight:850;color:#daeaf4}
@@ -212,6 +212,16 @@ body[data-screen="select"] .selectScreen{display:flex;align-items:center;justify
  .battleCue .cueSub{font-size:18px}
 }
 
+
+/* Ver.0.8.3: contextual choice guidance and explicit card ability categories. */
+.battleCue.choosing{border-color:#f4d38e;background:#102d43f7;box-shadow:0 10px 32px #000b,0 0 0 3px #dbb9615e;top:40%;padding:15px 14px}
+.battleCue.choosing .cueSmall{font-size:12px;color:#ffe1a8}
+.battleCue.choosing .cueMain{font-size:clamp(17px,4.65vw,21px)}
+.battleCue .cueEffect{color:#f7f4e9;font-size:clamp(14px,3.9vw,18px);line-height:1.43;font-weight:800;margin-top:7px;overflow-wrap:anywhere}
+.battleCue .cueInstruction{font-size:clamp(15px,4vw,18px);line-height:1.4;color:#ffe4a7;font-weight:950;margin-top:10px}
+.abilityCategory{display:flex;gap:4px;flex-wrap:wrap;margin:8px 0!important}
+.abilityCategory .abilityType{background:#385c72;border-color:#92b4c6;color:#fff;font-size:12px;white-space:normal}
+@media(max-width:370px){.battleCue.choosing{left:3%;right:3%;padding:11px 8px;top:41%}.battleCue .cueEffect{font-size:14px}.battleCue .cueInstruction{font-size:15px}}
 </style>
 </head>
 <body>
@@ -226,7 +236,7 @@ body[data-screen="select"] .selectScreen{display:flex;align-items:center;justify
     <p class="titleTagline">三つの戦場、四つの紋章。</p>
     <div class="titleTap"><span class="titleTapArrow">✦</span> TAP TO START <span class="titleTapArrow">✦</span></div>
   </div>
-  <div class="titleVersion">Ver.0.8.2 α ・ FOUR EMBLEMS</div>
+  <div class="titleVersion">Ver.0.8.3 α ・ FOUR EMBLEMS</div>
 </section>
 <section id="selectScreen" class="selectScreen" aria-hidden="true">
   <div class="selectInner">
@@ -246,11 +256,11 @@ body[data-screen="select"] .selectScreen{display:flex;align-items:center;justify
     <p id="resultSub" class="resultSub"></p>
     <div id="resultStats" class="resultStats"></div>
     <div class="resultActions"><button id="resultReplay">⚔ もう一度対戦</button><button id="resultTitleBtn">タイトルへ戻る</button></div>
-    <div class="resultNote">Ver.0.8.2 α：対戦データはバランス確認用</div>
+    <div class="resultNote">Ver.0.8.3 α：対戦データはバランス確認用</div>
   </div>
 </section>
 <main id="app">
-  <header class="top"><div class="brand">⚔ DREI KAMPF <span class="version">演出調整 v0.8.2 α</span></div><div class="top-right"><span class="phaseChip" id="phaseChip">準備中</span><button class="tinyBtn" id="rulesBtn">ルール</button><button class="tinyBtn" id="restartBtn">タイトル</button></div></header>
+  <header class="top"><div class="brand">⚔ DREI KAMPF <span class="version">演出調整 v0.8.3 α</span></div><div class="top-right"><span class="phaseChip" id="phaseChip">準備中</span><button class="tinyBtn" id="rulesBtn">ルール</button><button class="tinyBtn" id="restartBtn">タイトル</button></div></header>
   <section class="playerBar enemy"><div class="playerBadge"><div class="avatar">🤖</div><div><div class="playerName">CPU <span class="version" id="cpuDeckName">蒼</span> <span class="playerPlan" id="cpuPlan">魔導制御</span></div><div class="playerMeta" id="cpuInfo">山札40・手札5</div></div></div><div class="health"><span class="heart">♥</span><span id="cpuHp">10</span><small>/<span id="cpuMaxHp">10</span></small></div></section>
   <div class="bus enemyBus" aria-hidden="true"><span></span><span></span><span></span></div>
   <section id="lanes" class="lanes" aria-label="3本の独立したバトルレーン"></section><div id="battleCue" class="battleCue" aria-live="off" aria-hidden="true"></div>
@@ -373,6 +383,57 @@ for(const ln of CARD_ROWS.trim().split('\n')){
  CARDS[id]={id,name,cost:Number(cost),atk:atk==='-'?null:Number(atk),hp:hp==='-'?null:Number(hp),tribe,icon,desc,pure,emblem,type:num<=MON_COUNT[emblem]?'monster':'spell'};
 }
 if(Object.keys(CARDS).length!==80)throw Error('カード80種類ではありません');
+
+// Ver.0.8.3: ability classifications are distinct from individual keywords and activation timings.
+// The current card pool has no player-activated monster skills; "起動能力" is reserved for future cards.
+const ABILITY_TYPES=Object.freeze({static:'常在能力',trigger:'誘発能力',activated:'起動能力'});
+const CARD_ABILITY_META={
+ 'R-01':[['常在能力','猛進']], 'R-02':[['常在能力','獣がいる間ATK上昇'],['誘発能力','純朱・登場時']],
+ 'R-03':[['常在能力','獣がいる場合の戦闘時強化']], 'R-04':[['誘発能力','戦闘で敵を破壊した時']],
+ 'R-05':[['誘発能力','登場時']], 'R-06':[['誘発能力','破壊時']],
+ 'R-07':[['常在能力','攻撃中のATK強化']], 'R-08':[['誘発能力','攻撃したターンの終了時']],
+ 'R-09':[['誘発能力','登場時（純朱で強化）']], 'R-10':[['誘発能力','登場時']],
+ 'R-11':[['常在能力','攻撃可能レーン拡張']], 'R-12':[['常在能力','負傷した敵との戦闘時強化']],
+ 'R-13':[['常在能力','味方の攻撃支援']], 'R-14':[['誘発能力','登場時（純朱で強化）']],
+ 'A-01':[['常在能力','魔法使用済みのターンの攻撃強化']], 'A-02':[['誘発能力','登場時（純蒼で強化）']],
+ 'A-03':[['誘発能力','登場時']], 'A-04':[['誘発能力','自分の最初の魔法使用時']],
+ 'A-05':[['誘発能力','登場時（魔法使用済みの場合）']], 'A-06':[['誘発能力','魔法使用時']],
+ 'A-07':[['誘発能力','魔法使用時（純蒼で追加効果）']], 'A-08':[['誘発能力','登場時']],
+ 'A-09':[['常在能力','魔法使用済みのターンに直接攻撃可能']], 'A-10':[['誘発能力','登場時（手札3枚以下の場合）']],
+ 'A-11':[['誘発能力','魔法使用時']], 'A-12':[['誘発能力','登場時（純蒼で強化）']],
+ 'W-01':[['誘発能力','登場時（ライフ5以下の場合）']], 'W-02':[['誘発能力','登場時（純白で強化）']],
+ 'W-03':[['常在能力','隣接味方への戦闘ダメージ軽減']], 'W-04':[['誘発能力','登場時']],
+ 'W-05':[['常在能力','防壁']], 'W-06':[['常在能力','防壁']],
+ 'W-07':[['常在能力','防御戦闘中のATK強化']], 'W-08':[['誘発能力','戦闘で敵を破壊した時']],
+ 'W-09':[['常在能力','防壁がいる間ATK上昇'],['誘発能力','純白・登場時']],
+ 'W-10':[['誘発能力','味方のHP回復時']], 'W-11':[['常在能力','隣接味方のATK強化']],
+ 'W-12':[['常在能力','防御戦闘中のATK強化']], 'W-13':[['誘発能力','登場時']],
+ 'W-14':[['誘発能力','登場時'],['常在能力','純白・隣接味方のATK強化']],
+ 'Y-01':[['誘発能力','破壊時']], 'Y-02':[['誘発能力','味方の破壊時'],['誘発能力','純宵・登場時']],
+ 'Y-03':[['誘発能力','破壊時']], 'Y-04':[['誘発能力','登場時']],
+ 'Y-05':[['召喚条件','ライフ1を支払う']], 'Y-06':[['誘発能力','登場時']],
+ 'Y-07':[['誘発能力','登場時（純宵で代償軽減）']], 'Y-08':[['常在能力','負傷した敵との戦闘時強化']],
+ 'Y-09':[['誘発能力','登場時']], 'Y-10':[['誘発能力','直接攻撃成功時']],
+ 'Y-11':[['誘発能力','ライフ支払い時']], 'Y-12':[['誘発能力','登場時']],
+ 'Y-13':[['誘発能力','登場時（純宵で強化）']]
+};
+for(const c of Object.values(CARDS)){
+ c.abilityMeta=c.type==='spell'?[['魔法効果','使用時']]:CARD_ABILITY_META[c.id]||[];
+ if(c.type==='monster'&&!c.abilityMeta.length)throw Error('能力分類が未設定: '+c.id);
+}
+function abilityLabel(c){return c.abilityMeta.map(([type,timing])=>`${type}：${timing}`).join('／')}
+function pendingMeta(p){
+ const prompt=p.prompt||'';
+ const c=Object.values(CARDS).find(x=>prompt.startsWith(x.name+'：')||prompt.includes('（'+x.name+'）'))||CARDS[p.cardId];
+ const name=c?.name||'カード効果';
+ const where=prompt.includes('：')?prompt.slice(prompt.indexOf('：')+1):prompt.replace(/（[^）]+）/g,'');
+ const sub=p.kind==='lane'?'移動先のレーンを選んでください':p.kind==='options'?'下の選択肢から決めてください':p.kind==='enemy'?'光っている敵モンスターを選んでください':'光っている味方モンスターを選んでください';
+ let timing=c?.type==='spell'?'魔法効果':'誘発能力';
+ const trig=c?.abilityMeta.find(([type])=>type==='誘発能力');
+ if(trig){const t=trig[1].replace(/（.*$/,'').replace(/^純[朱蒼白宵]・/,'');timing=`誘発能力・${t}`}
+ return {name,description:where||prompt,instruction:p.optional?sub.replace('選んでください','選ぶか、見送ってください'):sub,timing};
+}
+
 const DECKS={
  R:{'R-01':3,'R-02':3,'R-03':3,'R-04':1,'R-05':3,'R-06':2,'R-07':1,'R-08':1,'R-09':1,'R-10':3,'R-11':2,'R-12':2,'R-13':0,'R-14':1,'R-15':3,'R-16':3,'R-17':3,'R-18':1,'R-19':2,'R-20':2},
  A:{'A-01':2,'A-02':2,'A-03':1,'A-04':2,'A-05':2,'A-06':3,'A-07':3,'A-08':2,'A-09':1,'A-10':2,'A-11':1,'A-12':1,'A-13':3,'A-14':2,'A-15':3,'A-16':2,'A-17':2,'A-18':3,'A-19':2,'A-20':1},
@@ -401,7 +462,17 @@ const effectKey=(who,lane)=>`${who}:${lane}`;
 function markImpact(who,lane,text,kind='damage',id=null){if(!impactItems)return;impactItems.push({who,lane,text,kind,id:id||unitAt(who,lane)?.id||null})}
 function beginImpact(){impactItems=[];if(fxTimer){clearTimeout(fxTimer);fxTimer=null}fxToken++}
 function showPreview(kind,label,sub='',source=null,targets=[]){beginImpact();battleFx={phase:'preview',kind,label,sub,source,targets,marks:[],ghosts:{}};render()}
-function effectSummary(items){if(!items.length)return '効果が解決されました';const deaths=items.filter(x=>x.kind==='destroy').length,hits=items.filter(x=>x.kind==='damage').length,life=items.filter(x=>x.kind==='life');const parts=[];if(hits)parts.push(`ダメージ${hits}件`);if(deaths)parts.push(`${deaths}体破壊`);for(const l of life)parts.push(l.text);if(!parts.length){for(const i of items.slice(0,2))parts.push(i.text)}return parts.slice(0,3).join('・')}
+function effectSummary(items,kind='spell'){
+ if(!items.length)return kind==='summon'?'召喚しました':kind==='attack'?'攻撃しました':kind==='spell'?'魔法を使用しました':'選択しました';
+ const deaths=items.filter(x=>x.kind==='destroy').length,hits=items.filter(x=>x.kind==='damage'),life=items.filter(x=>x.kind==='life'),draws=items.filter(x=>x.kind==='draw');
+ const parts=[];
+ if(hits.length){const n=hits.reduce((z,i)=>z+(Number(i.text.replace(/[^0-9]/g,''))||0),0);parts.push(`${n}ダメージ${hits.length>1?`（${hits.length}体）`:''}`)}
+ if(deaths)parts.push(`${deaths}体破壊`);
+ for(const l of life.slice(0,2))parts.push(l.text);
+ if(draws.length)parts.push(`カードを${draws.reduce((n,x)=>n+(Number(x.text.match(/\d+/)?.[0])||0),0)}枚引いた`);
+ if(!parts.length)for(const i of items.slice(0,2))parts.push(i.text);
+ return parts.slice(0,3).join('・');
+}
 function showImpact(kind,label,source=null,targets=[]){
  const items=impactItems||[];impactItems=null;
  const marks={},ghosts={};
@@ -412,14 +483,14 @@ function showImpact(kind,label,source=null,targets=[]){
    if(item.kind==='destroy'){const prev=marks[key].text||'';marks[key]={kind:'destroy',text:prev?prev+'・破壊':'💥 破壊'};ghosts[key]={id:item.id}}
    else if(['damage','heal','buff','status'].includes(item.kind))marks[key]={...marks[key],kind:item.kind,text:(marks[key].text?marks[key].text+' ':'')+item.text};
  }
- const summary=effectSummary(items);battleFx={phase:'after',kind,label,sub:summary,source,targets,marks,ghosts,items};lastActivity=`${label}｜${summary}`;render();return summary;
+ const summary=effectSummary(items,kind);battleFx={phase:'after',kind,label,sub:summary,source,targets,marks,ghosts,items};lastActivity=`${label}｜${summary}`;render();return summary;
 }
 function clearImpactLater(delay){const token=fxToken;if(fxTimer)clearTimeout(fxTimer);fxTimer=setTimeout(()=>{if(token===fxToken){battleFx=null;if(screen==='battle')render()}},delay)}
 function resetFX(){fxToken++;if(fxTimer)clearTimeout(fxTimer);fxTimer=null;impactItems=null;battleFx=null;lastActivity='行動をここに表示します'}
 function cycleSpeed(){speed=speed==='normal'?'slow':speed==='slow'?'fast':'normal';try{localStorage.setItem('drei_kampf_v081_speed',speed)}catch{}render()}
 function showLog(){if(!g)return;const list=el('logEntries');list.replaceChildren();for(const msg of g.logs){const node=document.createElement('div');node.className='logItem'+(msg.includes('──')?' turn':msg.includes('破壊')?' destroyed':msg.includes('攻撃')?' attack':msg.includes('使用')?' spell':'');node.textContent=msg;list.append(node)}el('logOverlay').classList.add('show');el('logOverlay').setAttribute('aria-hidden','false')}
 function hideLog(){el('logOverlay').classList.remove('show');el('logOverlay').setAttribute('aria-hidden','true')}
-function playerEffect(who,kind,label,source=null,targets=[]){if(who!=='player')return;showImpact(kind,label,source,targets);clearImpactLater(1000)}
+function playerEffect(who,kind,label,source=null,targets=[]){if(who!=='player')return;showImpact(kind,label,source,targets);clearImpactLater(1100)}
 
 const freshStats=()=>({played:0,monster:0,spell:0,direct:0,attacks:0,blockedDraw:0,healed:0,lifeCost:0,sacrifices:0,removed:0});
 function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
@@ -432,7 +503,7 @@ function purity(who){return g[who].pure===g[who].code}
 function otherTribe(who,exceptSid,tribe){return field(who).some(u=>u.sid!==exceptSid&&CARDS[u.id].tribe===tribe)}
 function log(msg){if(!g)return;g.status=msg;g.logs.unshift(msg);g.logs.length=Math.min(g.logs.length,140)}
 function toast(msg){clearTimeout(timeoutToast);el('toast').textContent=msg;el('toast').classList.add('show');timeoutToast=setTimeout(()=>el('toast').classList.remove('show'),1450)}
-function draw(who,num){const s=g[who];let n=0;for(let i=0;i<num;i++){if(!s.deck.length)break;if(s.hand.length>=MAX_HAND){s.stats.blockedDraw++;continue}s.hand.push(s.deck.pop());n++}if(n)log(`${owner(who)}：${n}枚ドロー`);return n}
+function draw(who,num){const s=g[who];let n=0;for(let i=0;i<num;i++){if(!s.deck.length)break;if(s.hand.length>=MAX_HAND){s.stats.blockedDraw++;continue}s.hand.push(s.deck.pop());n++}if(n){log(`${owner(who)}：${n}枚ドロー`);markImpact(who,null,`${n}枚ドロー`,'draw')}return n}
 function changedLife(who,delta){const s=g[who],old=s.life;s.life=Math.min(s.maxLife,Math.max(0,s.life+delta));const actual=s.life-old;if(actual>0){s.stats.healed+=actual;log(`${owner(who)}のライフ＋${actual}`)}else if(actual<0)log(`${owner(who)}のライフ${actual}`);if(actual)markImpact(who,null,`♥ ${owner(who)}${actual>0?'+':''}${actual}`,'life');return actual}
 function payLife(who,n){if(g[who].life<=n)return false;changedLife(who,-n);g[who].stats.lifeCost+=n;for(const u of [...field(who)])if(u.id==='Y-11'&&!triggered(u,'blood')){markTrigger(u,'blood');queueTarget(who,'敵1体に1ダメージ（血月の貴族）','enemy',x=>true,t=>damageUnit(t,1),true)}return true}
 function healUnit(u,n){if(!unitBySid(u.sid))return 0;const actual=Math.min(n,u.maxHp-u.hp);u.hp+=actual;if(actual>0){markImpact(u.owner,u.lane,`HP＋${actual}`,'heal',u.id);log(`${CARDS[u.id].name}のHP＋${actual}`);for(const star of [...field(u.owner)])if(star.id==='W-10'&&!triggered(star,'heal')){markTrigger(star,'heal');addTemp(star,1,g.turn);log('星灯の使徒：ATK＋1')}}return actual}
@@ -564,8 +635,17 @@ function pumpQueue(){if(flushing||!g||g.over)return;flushing=true;
  flushing=false;
  if(!g.over&&screen==='battle')render();
 }
-function choosePending(value){if(!g?.pending)return false;const p=g.pending,cho=p.choices.find(x=>(value.sid!==undefined&&x.sid===value.sid)||(value.lane!==undefined&&p.kind==='lane'&&x.lane===value.lane)||(value.choice!==undefined&&p.kind==='options'&&x.choice===value.choice));if(!cho)return false;beginImpact();g.pending=null;p.run(cho);checkWinner();pumpQueue();showImpact('spell',`${owner(p.who)}：${p.prompt}`,null,cho.sid!==undefined?[{who:unitBySid(cho.sid)?.owner??(p.kind==='enemy'?opponent(p.who):p.who),lane:cho.lane}]:[]);clearImpactLater(1050);if(screen==='battle')render();return true}
-function skipPending(){if(g?.pending?.optional){g.pending=null;pumpQueue();if(screen==='battle')render()}}
+function choosePending(value){if(!g?.pending)return false;
+ const p=g.pending,cho=p.choices.find(x=>(value.sid!==undefined&&x.sid===value.sid)||(value.lane!==undefined&&p.kind==='lane'&&x.lane===value.lane)||(value.choice!==undefined&&p.kind==='options'&&x.choice===value.choice));
+ if(!cho)return false;
+ const info=pendingMeta(p),shownTarget=cho.sid!==undefined?unitBySid(cho.sid):null;
+ beginImpact();g.pending=null;p.run(cho);checkWinner();pumpQueue();
+ const selectedTargets=shownTarget?[{who:shownTarget.owner,lane:shownTarget.lane}]:[];
+ showImpact('ability',`${info.name}｜${info.timing}`,null,selectedTargets);
+ clearImpactLater(1200);
+ if(screen==='battle')render();return true;
+}
+function skipPending(){if(g?.pending?.optional){log(`${g.pending.prompt}：選択を見送った`);g.pending=null;battleFx=null;impactItems=null;pumpQueue();if(screen==='battle')render()}}
 function buffsFromSpell(who){const s=g[who];const first=s.spellsThisTurn===0;s.spellsThisTurn++;
  for(const u of [...field(who)]){
   if(u.id==='A-04'&&first)addTemp(u,1,who);
@@ -807,7 +887,7 @@ async function cpuPlay(current){if(!cpuAlive(current))return;
      else if(c.id==='A-19')sub='対象：あなたのモンスター全体';
      else if(['A-13','A-18','Y-17'].includes(c.id))sub='カードを引きます';
      else if(c.id==='W-15')sub='ライフを回復します';
-     else sub='魔法効果を解決します';
+     else sub=c.desc;
      work=()=>cast('cpu',act.index,tid,mode);
    }
    if(!await performCPU(current,act.kind==='summon'?'summon':'spell',label,sub,source,targets,work))break;
@@ -876,7 +956,7 @@ function showDetail(c,u,where){el('detailTitle').textContent=`${c.name}｜${c.id
  const basic=c.type==='monster'?`<span class="pill">⚔ ATK ${u?atk(u):c.atk}</span><span class="pill">♥ HP ${u?u.hp:c.hp}/${u?u.maxHp:c.hp}</span>`:'<span class="pill">✦ 魔法</span>';
  const lane=u?`<span class="pill">${LANE_NAMES[u.lane]}レーン</span>`:'';
  const atkStatus=u?`<p>攻撃：${isWall(u)?'不可（防壁）':ready(where,u)?'可能':'現在は不可'}／残り${availableAttacks(where,u)}回</p>`:'';
- el('detailInfo').innerHTML=`<p><strong>${where==='hand'?'自分の手札':where==='cpu'?'CPUの場':'自分の場'}</strong></p><span class="pill">${esc(EMBLEMS[c.emblem].name)}の紋章</span><span class="pill">${esc(c.tribe)}</span><span class="pill">💠 ${c.cost}</span>${lane}${basic}<p>${esc(c.desc)}</p>${c.pure?`<p class="pureDesc">${esc(c.pure)} ${where==='hand'&&g.player.pure===c.emblem?'（この対戦では有効）':''}</p>`:''}${atkStatus}`;
+ el('detailInfo').innerHTML=`<p><strong>${where==='hand'?'自分の手札':where==='cpu'?'CPUの場':'自分の場'}</strong></p><span class="pill">${esc(EMBLEMS[c.emblem].name)}の紋章</span><span class="pill">${esc(c.tribe)}</span><span class="pill">💠 ${c.cost}</span>${lane}${basic}<p class="abilityCategory">${c.abilityMeta.map(([type,timing])=>`<span class="pill abilityType">${esc(type)}｜${esc(timing)}</span>`).join('')}</p><p>${esc(c.desc)}</p>${c.pure?`<p class="pureDesc">${esc(c.pure)} ${where==='hand'&&g.player.pure===c.emblem?'（この対戦では有効）':''}</p>`:''}${atkStatus}`;
  el('detailOverlay').classList.add('show');el('detailOverlay').setAttribute('aria-hidden','false');
 }
 function hideDetail(){el('detailOverlay').classList.remove('show');el('detailOverlay').setAttribute('aria-hidden','true')}
@@ -955,7 +1035,7 @@ function makeCell(who,lane){const cell=document.createElement('div');cell.classN
  const appendTag=()=>{if(mark?.text){const tag=document.createElement('div');tag.className='fxTag '+(mark.kind==='destroy'?'destroy':mark.kind==='heal'?'heal':'');tag.textContent=mark.text;cell.append(tag)}};
 
  const attack=g.selected?.kind==='attack'?unitBySid(g.selected.sid):null;
- const targeted=g.pending?.choices.some(ch=>ch.sid===u?.sid)||(g.pending?.kind==='lane'&&g.pending.who===who&&g.pending.choices.some(ch=>ch.lane===lane));
+ const targeted=g.pending?.choices.some(ch=>ch.sid===u?.sid)||(g.pending?.kind==='lane'&&g.pending.who===who&&g.pending.choices.some(ch=>ch.lane===lane))||(g.selected?.kind==='spell'&&g.selected.side===(who==='player'?'ally':'enemy')&&spellTargets('player',g.player.hand[g.selected.index]||'').some(ch=>ch.sid===u?.sid))||(g.selected?.kind==='spellModeUnit'&&who==='player'&&u&&u.hp<u.maxHp);
  if(u){const c=CARDS[u.id],chosen=who==='player'&&attack?.sid===u.sid;cell.innerHTML=cardHTML(c,u,who,chosen);const card=cell.firstChild;
   if(targeted)card.classList.add('hitTarget');
   if(preSource)card.classList.add('fxSource');if(preTarget)card.classList.add('fxTarget');if(battleFx?.phase==='after'&&mark)card.classList.add('fxAfter');
@@ -979,14 +1059,25 @@ function makeCell(who,lane){const cell=document.createElement('div');cell.classN
 function render(){if(!g||screen!=='battle')return;
  el('activityText').textContent=battleFx?.label||lastActivity;
  el('speedBtn').textContent='▶ '+SPEEDS[speed].label;
- const cue=el('battleCue');if(battleFx){const phase=battleFx.phase;
-  cue.innerHTML=`<div class="cueSmall">${phase==='preview'?'⚠ CPUの行動を予告':'✦ 効果を解決'}</div><div class="cueMain">${esc(battleFx.label)}</div><div class="cueSub">${esc(battleFx.sub||'')}</div>`;
+ const cue=el('battleCue');
+ const pending=g.pending?.who==='player'?pendingMeta(g.pending):null;
+ const sel=g.selected;
+ const pickingSpell=!pending&&g.turn==='player'&&['spell','spellModeUnit'].includes(sel?.kind)&&g.player.hand[sel.index]?CARDS[g.player.hand[sel.index]]:null;
+ if(pending){
+  cue.innerHTML=`<div class="cueSmall">✦ ${esc(pending.timing)}｜対象選択中</div><div class="cueMain">${esc(pending.name)}</div><div class="cueEffect">${esc(pending.description)}</div><div class="cueInstruction">👆 ${esc(pending.instruction)}</div>`;
+  cue.className='battleCue visible choosing';cue.setAttribute('aria-hidden','false');
+ }else if(pickingSpell){
+  cue.innerHTML=`<div class="cueSmall">✦ 魔法効果｜対象選択中</div><div class="cueMain">${esc(pickingSpell.name)}</div><div class="cueEffect">${esc(pickingSpell.desc)}</div><div class="cueInstruction">👆 ${sel.kind==='spellModeUnit'?'負傷した味方を選んでください':sel.side==='enemy'?'光っている敵を選んでください':'光っている味方を選んでください'}</div>`;
+  cue.className='battleCue visible choosing';cue.setAttribute('aria-hidden','false');
+ }else if(battleFx){const phase=battleFx.phase;
+  const header=phase==='preview'?'⚠ CPUの行動予告':battleFx.kind==='summon'?'✦ 召喚':battleFx.kind==='attack'?'⚔ 攻撃':battleFx.kind==='ability'?'✦ 誘発能力':battleFx.kind==='spell'?'✦ 魔法効果':'✦ 行動結果';
+  cue.innerHTML=`<div class="cueSmall">${header}</div><div class="cueMain">${esc(battleFx.label)}</div><div class="cueSub">${esc(battleFx.sub||'')}</div>`;
   cue.className='battleCue visible '+battleFx.kind+(battleFx.items?.some(x=>x.kind==='destroy')?' destroy':'');cue.setAttribute('aria-hidden','false');
  }else{cue.className='battleCue';cue.setAttribute('aria-hidden','true')}
  const lifeChanged=battleFx?.phase==='after'&&battleFx.items?.some(x=>x.kind==='life');
  el('cpuHp').closest('.health').classList.toggle('fxLife',!!lifeChanged);el('playerHp').closest('.health').classList.toggle('fxLife',!!lifeChanged);
 
- el('phaseChip').textContent=g.turn==='player'?'🟢 自分の番':'🟣 CPUの番';
+ el('phaseChip').textContent=g.pending?.who==='player'?'🟡 対象選択中':g.turn==='player'?'🟢 自分の番':'🟣 CPUの番';
  el('cpuHp').textContent=g.cpu.life;el('cpuMaxHp').textContent=g.cpu.maxLife;el('playerHp').textContent=g.player.life;el('playerMaxHp').textContent=g.player.maxLife;
  el('cpuInfo').textContent=`山札${g.cpu.deck.length} ・ 手札${g.cpu.hand.length}`;el('cpuPlan').textContent=EMBLEMS[g.cpu.code].plan;
  el('playerInfo').textContent=`山札${g.player.deck.length} ・ 手札${g.player.hand.length}`;el('playerPlan').textContent=EMBLEMS[g.player.code].plan;
@@ -1035,7 +1126,7 @@ function render(){if(!g||screen!=='battle')return;
 }
 function showModal(title,content,action=null){el('modalTitle').textContent=title;el('modalBody').innerHTML=content;el('modalReplay').style.display=action?'inline-block':'none';el('modalReplay').textContent=action?.label||'確認';el('modalReplay').onclick=action?.run||null;el('modal').classList.add('show')}
 function hideModal(){el('modal').classList.remove('show')}
-function showRules(){showModal('📘 Ver.0.8.2 α ルール',`<ul><li>3レーンの各マスに味方・敵がそれぞれ最大1体。攻撃は原則同じレーンに限る。一部カードは隣レーンへの攻撃や直接攻撃の例外あり。</li><li>戦闘では双方が同時にATK分のダメージを与え、HPは持ち越し。直接攻撃は基本1ライフダメージ。</li><li>召喚酔いあり、原則1ターンに1回攻撃。猛進は可能な攻撃が必須。防壁は攻撃不可だがATKがあれば反撃できる。</li><li>自分の防壁が置かれたレーンには、通常モンスターを上書き召喚可能。撤去される防壁は「破壊」扱いにならず、破壊時効果も発動しない。</li><li>40枚デッキ、同名最大3枚。単色または2色（25:15〜20:20）。今回の試作では4つの単色固定デッキを選択。</li><li>純紋章能力は試合開始時の元デッキ40枚がすべて同じ紋章の場合のみ有効。試合中に変わらない。</li><li>初期ライフ10、初手5枚、手札上限7。各ターン開始に1枚ドロー、マナは毎ターン全回復し最大値が1ずつ増加（最大10）。</li><li>ライフの支払いは、支払った結果ライフ0以下になる場合は不可。最大ライフの変更は今回のカードにはなし。</li><li>自分のターンにカード使用。登場時の対象選択や生贄、レーン移動は画面に従って選ぶ。効果の見送りが許される場合はキャンセル可能。</li><li>手札タップで選択、長押し・詳細モードでカード全文。山札切れだけでは負けない。ライフ0または山札・手札・場が全て空になると敗北。両者が攻撃手段を失った場合は引き分け。</li><li>バトル画面の「▶ 標準」からCPUの演出速度を切り替え可能。「☷ ログ」から履歴を確認。ログ表示中はCPUの進行を一時停止。80種類のカード名・性能・CPU判断は試作。CPUの思考やバランスは今後調整。</li></ul>`)}
+function showRules(){showModal('📘 Ver.0.8.3 α ルール',`<ul><li>3レーンの各マスに味方・敵がそれぞれ最大1体。攻撃は原則同じレーンに限る。一部カードは隣レーンへの攻撃や直接攻撃の例外あり。</li><li>戦闘では双方が同時にATK分のダメージを与え、HPは持ち越し。直接攻撃は基本1ライフダメージ。</li><li>召喚酔いあり、原則1ターンに1回攻撃。猛進は可能な攻撃が必須。防壁は攻撃不可だがATKがあれば反撃できる。</li><li>自分の防壁が置かれたレーンには、通常モンスターを上書き召喚可能。撤去される防壁は「破壊」扱いにならず、破壊時効果も発動しない。</li><li>40枚デッキ、同名最大3枚。単色または2色（25:15〜20:20）。今回の試作では4つの単色固定デッキを選択。</li><li>純紋章能力は試合開始時の元デッキ40枚がすべて同じ紋章の場合のみ有効。試合中に変わらない。</li><li>能力は常在能力・誘発能力・起動能力の3分類。猛進や防壁は個別キーワードで、登場時・破壊時は誘発タイミング。現在のカードには起動能力を持つモンスターはありません。</li><li>初期ライフ10、初手5枚、手札上限7。各ターン開始に1枚ドロー、マナは毎ターン全回復し最大値が1ずつ増加（最大10）。</li><li>ライフの支払いは、支払った結果ライフ0以下になる場合は不可。最大ライフの変更は今回のカードにはなし。</li><li>自分のターンにカード使用。登場時の対象選択や生贄、レーン移動は画面に従って選ぶ。効果の見送りが許される場合はキャンセル可能。</li><li>手札タップで選択、長押し・詳細モードでカード全文。山札切れだけでは負けない。ライフ0または山札・手札・場が全て空になると敗北。両者が攻撃手段を失った場合は引き分け。</li><li>バトル画面の「▶ 標準」からCPUの演出速度を切り替え可能。「☷ ログ」から履歴を確認。ログ表示中はCPUの進行を一時停止。80種類のカード名・性能・CPU判断は試作。CPUの思考やバランスは今後調整。</li></ul>`)}
 el('titleScreen').addEventListener('click',()=>{if(screen==='title')toSelect()});
 el('titleScreen').addEventListener('keydown',e=>{if((e.key==='Enter'||e.key===' ')&&screen==='title'){e.preventDefault();toSelect()}});
 el('selectBack').addEventListener('click',()=>{if(playerChoiceStep==='cpu'){playerChoiceStep='player';renderSelect()}else returnTitle()});
@@ -1051,7 +1142,7 @@ el('endBtn').addEventListener('click',requestEndTurn);el('endConfirmBack').addEv
 el('endConfirmGo').addEventListener('click',()=>{hideEndConfirm();if(!g?.over&&g.turn==='player'){if(mandatoryPlayerAttacks().length)requestEndTurn();else endTurn()}});
 el('endConfirmOverlay').addEventListener('click',e=>{if(e.target===el('endConfirmOverlay'))hideEndConfirm()});
 setScreen('title');
-window.__LANE_TEST__={getSpeed:()=>speed,getFx:()=>battleFx,cycleSpeed,showLog,hideLog,showPreview,showImpact,beginImpact,clearImpactLater,getScreen:()=>screen,getState:()=>g?JSON.parse(JSON.stringify(g)):null,getMutableState:()=>g,cards:CARDS,decks:DECKS,emblems:EMBLEMS,validateDeck,newGame,returnTitle,summon,cast,fight,ready,unitAt,startTurn,endTurn,cpuPlay,render,handTap,ownSlotTap,enemySlotTap,atk,attackTargets,requestEndTurn,resolveDeaths,choosePending,skipPending,draw,boostHp,damageUnit,playerSelect:(p,c)=>{playerChoice=p;cpuChoice=c},setScreen,toSelect,payLife};
+window.__LANE_TEST__={getSpeed:()=>speed,getFx:()=>battleFx,cycleSpeed,showLog,hideLog,showPreview,showImpact,beginImpact,clearImpactLater,getScreen:()=>screen,getState:()=>g?JSON.parse(JSON.stringify(g)):null,getMutableState:()=>g,cards:CARDS,abilityTypes:ABILITY_TYPES,pendingMeta,decks:DECKS,emblems:EMBLEMS,validateDeck,newGame,returnTitle,summon,cast,fight,ready,unitAt,startTurn,endTurn,cpuPlay,render,handTap,ownSlotTap,enemySlotTap,atk,attackTargets,requestEndTurn,resolveDeaths,choosePending,skipPending,draw,boostHp,damageUnit,playerSelect:(p,c)=>{playerChoice=p;cpuChoice=c},setScreen,toSelect,payLife};
 
 })();
 </script>
