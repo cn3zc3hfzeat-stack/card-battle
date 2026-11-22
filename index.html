@@ -2,428 +2,131 @@
 <html lang="ja">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#0b1421">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0b1726">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<title>CARD DUEL｜B vs B Ver.0.4.1 UI操作修正版</title>
+<title>CARD DUEL｜3レーン試作版 Ver.0.5</title>
 <style>
-:root{--bg:#0b1421;--panel:#15283b;--panel2:#1b3347;--line:#3b596d;--ink:#eff8ff;--muted:#bdd1e0;--aqua:#8de5d4;--gold:#f5d08e;--green:#a8e5a9;--red:#ffa5a5}
-*{box-sizing:border-box}html,body{height:100%;margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Noto Sans JP",sans-serif}button{font:inherit;color:inherit;cursor:pointer;touch-action:manipulation}button:disabled{opacity:.4;cursor:default}button:focus-visible,[role=button]:focus-visible{outline:2px solid #ffdf9b;outline-offset:2px}
-#app{height:100dvh;min-height:340px;overflow:hidden;display:flex;flex-direction:column;gap:5px;background:radial-gradient(ellipse at 50% 46%,#1a444b 0%,#102337 54%,#091322 96%);padding:env(safe-area-inset-top) max(8px,env(safe-area-inset-right)) env(safe-area-inset-bottom) max(8px,env(safe-area-inset-left))}
-.header{flex:0 0 38px;display:flex;align-items:center;gap:9px;background:#0b1a2ddf;border:1px solid #2e5061;border-radius:9px;padding:4px 9px;min-width:0}.brand{font-size:14px;font-weight:850;white-space:nowrap}.brand small{font-size:9px;font-weight:650;color:#b1cddb;margin-left:7px}.turnInfo{display:flex;align-items:center;gap:7px;margin-left:auto;font-size:11px}.turnChip{white-space:nowrap;background:#254656;border-radius:20px;padding:5px 9px;font-weight:800}.resource{font-variant-numeric:tabular-nums;color:var(--gold);font-weight:800;white-space:nowrap}.tinyBtn{background:#1c3348;border:1px solid #496779;border-radius:7px;padding:5px 9px;font-size:11px;font-weight:800;white-space:nowrap}
-.battle{flex:1;min-height:0;display:grid;grid-template-rows:minmax(86px,1fr) 29px minmax(86px,1fr);gap:3px}.lane{min-height:0;display:flex;gap:7px;align-items:stretch}.hero{flex:0 0 112px;max-width:112px;min-height:0;border:1px solid #3e6a7c;border-radius:10px;background:linear-gradient(155deg,#22445a,#162a3b);padding:7px;display:flex;flex-direction:column;justify-content:center;align-items:flex-start;gap:4px;text-align:left}.hero.enemy{border-color:#7f5873;background:linear-gradient(145deg,#4b2c44,#241d33)}.hero.targetable{border:2px solid #ffe39c;box-shadow:0 0 8px #ffe39c70}.heroName{font-size:12px;font-weight:850;white-space:nowrap}.heroLife{font-size:21px;line-height:1;font-weight:900;color:#ffe7e4}.heroLife span{font-size:10px;color:#ebc9cc;font-weight:650}.heroMini{font-size:10px;color:var(--muted);white-space:nowrap}
-.formations{min-width:0;flex:1;display:grid;grid-template-rows:1fr 1fr;gap:4px}.zone{display:flex;align-items:center;gap:6px;min-height:0;min-width:0;border:1px solid #31576c88;border-radius:8px;padding:2px 6px;background:#0c24352e}.zone.front{border-color:#5990b5ba;background:#2b5c7240}.zoneLabel{flex:0 0 58px;font-size:10px;line-height:1.25;font-weight:800;color:#bcd5df;text-align:center}.zone.front .zoneLabel{color:#a5d8ff}.zoneLabel b{display:block;font-size:9px;font-weight:650;margin-top:2px;color:#98afc3}.slots{flex:1;min-width:0;display:flex;justify-content:center;align-items:stretch;gap:6px;height:100%}.slot{flex:0 1 110px;max-width:110px;min-width:0;border:1px dashed #42617799;border-radius:7px;background:#15283b45;display:flex;align-items:stretch;justify-content:center}.front .slot{flex:0 1 120px;border-color:#7b9fb366}
-.unit,.handCard{width:100%;height:100%;min-width:0;border-radius:7px;border:1px solid #7aa2b3;background:linear-gradient(140deg,#295166,#193043);padding:4px;display:flex;flex-direction:column;gap:2px;position:relative;text-align:left;overflow:hidden;box-shadow:0 2px 5px #02091260;user-select:none}.unit.enemyUnit{border-color:#9a7b9c;background:linear-gradient(145deg,#51384d,#302a45)}.unit.blocker{border-color:#88bded;background:linear-gradient(155deg,#28587c,#15354d)}.unit.enemyUnit.blocker{border-color:#e5afc8;background:linear-gradient(155deg,#714359,#42283f)}.unit.fresh{filter:saturate(.67)}.unit.ready{box-shadow:inset 0 0 0 1px #99e5d7}.unit.selected,.handCard.selected{border:2px solid #ffe39b;background:linear-gradient(155deg,#535844,#2b3e4c);box-shadow:0 0 7px #ffe39b85}.unit.targetable{border:2px solid #ffcf99;box-shadow:0 0 9px #ffcc9470}.idrow{display:flex;align-items:center;justify-content:space-between;gap:2px}.id{font-size:10px;font-weight:850}.cost{min-width:19px;height:19px;display:grid;place-items:center;border:1px solid #8fc2e5;border-radius:50%;background:#2e6990;font-weight:900;font-size:11px;line-height:1}.art{flex:1;min-height:0;display:grid;place-items:center;border-radius:5px;background:#91daca13;font-size:clamp(12px,2.3vw,26px)}.effect{font-weight:700;font-size:9px;color:#d9f7ed;white-space:nowrap;text-overflow:ellipsis;overflow:hidden}.effect.noAbility{color:#a3bbc9}.stats{display:flex;justify-content:space-between;align-items:center;gap:2px;font-weight:850;font-size:10px;white-space:nowrap}.statA{color:#ffd0aa}.statH{color:#c5f8cd}.atkCount{position:absolute;bottom:19px;right:2px;font-size:8px;color:#ffda89}.marker{font-size:9px;color:#b8e0ff;font-weight:850}.handCard{flex:0 0 clamp(73px,10vw,112px);min-height:0}.handCard.spell{background:linear-gradient(155deg,#58452e,#2c2c35);border-color:#bba673}.handCard.unplayable{opacity:.52}.handCard .effect{white-space:normal;line-height:1.14;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}.handCard .art{font-size:20px}.handCard .stats{font-size:9px}
-.centerBar{display:flex;align-items:center;justify-content:space-between;gap:6px;background:#091824da;border:1px solid #306070;border-radius:7px;padding:2px 8px;min-width:0}.centerLabel{font-weight:850;font-size:10px;color:#a1e4de;white-space:nowrap}.hint{flex:1;min-width:0;font-size:10px;color:#e0edf4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:center}.cancelBtn{font-size:10px;font-weight:750;padding:3px 6px;border-radius:5px;border:1px solid #546c7b;background:#294354;white-space:nowrap}
-.handBar{flex:0 0 120px;min-height:0;display:flex;gap:8px;padding:6px 8px;background:#102338f0;border:1px solid #385a6e;border-radius:9px}.handArea{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px}.handLabel{font-size:10px;color:#bfd9e6;font-weight:800;display:flex;align-items:center;gap:12px}.handList{display:flex;gap:5px;overflow-x:auto;scrollbar-width:thin;flex:1;min-height:0;align-items:stretch;padding-bottom:1px}.rightTools{flex:0 0 140px;width:140px;min-width:0;display:flex;flex-direction:column;gap:4px}.endBtn{min-height:38px;background:linear-gradient(180deg,#d4e7a6,#a8d17f);border:0;border-radius:8px;color:#102830;font-weight:900;font-size:13px}.log{flex:1;overflow-y:auto;min-height:0;background:#09192a;border-radius:6px;padding:5px;font-size:9px;line-height:1.35;color:#c7d8e5}.log div{margin-bottom:2px}.log div:first-child{color:#effbff}.footer{flex:0 0 17px;display:flex;justify-content:space-between;gap:6px;align-items:center;color:#a1b8c4;font-size:9px}.footer span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.overlay{position:fixed;inset:0;z-index:10;display:none;place-items:center;background:#050d17d8;padding:17px}.overlay.show{display:grid}.dialog{width:min(560px,94vw);max-height:86dvh;overflow:auto;border:1px solid #5a8596;border-radius:15px;padding:18px;background:#1c3548;box-shadow:0 15px 50px #000c}.dialog h2{margin:0 0 8px;font-size:19px}.dialog p,.dialog li{font-size:13px;line-height:1.65;color:#e0eef6}.dialog ul{padding-left:22px}.dialogAction{background:#93e4d3;color:#102930;border:0;border-radius:9px;font-weight:850;padding:9px 14px;margin-top:8px}.dialogSecondary{background:transparent;border:1px solid #678594;border-radius:9px;padding:9px 12px;margin:8px 0 0 8px}.toast{position:fixed;left:50%;bottom:calc(128px + env(safe-area-inset-bottom));transform:translateX(-50%);z-index:9;pointer-events:none;opacity:0;transition:opacity .17s;max-width:90vw;min-width:100px;text-align:center;background:#304a60;border:1px solid #83adbf;border-radius:9px;box-shadow:0 4px 16px #000a;padding:8px 13px;font-size:12px;font-weight:750}.toast.show{opacity:1}.portraitNote{display:none}
-@media(max-height:570px){#app{gap:3px}.header{flex-basis:31px;padding:2px 6px}.battle{grid-template-rows:minmax(78px,1fr) 25px minmax(78px,1fr)}.lane{gap:4px}.hero{flex:0 0 87px;max-width:87px;padding:4px 5px;gap:2px}.heroName{font-size:10px}.heroLife{font-size:17px}.heroMini{font-size:9px}.formations{gap:2px}.zone{padding:1px 4px;gap:4px}.zoneLabel{flex-basis:44px;font-size:9px}.zoneLabel b{display:none}.slots{gap:4px}.slot{flex:0 1 96px;max-width:96px}.front .slot{flex:0 1 105px}.unit{padding:2px 4px;gap:0;justify-content:space-between}.unit .art{display:none}.unit .effect{font-size:8px}.unit .stats{font-size:9px}.unit .cost{min-width:15px;height:15px;font-size:9px}.unit .id{font-size:9px}.unit .atkCount{font-size:7px;bottom:11px}.handBar{flex-basis:104px;padding:4px 6px}.handCard{flex-basis:clamp(67px,9vw,94px);padding:3px}.handCard .art{font-size:16px}.handCard .cost{min-width:17px;height:17px;font-size:10px}.handCard .id{font-size:9px}.handCard .effect{font-size:8px}.rightTools{flex-basis:114px;width:114px}.endBtn{min-height:32px;font-size:11px}.footer{flex-basis:13px;font-size:8px}.centerBar{padding:0 6px}.centerLabel,.hint{font-size:9px}.handLabel{font-size:9px}}
-@media(max-width:710px){.brand small{display:none}.brand{font-size:12px}.turnInfo{gap:4px}.tinyBtn{font-size:10px;padding:5px}.slot{max-width:85px}.hero{flex-basis:76px;max-width:76px}.zoneLabel{flex-basis:32px}.rightTools{width:96px;flex-basis:96px}.handCard{flex-basis:68px}.hint{font-size:8px}}
-@media(orientation:portrait) and (max-width:650px){.portraitNote{display:grid;position:fixed;inset:0;place-items:center;z-index:20;text-align:center;padding:26px;background:#0c1b2b}.portraitNote strong{font-size:22px}.portraitNote p{line-height:1.7;color:#bfd3e3}}
-
-/* M-01 only: art trial. All M-02+ remain the original placeholder cards. */
-.m01Illustrated{isolation:isolate}
-.m01Illustrated .art{position:relative;overflow:hidden;background:#142d38}
-.m01Illustrated .art img{display:block;width:100%;height:100%;object-fit:cover;object-position:55% 45%;border-radius:3px}
-.m01Illustrated.unit::before{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg,#0c1b2cba,#0c1b2c67),url("assets/m01_art.webp") center/cover no-repeat;opacity:.72}
-.m01Illustrated.unit .idrow,.m01Illustrated.unit .effect,.m01Illustrated.unit .stats,.m01Illustrated.unit .atkCount{position:relative;text-shadow:0 1px 3px #061522,0 0 5px #061522}
-.m01Illustrated.handCard{border-color:#d9b97e;box-shadow:inset 0 0 0 1px #d9b97e90,0 2px 7px #020912aa}
-
-
-/* Ver.0.4 first stage — landscape portrait cards and detailed inspection */
-#app{background:radial-gradient(ellipse at 50% 45%,#204652 0%,#122a3c 49%,#091321 94%)}
-.battle{grid-template-rows:minmax(72px,1fr) 26px minmax(72px,1fr);gap:3px}
-.formations{display:grid;grid-template-columns:minmax(0,3.15fr) minmax(108px,1.1fr);grid-template-rows:minmax(0,1fr);gap:5px;min-height:0}
-.formations .zone{grid-row:1;min-height:0;gap:5px;padding:3px 5px}
-.formations .zone.rear{grid-column:1}
-.formations .zone.front{grid-column:2}
-.zoneLabel{flex:0 0 40px;font-size:10px}
-.zoneLabel b{font-size:8px}
-.slots{align-items:center;justify-content:center;height:100%;gap:5px}
-.slot,.front .slot{flex:0 0 auto;width:auto;max-width:none;height:min(100%,190px);aspect-ratio:2 / 3;overflow:hidden;border-radius:7px;background:#132d4075;border:1px dashed #536b7a90}
-.zone.front .slot{border-color:#8bb9d388}
-.unit,.handCard{min-width:0;min-height:0;flex:none;padding:3px;gap:2px;border-radius:7px;background:linear-gradient(145deg,#325464,#112a39);border:1px solid #98b6c5;box-shadow:inset 0 0 0 1px #ebf8ff18,0 2px 6px #0008}
-.unit.enemyUnit{background:linear-gradient(155deg,#553c55,#222b43);border-color:#bba5c2}
-.unit.blocker{background:linear-gradient(155deg,#355b7d,#162e4f);border-color:#b5d9ff}
-.unit.enemyUnit.blocker{background:linear-gradient(160deg,#67425c,#302640);border-color:#dcb9d4}
-.unit.fresh{filter:none}
-.unit.fresh .art{filter:saturate(.68)}
-.unit.ready{box-shadow:inset 0 0 0 1px #9ce9da,0 0 6px #6eccc155}
-.unit.selected,.handCard.selected{border:2px solid #ffe39b;background:linear-gradient(155deg,#434f56,#253848);box-shadow:0 0 9px #ffe39b90}
-.unit.targetable{border:2px solid #ffca7b;box-shadow:0 0 10px #ffb4668c}
-.idrow{flex:none;height:16px;display:flex;flex-direction:row-reverse;gap:2px;justify-content:space-between;align-items:center}
-.id{font-size:9px;font-weight:850;letter-spacing:-.25px}
-.cost{flex:none;min-width:15px;width:16px;height:16px;font-size:10px;background:#255d88;border-color:#8ac9ec}
-.art{flex:1;min-height:10px;overflow:hidden;border-radius:4px;border:1px solid #ffffff22;background:radial-gradient(circle at 50% 25%,#4a789060,#182c4259);font-size:clamp(14px,2.2vw,29px)}
-.art img{width:100%;height:100%;display:block;object-fit:cover;object-position:center}
-.effect{flex:none;font-size:9px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.2;display:flex;align-items:center;gap:2px;color:#d8f6ef;background:#071f30ad;border-radius:3px;padding:2px 2px}
-.effect .efIcon{flex:none;font-size:10px}
-.effect.noAbility{color:#9bb8c7}
-.stats{flex:none;font-size:10px;line-height:1.1;display:flex;justify-content:space-between;gap:2px;white-space:nowrap}
-.statA,.statH{border-radius:4px;padding:1px 2px;background:#081d2ba3}
-.statA{color:#ffbaab}.statH{color:#b8edc4}
-.atkCount{position:absolute;right:3px;top:22px;bottom:auto;background:#143b47e8;padding:1px 3px;border-radius:3px;font-size:8px;color:#fff0ac}
-.handBar{flex-basis:142px;min-height:0;gap:8px}
-.handArea{min-height:0}
-.handList{align-items:stretch;padding-bottom:2px;gap:5px}
-.handCard{flex:0 0 auto;width:auto;height:100%;aspect-ratio:2/3;max-width:125px}
-.handCard .art{font-size:clamp(17px,2.7vw,27px)}
-.handCard .idrow{height:17px}
-.handCard .effect{font-size:9px;white-space:nowrap;display:flex;line-height:1.2;-webkit-line-clamp:unset}
-.handCard .stats{font-size:10px}
-.rightTools{flex-basis:130px;width:130px}
-.m01Illustrated{border-color:#c4d7e8!important;background:linear-gradient(145deg,#2f587b,#101e35)!important}
-.m01Illustrated .art{background:#24466a}
-.m01Illustrated.unit::before{display:none}
-.inspectBtn{position:absolute;z-index:3;right:3px;top:22px;display:grid;place-items:center;width:19px;height:19px;padding:0;border-radius:50%;font-size:12px;font-weight:800;line-height:1;color:#fff3d7;background:#132c44da;border:1px solid #e1c68ecc;box-shadow:0 1px 3px #0009;touch-action:manipulation}
-.inspectBtn:active{background:#607f9a}
-.unit,.handCard{-webkit-touch-callout:none;touch-action:pan-x pan-y}
-.cardHint{display:inline-flex;gap:4px;align-items:center;white-space:nowrap;color:#ffe7b5}
-#detailOverlay{z-index:40;padding:7px;background:#060d18ed}
-#detailOverlay .detailDialog{width:min(720px,96vw);max-height:94dvh;overflow:hidden;display:flex;flex-direction:column;background:linear-gradient(135deg,#203c50,#112334);border:1px solid #a5bfd0;border-radius:14px;box-shadow:0 14px 50px #000c;padding:10px}
-.detailHeader{flex:none;display:flex;align-items:center;gap:8px;padding-bottom:7px}
-.detailHeader h2{margin:0;font-size:15px;line-height:1.2}
-.detailOwner{color:#c9dcec;font-size:10px;margin-left:auto}
-.detailClose{background:#335168;border:1px solid #7b9cae;border-radius:7px;padding:5px 10px;font-size:12px;font-weight:750}
-.detailBody{min-height:0;overflow-y:auto;display:grid;grid-template-columns:minmax(140px,35%) minmax(0,1fr);gap:14px;align-items:start;padding:2px 3px 4px}
-.detailPicture{display:grid;place-items:center;min-width:0;align-self:stretch}
-.detailPicture img{display:block;width:auto;max-width:100%;max-height:68dvh;object-fit:contain;border-radius:6px;box-shadow:0 4px 15px #0008}
-.detailFake{width:min(100%,192px);aspect-ratio:2/3;border:2px solid #9ab3c5;border-radius:12px;display:flex;flex-direction:column;gap:7px;align-items:center;padding:10px;background:linear-gradient(160deg,#355a73,#152c40);box-shadow:0 4px 20px #0008}
-.detailFake.spell{background:linear-gradient(160deg,#746040,#2b2d3a);border-color:#ebcb97}
-.detailFake .fakeTop{font-size:13px;align-self:stretch;display:flex;justify-content:space-between;font-weight:800}
-.detailFake .fakeArt{font-size:56px;display:grid;place-items:center;flex:1;width:100%;background:#071d2b52;border-radius:8px}
-.detailFake .fakeAbility{font-size:12px;font-weight:700}
-.detailInfo{display:flex;flex-direction:column;gap:10px;min-width:0}
-.detailInfo .detailPills{display:flex;gap:6px;flex-wrap:wrap}
-.detailPill{font-size:11px;padding:5px 7px;border-radius:6px;background:#24465b;border:1px solid #547a91;font-weight:700}
-.detailPill.important{border-color:#d2b87c;color:#ffe6b6}
-.detailSection{border-top:1px solid #4f708366;padding-top:8px}
-.detailSection h3{font-size:12px;color:#c6e5f4;margin:0 0 5px}
-.detailSection p{font-size:12px;line-height:1.6;margin:0;color:#f1f8ff}
-.detailFooter{font-size:10px;color:#abc6d4;line-height:1.5}
-@media(max-height:570px){
- .battle{grid-template-rows:minmax(65px,1fr) 24px minmax(65px,1fr)}
- .formations{grid-template-columns:minmax(0,3.15fr) minmax(104px,1.1fr);gap:3px}
- .formations .zone{padding:2px 3px;gap:3px}
- .zoneLabel{flex-basis:29px;font-size:9px}.zoneLabel b{display:none}
- .slot,.front .slot{height:min(100%,160px);width:auto;max-width:none;flex:0 0 auto}
- .unit{padding:2px;gap:1px;justify-content:initial}
- .unit .art{display:grid;min-height:8px}
- .unit .effect{font-size:8px;line-height:1;padding:1px}
- .unit .idrow{height:13px}
- .unit .cost{width:13px;min-width:13px;height:13px;font-size:8px}
- .unit .id{font-size:8px}
- .unit .stats{font-size:8px}
- .unit .atkCount{top:17px;bottom:auto;font-size:7px}
- .handBar{flex-basis:109px;padding:4px 6px}
- .handCard{flex:0 0 auto;height:100%;width:auto;aspect-ratio:2/3;max-width:100px;padding:2px;gap:1px}
- .handCard .art{display:grid;min-height:12px;font-size:19px}
- .handCard .idrow{height:15px}
- .handCard .stats{font-size:9px}
- .handCard .effect{font-size:8px;line-height:1.1}
- .rightTools{flex-basis:114px;width:114px}
- .inspectBtn{width:17px;height:17px;top:17px;right:2px;font-size:11px}
- .detailBody{grid-template-columns:minmax(130px,34%) minmax(0,1fr);gap:9px}
- .detailPicture img{max-height:66dvh}
- .detailFake{max-height:66dvh;gap:3px}
- .detailFake .fakeArt{font-size:35px}
- .detailSection p{font-size:11px}
- .detailInfo{gap:7px}
- .detailPill{font-size:10px;padding:3px 5px}
-}
-@media(max-width:710px){
- .formations{grid-template-columns:minmax(0,3fr) minmax(91px,1.05fr)}
- .zoneLabel{flex-basis:27px}
- .slot,.front .slot{max-width:none}
- .handCard{flex-basis:auto;width:auto}
- .rightTools{flex-basis:96px;width:96px}
- .hero{flex-basis:72px;max-width:72px}
- .detailDialog{width:98vw}
-}
-@media(prefers-reduced-motion:reduce){.overlay,.unit,.handCard{animation:none!important;transition:none!important}}
-
-
-/* Ver.0.4.1 UX revision: mirrored field rows, hero on right, and generous touch areas. */
-.formations{grid-template-columns:minmax(105px,1.05fr) minmax(0,3.15fr)}
-.formations .zone.front{grid-column:1}
-.formations .zone.rear{grid-column:2}
-.lane>.hero{margin-left:0}
-.slots{justify-content:space-evenly;gap:2px;min-width:0}
-.slot,.front .slot{flex:1 1 0;max-width:102px;min-width:0;width:auto;height:100%;aspect-ratio:auto;border:none;background:transparent;border-radius:8px;display:flex;align-items:center;justify-content:center;overflow:visible;touch-action:pan-x pan-y;cursor:pointer}
-.slot:empty::after{content:"";display:block;height:min(100%,190px);aspect-ratio:2/3;border:1px dashed #54758a90;border-radius:7px;background:#15344836;pointer-events:none}
-.slot .unit{width:auto;max-width:100%;height:min(100%,190px);aspect-ratio:2/3;flex:0 1 auto;min-width:0;align-self:center;overflow:hidden}
-.slot:has(.targetable){background:#f7bf6c15;box-shadow:inset 0 0 0 1px #e3c0845c}
-.slot:has(.selected){background:#f7df6c15}
-.unit .stats,.handCard .stats{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:2px;min-height:13px;width:100%;font-variant-numeric:tabular-nums}
-.unit .statA,.unit .statH,.handCard .statA,.handCard .statH{min-width:0;display:flex;justify-content:center;align-items:center;gap:1px;padding:1px 0;font-weight:900;font-size:10px;line-height:1.2;white-space:nowrap}
-.statH.damaged{color:#ffadb5;background:#4c263aac}
-.unit .statIcon,.handCard .statIcon{font-size:10px;line-height:1}
-.unit .statNum,.handCard .statNum{font-size:10px;font-weight:950;line-height:1}
-.handCard .stats{min-height:15px}
-.unit .effect,.handCard .effect{max-width:100%}
-.unit .effect span:last-child,.handCard .effect span:last-child{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.unit .art,.handCard .art{pointer-events:none}
-.unit,.handCard{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
-.inspectModeBtn{flex:none;white-space:nowrap;background:#253d54;border:1px solid #7097a8;border-radius:7px;font-size:10px;font-weight:800;padding:4px 7px;color:#ecf7ff}
-.inspectModeBtn.active{background:#cfb56b;color:#102431;border-color:#ffe49a;box-shadow:0 0 0 2px #f1c97e44}
-#app.inspect-active .unit,#app.inspect-active .handCard{cursor:zoom-in}
-@media(max-height:570px){
- .formations{grid-template-columns:minmax(92px,1.05fr) minmax(0,3.15fr)}
- .slot,.front .slot{height:100%;max-width:90px}
- .slot:empty::after,.slot .unit{height:min(100%,160px)}
- .unit .stats{min-height:11px;gap:1px}
- .unit .statA,.unit .statH{font-size:9px;line-height:1.1}
- .unit .statIcon,.unit .statNum{font-size:9px}
- .unit .effect{padding:1px}
- .hero{flex-basis:89px;max-width:89px}
- .inspectModeBtn{font-size:9px;padding:3px 5px}
-}
-@media(max-width:710px){
- .formations{grid-template-columns:minmax(82px,1.05fr) minmax(0,3.15fr)}
- .slot,.front .slot{max-width:80px}
- .hero{flex-basis:75px;max-width:75px}
- .inspectModeBtn{font-size:8px;padding:3px 4px}
- .centerLabel{font-size:8px}
-}
+:root{--bg:#0b1726;--panel:#152c40;--line:#406477;--text:#f3f7fa;--muted:#bdd1dd;--gold:#f6d494;--cyan:#81e2e3;--red:#ff9fba;--good:#9cf0b9}
+*{box-sizing:border-box}html,body{width:100%;height:100%;margin:0;background:#07101d;color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Noto Sans JP",sans-serif;-webkit-tap-highlight-color:transparent}button{font:inherit;cursor:pointer;touch-action:manipulation;color:inherit}button:disabled{cursor:default;opacity:.45}button:focus-visible,[role=button]:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+#app{width:min(100%,760px);height:100dvh;min-height:560px;overflow:hidden;margin:auto;display:grid;grid-template-rows:39px 44px 9px minmax(210px,1fr) 9px 44px 46px 158px 14px;grid-template-columns:minmax(0,1fr);gap:3px;padding:max(3px,env(safe-area-inset-top)) max(7px,env(safe-area-inset-right)) max(3px,env(safe-area-inset-bottom)) max(7px,env(safe-area-inset-left));background:radial-gradient(ellipse at 50% 40%,#17394a 0%,#101f32 51%,#081423 100%)}
+.top{display:flex;align-items:center;gap:7px;border:1px solid #345b6f;background:#0d1e30ed;border-radius:9px;padding:3px 8px;min-width:0}.brand{font-size:13px;font-weight:900;letter-spacing:.02em;white-space:nowrap}.version{font-size:9px;color:#a5c8d5}.top-right{margin-left:auto;display:flex;gap:5px;align-items:center;min-width:0}.phaseChip{font-size:10px;color:#edfbf9;border:1px solid #38667c;background:#1e4156;border-radius:6px;padding:5px 7px;white-space:nowrap;font-weight:850}.tinyBtn{font-size:10px;font-weight:850;border:1px solid #516f7e;background:#253d50;border-radius:6px;padding:5px 7px;white-space:nowrap}
+.playerBar{min-width:0;min-height:0;display:flex;align-items:center;gap:10px;padding:5px 11px;border-radius:10px;border:1px solid #4b7a8b;background:linear-gradient(90deg,#284a5e,#15293d);box-shadow:inset 0 0 0 1px #ffffff08}.playerBar.enemy{border-color:#875c74;background:linear-gradient(90deg,#57354f,#27243d)}.playerBadge{display:flex;align-items:center;gap:8px;min-width:0}.avatar{height:29px;width:29px;flex:0 0 29px;display:grid;place-items:center;font-size:16px;border-radius:50%;background:#17344b;border:1px solid #6e9db0}.enemy .avatar{background:#4b2b45;border-color:#c191ac}.playerName{font-size:12px;font-weight:900;white-space:nowrap}.playerMeta{font-size:9px;color:#c1d5e0;white-space:nowrap}.health{margin-left:auto;display:flex;align-items:center;gap:5px;white-space:nowrap;font-size:23px;font-weight:950;color:#ffd1d6;font-variant-numeric:tabular-nums}.health small{font-size:11px;font-weight:700;color:#c5acb9}.health .heart{font-size:16px}
+/* All three lanes meet one shared life bar on each side. */
+.bus{min-height:0;position:relative;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:0 7px}.bus::before{content:"";position:absolute;left:15%;right:15%;top:1px;border-top:2px solid #658e9d80}.bus.enemyBus::before{border-color:#ac789784}.bus span{height:8px;position:relative;display:block}.bus span::before{content:"";position:absolute;left:50%;top:0;height:9px;border-left:2px solid #628fa6}.bus.enemyBus span::before{border-color:#ba879c}
+.lanes{min-width:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;padding:0 1px;min-height:0}.laneTrack{--track:#406c83;display:grid;grid-template-rows:25px minmax(0,1fr) 34px minmax(0,1fr);min-height:0;min-width:0;align-items:stretch;padding:4px 4px 7px;background:linear-gradient(180deg,#273246b8 0%,#1a3b4abf 48%,#183749bc 100%);border:1px solid #56809b;border-radius:12px;box-shadow:inset 0 0 0 1px #a5cadd12,0 3px 9px #0003;overflow:hidden}.laneTrack:nth-child(2){--track:#c09f66;border-color:#99835c;background:linear-gradient(180deg,#303249b8,#343a44a8 53%,#263846b8)}.laneTrack:nth-child(3){--track:#668ea8}.laneTitle{text-align:center;color:#dce9f0;font-weight:850;font-size:11px;letter-spacing:.05em;display:flex;align-items:center;justify-content:center;gap:3px}.laneNumber{width:17px;height:17px;display:grid;place-items:center;border-radius:50%;border:1px solid var(--track);font-size:9px;color:#ebf7ff}
+.zoneCell{min-height:0;min-width:0;display:flex;align-items:center;justify-content:center;position:relative;padding:1px 0}.zoneCell::after{content:"";position:absolute;z-index:0;top:1px;bottom:1px;left:50%;width:2px;background:linear-gradient(180deg,transparent,#6c96ad52,transparent);pointer-events:none}.emptySlot{z-index:1;width:min(100%,132px);height:min(100%,170px);aspect-ratio:3/4;border:1px dashed #6c8b9aa6;background:#10283a88;border-radius:8px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;color:#97b0c1;font-size:10px;font-weight:800;text-align:center;touch-action:manipulation}.emptySlot .plus{font-size:26px;line-height:1;font-weight:350}.emptySlot.available{border:2px solid #d9c18a;background:#3c51455e;box-shadow:0 0 12px #f7da9340;color:#fff0b5;animation:breathe 1.3s ease-in-out infinite}.emptySlot.attackHere{border:2px solid #f4bcbc;background:#5f394960;color:#ffe5ed;box-shadow:0 0 12px #ff9daa5e}.emptySlot[role=button]:active{transform:scale(.98)}@keyframes breathe{50%{box-shadow:0 0 16px #f7da9375}}
+.laneCenter{position:relative;display:flex;align-items:center;justify-content:center;min-height:0}.laneCenter::before{content:"";position:absolute;left:50%;top:-2px;bottom:-2px;width:3px;transform:translateX(-50%);background:linear-gradient(#a36f8f80,#e7c58e,#72a8c4a0);border-radius:5px}.laneCenter span{position:relative;z-index:1;background:#203749;border:1px solid var(--track);border-radius:20px;color:#e7d5ab;font-size:12px;font-weight:900;padding:3px 11px;box-shadow:0 2px 6px #0006}
+.unitCard,.handCard{position:relative;z-index:1;min-height:0;min-width:0;display:flex;flex-direction:column;gap:2px;padding:4px;border-radius:8px;border:1px solid #92b8c7;background:linear-gradient(150deg,#274c61,#182f42);box-shadow:0 2px 5px #00131caa;overflow:hidden;text-align:left;user-select:none;-webkit-user-select:none;touch-action:manipulation}.unitCard{height:auto;width:min(100%,135px);aspect-ratio:3/4;max-width:100%;max-height:100%}.unitCard.enemyCard{border-color:#b18ea8;background:linear-gradient(150deg,#5a394f,#2a3044)}.unitCard.selected,.handCard.selected{border:2px solid #ffe299;box-shadow:0 0 0 2px #f7d48b4d,0 0 12px #ffdb85a0}.unitCard.hitTarget{border:2px solid #ffb9b6;box-shadow:0 0 13px #f8b9b76f}.unitCard.notReady{filter:saturate(.77)}.unitCard.ready{box-shadow:inset 0 0 0 1px #87f3c3,0 2px 7px #0007}.cardTop{flex:0 0 auto;display:flex;align-items:center;justify-content:space-between;gap:2px;min-width:0}.cardId{font-size:10px;font-weight:900;white-space:nowrap}.cardCost{width:18px;height:18px;flex:0 0 18px;display:grid;place-items:center;border-radius:50%;background:#317ba0;border:1px solid #a0d8f1;font-size:11px;font-weight:950;line-height:1}.cardArt{min-height:0;flex:1;display:grid;place-items:center;overflow:hidden;background:#2c5767;border:1px solid #ffffff22;border-radius:4px;font-size:26px;line-height:1}.cardArt img{display:block;height:100%;width:100%;object-fit:cover}.cardName{font-size:9px;font-weight:850;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.2}.cardAbility{display:flex;align-items:center;justify-content:center;gap:2px;color:#c9f2e8;font-weight:800;font-size:9px;white-space:nowrap;min-height:11px;overflow:hidden;text-overflow:ellipsis}.cardAbility.none{color:#94acbe}.cardStats{display:flex;align-items:center;justify-content:space-between;gap:2px;font-size:13px;font-variant-numeric:tabular-nums;font-weight:950;line-height:1.15;min-height:17px}.cardStats .atk{color:#ffdaa9}.cardStats .hp{color:#b8f8c7}.cardStats .damaged{color:#ffadad}.attackMark{position:absolute;bottom:20px;right:4px;font-size:9px;font-weight:850;background:#182e40db;border-radius:4px;padding:0 2px}.handCard{height:128px;width:96px;flex:0 0 96px}.handCard.spell{border-color:#d0b88a;background:linear-gradient(150deg,#644a32,#333547)}.handCard.disabled{opacity:.51}.handCard .cardArt{font-size:23px}.handCard .cardAbility{font-size:8px}.handCard .cardName{font-size:9px}.handCard .cardStats{font-size:12px}
+.controls{display:flex;align-items:center;gap:6px;min-width:0;border:1px solid #355a69;border-radius:9px;background:#0a1d2e;padding:4px 6px}.hint{min-width:0;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#e1f0f5;font-size:11px;font-weight:700}.modeBtn,.cancelBtn{font-size:10px;font-weight:800;white-space:nowrap;border:1px solid #587f8e;border-radius:6px;padding:7px 8px;background:#244357}.modeBtn.active{color:#09202c;background:#b9eaf1;border-color:#b9eaf1}.endBtn{border:none;border-radius:7px;padding:8px 11px;font-size:11px;font-weight:950;background:linear-gradient(#d5edb8,#9ecf84);color:#123026;white-space:nowrap;min-height:32px}
+.handSection{min-width:0;min-height:0;border-radius:10px;border:1px solid #476c83;background:#101f32e8;padding:5px 6px;display:flex;flex-direction:column;gap:4px}.handHead{display:flex;align-items:center;justify-content:space-between;gap:5px;font-size:11px;font-weight:850;color:#d4e5eb;min-height:16px}.handHead strong{color:#f9d88a}.handScroll{min-height:0;flex:1;display:flex;gap:6px;overflow-x:auto;overflow-y:hidden;padding-bottom:3px;align-items:stretch;scrollbar-width:thin;scroll-snap-type:x proximity}.handScroll .handCard{scroll-snap-align:start}.foot{display:flex;align-items:center;justify-content:space-between;gap:8px;color:#9fb7c5;font-size:9px;overflow:hidden}.foot span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.toast{position:fixed;top:48%;left:50%;transform:translate(-50%,-50%);z-index:12;pointer-events:none;opacity:0;max-width:min(86vw,460px);min-width:120px;text-align:center;background:#173e51ef;border:1px solid #addde5;border-radius:11px;box-shadow:0 6px 22px #000a;padding:11px 14px;font-weight:850;font-size:13px;transition:opacity .14s}.toast.show{opacity:1}.overlay{display:none;position:fixed;inset:0;z-index:20;background:#020915dc;padding:max(14px,env(safe-area-inset-top)) 14px max(14px,env(safe-area-inset-bottom));align-items:center;justify-content:center}.overlay.show{display:flex}.dialog{width:min(540px,95vw);max-height:90dvh;overflow:auto;border-radius:15px;border:1px solid #79a0b2;padding:16px;background:#193449;box-shadow:0 16px 50px #000c}.dialog h2{margin:0 0 9px;font-size:19px}.dialog p,.dialog li{font-size:13px;line-height:1.65;color:#e5f0f7}.dialog ul{padding-left:20px}.dialogBtn{border:0;color:#12303a;background:#b0e8d9;border-radius:8px;padding:9px 13px;font-size:13px;font-weight:900;margin:7px 7px 0 0}.dialogBtn.secondary{background:#294c60;color:#dcebf3;border:1px solid #638c9e}.detail{width:min(600px,96vw);max-height:88dvh;overflow:auto;border:1px solid #7e9fae;border-radius:16px;background:linear-gradient(#263f51,#14293b);padding:13px}.detailHead{display:flex;align-items:center;gap:8px;justify-content:space-between}.detailHead h2{font-size:17px;margin:0}.detailBody{display:flex;gap:14px;align-items:flex-start;margin-top:11px}.detailArt{flex:0 0 42%;width:42%;max-width:230px;aspect-ratio:3/4;border:2px solid #9cb4c0;background:#213f51;border-radius:10px;overflow:hidden;display:grid;place-items:center;font-size:52px}.detailArt img{height:100%;width:100%;object-fit:cover}.detailInfo{flex:1;min-width:0;font-size:13px;line-height:1.7;color:#e8eff3}.pill{display:inline-block;background:#304e61;border:1px solid #688d9d;padding:2px 7px;margin:0 4px 5px 0;border-radius:18px;white-space:nowrap;font-size:12px}.detailInfo p{margin:5px 0 9px}.rotateHint{display:none}
+@media(max-width:370px){#app{grid-template-rows:36px 41px 7px minmax(205px,1fr) 7px 41px 43px 150px 13px;gap:2px;padding-left:4px;padding-right:4px}.lanes{gap:5px}.laneTrack{padding:3px 2px 5px}.laneTitle{font-size:10px}.top{gap:3px;padding:2px 5px}.brand{font-size:11px}.version{display:none}.top-right{gap:3px}.phaseChip{font-size:9px;padding:4px}.tinyBtn{font-size:9px;padding:5px}.modeBtn,.cancelBtn,.endBtn{font-size:9px;padding:6px}.handCard{width:91px;flex-basis:91px;height:122px}}
+@media(max-height:720px) and (orientation:portrait){#app{grid-template-rows:36px 40px 7px minmax(208px,1fr) 7px 40px 41px 145px 12px;gap:2px}.handCard{height:117px;width:88px;flex-basis:88px}.cardArt{font-size:21px}.cardName{font-size:8px}.cardAbility{font-size:8px}.cardStats{font-size:11px;min-height:15px}.cardTop{font-size:9px}.cardId{font-size:9px}.cardCost{width:16px;height:16px;flex-basis:16px;font-size:10px}}
+@media(min-width:600px) and (orientation:portrait){#app{padding-left:22px;padding-right:22px;grid-template-rows:46px 56px 12px minmax(250px,1fr) 12px 56px 52px 196px 16px;gap:5px}.playerBar{padding:8px 16px}.playerName{font-size:15px}.playerMeta{font-size:11px}.health{font-size:28px}.brand{font-size:17px}.version{font-size:11px}.laneTrack{padding:8px 9px 10px;grid-template-rows:32px minmax(0,1fr) 46px minmax(0,1fr)}.laneTitle{font-size:14px}.unitCard{max-height:205px;max-width:100%}.emptySlot{height:min(100%,205px);max-width:100%}.cardId{font-size:12px}.cardName{font-size:11px}.cardAbility{font-size:11px}.cardStats{font-size:15px}.handCard{height:156px;width:117px;flex-basis:117px}.handHead{font-size:14px}.hint{font-size:13px}.modeBtn,.cancelBtn,.endBtn{font-size:12px}.detailInfo{font-size:15px}}
+@media(orientation:landscape) and (max-height:560px){.rotateHint{position:fixed;inset:0;display:grid;place-items:center;z-index:40;background:#0d1f32;color:#fff;text-align:center;padding:30px}.rotateHint strong{display:block;font-size:24px;margin-bottom:14px}.rotateHint p{font-size:15px;line-height:1.65}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.001ms!important;transition-duration:.001ms!important}}
 </style>
 </head>
 <body>
-<div class="portraitNote"><div><strong>📱 横向きにして遊ぼう</strong><p>Ver.0.4.1はiPhone・iPadの横画面向けです。<br>端末を横向きにすると対戦画面が表示されます。</p></div></div>
 <main id="app">
- <header class="header"><div class="brand">⚔️ CARD DUEL <small>デッキB UIテスト v0.4.1</small></div><div class="turnInfo"><span id="turnChip" class="turnChip">準備中</span><span id="manaTop" class="resource">💠 0/0</span><button class="tinyBtn" id="rulesBtn">ルール</button><button class="tinyBtn" id="newBtn">やり直す</button></div></header>
- <section class="battle">
-  <div class="lane"><div class="formations"><div class="zone front"><div class="zoneLabel">🛡 前列<b>壁役 ×1</b></div><div class="slots" id="cpuFront"></div></div><div class="zone rear"><div class="zoneLabel">後列<b>攻撃役 ×3</b></div><div class="slots" id="cpuRear"></div></div></div><button class="hero enemy" id="cpuHero" aria-label="CPUプレイヤーを攻撃"><div class="heroName">🤖 CPU｜B</div><div class="heroLife" id="cpuLife">♥ 10 <span>/10</span></div><div class="heroMini" id="cpuInfo">山札50・手札0</div></button></div>
-  <div class="centerBar"><span class="centerLabel" id="phase">⚔️ バトル</span><span class="hint" id="hint">手札から召喚・魔法、味方をタップして攻撃</span><button class="inspectModeBtn" id="inspectModeBtn" type="button" aria-pressed="false">🔎 詳細モード</button><button class="cancelBtn" id="cancelBtn">選択解除</button></div>
-  <div class="lane"><div class="formations"><div class="zone front"><div class="zoneLabel">🛡 前列<b>壁役 ×1</b></div><div class="slots" id="playerFront"></div></div><div class="zone rear"><div class="zoneLabel">後列<b>攻撃役 ×3</b></div><div class="slots" id="playerRear"></div></div></div><button class="hero" id="playerHero" aria-label="自分のプレイヤー"><div class="heroName">🙂 あなた｜B</div><div class="heroLife" id="playerLife">♥ 10 <span>/10</span></div><div class="heroMini" id="playerInfo">山札50・手札0</div></button></div>
- </section>
- <section class="handBar"><div class="handArea"><div class="handLabel"><span>🃏 手札 <b id="handCount">0/7</b></span><span class="resource" id="manaHand">マナ 0/0</span></div><div class="handList" id="hand"></div></div><aside class="rightTools"><button class="endBtn" id="endBtn">ターン終了 ▶</button><div class="log" id="log" aria-live="polite"></div></aside></section>
- <div class="footer"><span id="record">勝敗記録：0勝 / 0敗 / 0分</span><span>B50枚｜1枚ドロー｜前列1・後列3</span></div>
+  <header class="top"><div class="brand">⚔ CARD DUEL <span class="version">3レーン試作 v0.5</span></div><div class="top-right"><span class="phaseChip" id="phaseChip">準備中</span><button class="tinyBtn" id="rulesBtn">ルール</button><button class="tinyBtn" id="restartBtn">再戦</button></div></header>
+  <section class="playerBar enemy"><div class="playerBadge"><div class="avatar">🤖</div><div><div class="playerName">CPU <span class="version">デッキB</span></div><div class="playerMeta" id="cpuInfo">山札50・手札5</div></div></div><div class="health"><span class="heart">♥</span><span id="cpuHp">10</span><small>/10</small></div></section>
+  <div class="bus enemyBus" aria-hidden="true"><span></span><span></span><span></span></div>
+  <section id="lanes" class="lanes" aria-label="3本の独立したバトルレーン"></section>
+  <div class="bus" aria-hidden="true"><span></span><span></span><span></span></div>
+  <section class="playerBar"><div class="playerBadge"><div class="avatar">🙂</div><div><div class="playerName">あなた <span class="version">デッキB</span></div><div class="playerMeta" id="playerInfo">山札50・手札5</div></div></div><div class="health"><span class="heart">♥</span><span id="playerHp">10</span><small>/10</small></div></section>
+  <section class="controls"><div id="hint" class="hint" aria-live="polite">カードを選ぼう</div><button id="cancelBtn" class="cancelBtn">解除</button><button id="inspectBtn" class="modeBtn" aria-pressed="false">🔎 詳細</button><button id="endBtn" class="endBtn">ターン終了 ▶</button></section>
+  <section class="handSection"><div class="handHead"><span>🃏 手札 <span id="handCount">0/7</span></span><strong id="mana">💠 0/0</strong></div><div id="hand" class="handScroll" aria-label="自分の手札"></div></section>
+  <footer class="foot"><span id="record">戦績：0勝 0敗 0分</span><span>3レーン・移動なし・ダメージ持続</span></footer>
 </main>
+<div class="rotateHint"><div><strong>📱 縦向きで遊ぼう</strong><p>3レーン試作版は縦画面向け！<br>スマホを縦にするとバトル画面が表示されるよ。</p></div></div>
 <div class="toast" id="toast"></div>
-<div class="overlay" id="modal"><section class="dialog"><h2 id="modalTitle"></h2><div id="modalContent"></div><button class="dialogAction" id="modalOk">閉じる</button><button class="dialogSecondary" id="modalAlt" style="display:none">もう一度対戦</button></section></div>
-<div class="overlay" id="detailOverlay" aria-hidden="true" role="dialog" aria-label="カードの詳細">
-  <div class="detailDialog">
-    <div class="detailHeader"><h2 id="detailTitle">カード詳細</h2><span id="detailOwner" class="detailOwner"></span><button id="detailClose" class="detailClose" type="button">✕ 閉じる</button></div>
-    <div class="detailBody"><div class="detailPicture" id="detailPicture"></div><div class="detailInfo" id="detailInfo"></div></div>
-  </div>
-</div>
+<div class="overlay" id="modal"><div class="dialog"><h2 id="modalTitle"></h2><div id="modalBody"></div><button class="dialogBtn" id="modalClose">閉じる</button><button class="dialogBtn secondary" id="modalReplay" style="display:none">新しく対戦</button></div></div>
+<div class="overlay" id="detailOverlay" role="dialog" aria-label="カード詳細" aria-hidden="true"><div class="detail"><div class="detailHead"><h2 id="detailTitle">カード詳細</h2><button id="detailClose" class="tinyBtn">✕ 閉じる</button></div><div class="detailBody"><div id="detailArt" class="detailArt"></div><div id="detailInfo" class="detailInfo"></div></div></div></div>
 <script>
 'use strict';
-(() => {
-  const MONSTERS = [
+(()=>{
+  const MONSTERS=[
     ['M-01',1,1,2,'',0],['M-02',1,1,1,'legacy',1],['M-03',2,2,3,'',0],['M-04',2,1,2,'draw',1],['M-05',2,1,1,'double',0],
     ['M-06',3,3,4,'',0],['M-07',3,2,3,'heal',1],['M-08',3,2,2,'blast',1],['M-09',4,4,5,'',0],['M-10',4,2,3,'double',0],
     ['M-11',4,3,3,'legacy',1],['M-12',5,5,6,'',0],['M-13',5,3,3,'draw',2],['M-14',5,3,4,'heal',2],['M-15',6,6,7,'',0],
     ['M-16',6,4,5,'blast',2],['M-17',7,5,6,'legacy',2],['M-18',8,4,9,'',0],['M-19',9,6,7,'blast',3],['M-20',10,8,8,'',0]
   ];
-  const SPELLS = [['S-01',2,'dmg',2],['S-02',4,'dmg',4],['S-03',3,'aoe',1],['S-04',5,'aoe',2],['S-05',2,'draw',1],['S-06',4,'draw',2],['S-07',2,'heal',2],['S-08',2,'buff',2],['S-09',2,'debuff',2],['S-10',5,'dmgDraw',3]];
-  const CARDS = {};
-  // 将来の拡張: traits に blockerDirect（ブロッカーでもプレイヤー攻撃可）、
-  // reachRear（ブロッカーがいても後列モンスターを攻撃可）、
-  // pierceFront（後列とプレイヤー双方へ攻撃可）を追加できる構造。
-  for (const [id,cost,atk,hp,ability,n] of MONSTERS) CARDS[id] = {id,type:'monster',cost,atk,hp,ability,n,traits:['M-01','M-03'].includes(id)?['blocker']:[]};
-  for (const [id,cost,ability,n] of SPELLS) CARDS[id] = {id,type:'spell',cost,ability,n,traits:[]};
-  const DECK_B = {'M-01':3,'M-02':3,'M-03':3,'M-04':3,'M-05':2,'M-06':3,'M-07':2,'M-08':2,'M-09':2,'M-10':2,'M-11':2,'M-12':2,'M-13':2,'M-14':1,'M-15':1,'M-16':1,'M-18':1,'S-01':3,'S-02':2,'S-03':2,'S-05':2,'S-06':1,'S-07':2,'S-08':1,'S-09':1,'S-10':1};
-  if(Object.values(DECK_B).reduce((a,n)=>a+n,0)!==50 || Object.values(DECK_B).some(n=>n>3) || Object.keys(DECK_B).some(id=>!CARDS[id])) throw Error('デッキB構築エラー');
-  const MAX_FRONT=1,MAX_REAR=3,MAX_HAND=7,MAX_LIFE=10;
-  const el=id=>document.getElementById(id);
-  const other=who=>who==='player'?'cpu':'player';
-  const traits=id=>CARDS[id].traits||[];
-  const hasTrait=(id,trait)=>traits(id).includes(trait);
-  const isBlocker=u=>hasTrait(u.id,'blocker');
-  const laneOf=c=>hasTrait(c.id,'blocker')?'front':'rear';
-  const canAttackHero=u=>!isBlocker(u)||hasTrait(u.id,'blockerDirect');
-  const bypassFront=u=>hasTrait(u.id,'pierceFront');
-  const reachRear=u=>hasTrait(u.id,'reachRear')||bypassFront(u);
-  const maxAttacks=u=>CARDS[u.id].ability==='double'?2:1;
-  const art=c=>c.type==='spell'?({dmg:'🔥',aoe:'💥',draw:'📖',heal:'💚',buff:'⚔️',debuff:'🌫️',dmgDraw:'✨'})[c.ability]:(hasTrait(c.id,'blocker')?'🛡️':({'':'⚔️',legacy:'🕯️',draw:'📖',double:'⚔️',heal:'💚',blast:'🔥'})[c.ability]);
-  function abilityLabel(c){if(c.type==='spell')return ({dmg:`敵1体 ${c.n}ダメ`,aoe:`敵全体 ${c.n}ダメ`,draw:`${c.n}枚ドロー`,heal:`ライフ${c.n}回復`,buff:`味方ATK＋${c.n}`,debuff:`敵ATK－${c.n}`,dmgDraw:'敵1体3ダメ＋1ドロー'})[c.ability];if(hasTrait(c.id,'blocker'))return 'ブロッカー';return ({'':'能力なし',legacy:`遺志${c.n}`,draw:`ドロー${c.n}`,double:'連撃',heal:`治癒${c.n}`,blast:`爆炎${c.n}`})[c.ability]}
-  let game=null,uid=0,cpuTimer=0,toastTimer=0,inspectMode=false;
+  const SPELLS=[['S-01',2,'dmg',2],['S-02',4,'dmg',4],['S-03',3,'aoe',1],['S-04',5,'aoe',2],['S-05',2,'draw',1],['S-06',4,'draw',2],['S-07',2,'heal',2],['S-08',2,'buff',2],['S-09',2,'debuff',2],['S-10',5,'dmgDraw',3]];
+  const CARDS={};
+  for(const [id,cost,atk,hp,ability,n] of MONSTERS)CARDS[id]={id,type:'monster',cost,atk,hp,ability,n};
+  for(const [id,cost,ability,n] of SPELLS)CARDS[id]={id,type:'spell',cost,ability,n};
+  // v0.4.1の同じ50枚。今回「ブロッカー」は廃止、M-01/M-03は暫定能力なし。
+  const DECK_B={'M-01':3,'M-02':3,'M-03':3,'M-04':3,'M-05':2,'M-06':3,'M-07':2,'M-08':2,'M-09':2,'M-10':2,'M-11':2,'M-12':2,'M-13':2,'M-14':1,'M-15':1,'M-16':1,'M-18':1,'S-01':3,'S-02':2,'S-03':2,'S-05':2,'S-06':1,'S-07':2,'S-08':1,'S-09':1,'S-10':1};
+  const MAX_HAND=7,MAX_LIFE=10,LANE_NAMES=['左','中央','右'];
+  if(Object.values(DECK_B).reduce((s,n)=>s+n,0)!==50)throw Error('デッキ枚数が不正');
+  const el=id=>document.getElementById(id),other=who=>who==='player'?'cpu':'player',owner=who=>who==='player'?'あなた':'CPU';
+  let g=null,seq=0,session=0,inspect=false,toastTimeout=null;
   function shuffle(a){for(let i=a.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
-  function newSide(){const deck=[];for(const [id,n] of Object.entries(DECK_B))for(let i=0;i<n;i++)deck.push(id);return {life:MAX_LIFE,deck:shuffle(deck),hand:[],field:[],turns:0,mana:0,maxMana:0}}
-  function log(msg){game.logs.unshift(msg);if(game.logs.length>60)game.logs.length=60}
-  function note(msg){clearTimeout(toastTimer);el('toast').textContent=msg;el('toast').classList.add('show');toastTimer=setTimeout(()=>el('toast').classList.remove('show'),2200)}
-  function draw(who,n){const s=game[who];let got=0;while(got<n && s.hand.length<MAX_HAND && s.deck.length){s.hand.push(s.deck.pop());got++}if(got)log(`${who==='player'?'あなた':'CPU'}：${got}枚ドロー`);return got}
-  function recover(who,n){const s=game[who],actual=Math.min(n,MAX_LIFE-s.life);s.life+=actual;if(actual)log(`${who==='player'?'あなた':'CPU'}：ライフ＋${actual}`)}
-  function resolveDeaths(){const deaths=[];for(const who of ['player','cpu']){const keep=[];for(const u of game[who].field){if(u.hp<=0)deaths.push({who,u});else keep.push(u)}game[who].field=keep}for(const {who,u} of deaths)log(`${who==='player'?'あなた':'CPU'}の${u.id}が破壊`);for(const {who,u} of deaths){const c=CARDS[u.id];if(c.ability==='legacy')draw(who,c.n)}}
-  function damageTargets(who,n,sid=null){let hits=game[who].field.filter(u=>sid===null||u.sid===sid);for(const u of hits)u.hp-=n;log(`${who==='player'?'あなた':'CPU'}側 ${hits.length}体に${n}ダメージ`);resolveDeaths()}
-  function potentialFinisher(who){const s=game[who];return s.field.some(u=>canAttackHero(u))||s.hand.some(id=>CARDS[id].type==='monster'&&(!hasTrait(id,'blocker')||hasTrait(id,'blockerDirect')))||s.deck.some(id=>CARDS[id].type==='monster'&&(!hasTrait(id,'blocker')||hasTrait(id,'blockerDirect')))}
-  function exhausted(who){const s=game[who];return !s.deck.length&&!s.hand.length&&!s.field.length}
-  function winnerCheck(){if(game.over)return true;const pl=game.player.life,cl=game.cpu.life;if(pl<=0||cl<=0){finish(pl<=0&&cl<=0?'draw':cl<=0?'win':'lose');return true}const pEmpty=exhausted('player'),cEmpty=exhausted('cpu');if(pEmpty||cEmpty){finish(pEmpty&&cEmpty?'draw':cEmpty?'win':'lose');return true}if(!potentialFinisher('player')&&!potentialFinisher('cpu')){finish('draw');return true}return false}
-  function countLane(who,lane){return game[who].field.filter(u=>laneOf(CARDS[u.id])===lane).length}
-  function canSummon(who,id){const c=CARDS[id];if(!c||c.type!=='monster')return false;const lane=laneOf(c);return countLane(who,lane)<(lane==='front'?MAX_FRONT:MAX_REAR)}
-  function attackReady(u,who){return game[who].turns>u.summonedTurn && u.attacksUsed<maxAttacks(u)}
-  function effectiveATK(u){return Math.max(0,CARDS[u.id].atk+u.mod)}
-  function legalUnitTargets(who,attacker){const enemy=game[other(who)].field,front=enemy.filter(isBlocker);return front.length&&!reachRear(attacker)?front:enemy}
-  function canTargetHero(who,attacker){const enemy=game[other(who)].field;return canAttackHero(attacker)&&(bypassFront(attacker)||!enemy.some(isBlocker))}
-  function startTurn(who){if(game.over)return;game.turn=who;const s=game[who];s.turns++;s.maxMana=Math.min(s.turns,10);s.mana=s.maxMana;for(const u of s.field)u.attacksUsed=0;game.selected=null;log(`── ${who==='player'?'あなた':'CPU'}の${s.turns}ターン目（マナ${s.mana}） ──`);draw(who,1);render();if(winnerCheck())return;if(who==='cpu')cpuTimer=setTimeout(cpuPlay,500)}
-  function endTurn(){if(game.over)return;// HPはここで回復しない。一時ATK効果だけ消す。
-    for(const who of ['player','cpu'])for(const u of game[who].field)u.mod=0;
-    game.selected=null;startTurn(other(game.turn));
-  }
-  function summon(who,index){const s=game[who],id=s.hand[index],c=CARDS[id];if(!c||c.type!=='monster'||s.mana<c.cost||!canSummon(who,id))return false;s.hand.splice(index,1);s.mana-=c.cost;const unit={id,sid:++uid,hp:c.hp,mod:0,attacksUsed:0,summonedTurn:s.turns};s.field.push(unit);log(`${who==='player'?'あなた':'CPU'}が${id}を${isBlocker(unit)?'前列':'後列'}に召喚`);switch(c.ability){case'draw':draw(who,c.n);break;case'heal':recover(who,c.n);break;case'blast':damageTargets(other(who),c.n);break}game.selected=null;winnerCheck();return true}
-  function cast(who,index,targetSid){const s=game[who],id=s.hand[index],c=CARDS[id];if(!c||c.type!=='spell'||s.mana<c.cost)return false;const foe=other(who);let target=null;if(['dmg','dmgDraw','debuff'].includes(c.ability)){target=game[foe].field.find(u=>u.sid===targetSid);if(!target)return false}if(c.ability==='buff'){target=s.field.find(u=>u.sid===targetSid);if(!target)return false}s.hand.splice(index,1);s.mana-=c.cost;log(`${who==='player'?'あなた':'CPU'}が${id}を使用`);switch(c.ability){case'dmg':damageTargets(foe,c.n,target.sid);break;case'aoe':damageTargets(foe,c.n);break;case'draw':draw(who,c.n);break;case'heal':recover(who,c.n);break;case'buff':target.mod+=c.n;break;case'debuff':target.mod-=c.n;break;case'dmgDraw':damageTargets(foe,c.n,target.sid);draw(who,1);break}game.selected=null;winnerCheck();return true}
-  function fight(who,sid,targetSid=null){const foe=other(who),attacker=game[who].field.find(u=>u.sid===sid);if(!attacker||!attackReady(attacker,who))return false;if(targetSid===null){if(!canTargetHero(who,attacker))return false;attacker.attacksUsed++;game[foe].life=Math.max(0,game[foe].life-1);log(`${who==='player'?'あなた':'CPU'}：${attacker.id}が直接攻撃！ ライフ－1`)}else{const target=legalUnitTargets(who,attacker).find(u=>u.sid===targetSid);if(!target)return false;attacker.attacksUsed++;const a=effectiveATK(attacker),b=effectiveATK(target);attacker.hp-=b;target.hp-=a;log(`${attacker.id} → ${target.id}（${a}ダメ / 反撃${b}）`);resolveDeaths()}game.selected=null;winnerCheck();return true}
-  function selectSpellTarget(c){return ['dmg','dmgDraw','debuff','buff'].includes(c.ability)}
-  function clickHand(index){if(game.turn!=='player'||game.over)return;const id=game.player.hand[index],c=CARDS[id];if(!c)return;if(game.player.mana<c.cost){note('マナが足りないよ');return}if(c.type==='monster'){if(!canSummon('player',id)){note(laneOf(c)==='front'?'前列は1体まで。今のブロッカーがいる間は召喚できないよ':'後列は3体まで。空きを作ろう');return}summon('player',index);render();return}if(selectSpellTarget(c)){if(c.ability==='buff'&&!game.player.field.length){note('強化する味方モンスターがいないよ');return}if(c.ability!=='buff'&&!game.cpu.field.length){note('対象の敵モンスターがいないよ');return}game.selected={kind:'spell',index};render();return}cast('player',index);render()}
-  function clickOwnUnit(sid){if(game.turn!=='player'||game.over)return;const sel=game.selected;if(sel?.kind==='spell'){const c=CARDS[game.player.hand[sel.index]];if(c?.ability==='buff'){cast('player',sel.index,sid);render()}else note('敵モンスターを選んでね');return}const u=game.player.field.find(x=>x.sid===sid);if(!u)return;if(!attackReady(u,'player')){note(game.player.turns<=u.summonedTurn?'召喚したターンは攻撃できないよ':'このモンスターは攻撃済み');return}game.selected={kind:'attack',sid};render()}
-  function clickEnemyUnit(sid){if(game.turn!=='player'||game.over)return;const sel=game.selected;if(sel?.kind==='attack'){if(!fight('player',sel.sid,sid))note('敵の前列ブロッカーを先に攻撃してね')}else if(sel?.kind==='spell'){const c=CARDS[game.player.hand[sel.index]];if(c?.ability==='buff')note('味方モンスターを選んでね');else cast('player',sel.index,sid)}else note('攻撃する味方か、魔法を選んでね');render()}
-  function clickEnemyHero(){if(game.turn!=='player'||game.over)return;const sel=game.selected;if(sel?.kind!=='attack'){note('攻撃する味方モンスターを選んでね');return}if(!fight('player',sel.sid)){const u=game.player.field.find(x=>x.sid===sel.sid);note(u&&!canAttackHero(u)?'ブロッカーは敵プレイヤーを攻撃できないよ':'まず敵の前列ブロッカーを倒そう')}render()}
-  function cpuCandidates(){const s=game.cpu,enemy=game.player,ready=s.field.filter(u=>attackReady(u,'cpu'));const list=[];for(let i=0;i<s.hand.length;i++){const c=CARDS[s.hand[i]];if(c.cost>s.mana)continue;if(c.type==='monster'){if(!canSummon('cpu',c.id))continue;const urgency=countLane('cpu','front')===0&&hasTrait(c.id,'blocker')?1.9:0;let score=4+c.cost*.36+urgency+(c.ability==='draw'&&s.hand.length<6?c.n*1.3:0)+(c.ability==='heal'&&s.life<MAX_LIFE?c.n*.65:0)+(c.ability==='blast'?enemy.field.filter(u=>u.hp<=c.n).length*2.2:0);list.push({index:i,score:score+Math.random()*.1});continue}
-    if(c.ability==='draw'){if(!s.deck.length||s.hand.length>=MAX_HAND)continue;list.push({index:i,score:s.hand.length<=3?6:s.hand.length<=5?4.3:1.6});continue}
-    if(c.ability==='heal'){if(s.life>=MAX_LIFE)continue;list.push({index:i,score:s.life<=5?7:3.5});continue}
-    if(c.ability==='aoe'){if(!enemy.field.length)continue;const kills=enemy.field.filter(u=>u.hp<=c.n).length;list.push({index:i,score:2.7+kills*3+enemy.field.length*.4});continue}
-    if(c.ability==='dmg'||c.ability==='dmgDraw'){for(const t of enemy.field){const kills=t.hp<=c.n?1:0;let score=2.2+Math.min(c.n,t.hp)*.42+kills*3.6+(isBlocker(t)?1:0)+(c.ability==='dmgDraw'&&s.deck.length&&s.hand.length<MAX_HAND?1.4:0);list.push({index:i,target:t.sid,score})}continue}
-    if(c.ability==='buff'){for(const u of ready){const options=legalUnitTargets('cpu',u);if(options.some(t=>t.hp<=effectiveATK(u)+c.n&&t.hp>effectiveATK(u)))list.push({index:i,target:u.sid,score:5.2})}continue}
-    if(c.ability==='debuff'&&ready.length&&enemy.field.length){const t=enemy.field.slice().sort((a,b)=>effectiveATK(b)-effectiveATK(a))[0];if(t&&effectiveATK(t)>0)list.push({index:i,target:t.sid,score:3.3});continue}
+  function side(){const deck=[];for(const [id,n] of Object.entries(DECK_B))for(let i=0;i<n;i++)deck.push(id);return {life:10,deck:shuffle(deck),hand:[],field:[],turns:0,mana:0,maxMana:0}}
+  function pushLog(message){g.logs.unshift(message);g.logs.length=Math.min(g.logs.length,80);g.status=message}
+  function toast(message){clearTimeout(toastTimeout);el('toast').textContent=message;el('toast').classList.add('show');toastTimeout=setTimeout(()=>el('toast').classList.remove('show'),1700)}
+  function draw(who,n){const s=g[who];let actual=0;while(actual<n&&s.hand.length<MAX_HAND&&s.deck.length){s.hand.push(s.deck.pop());actual++}if(actual)pushLog(`${owner(who)}：${actual}枚ドロー`);return actual}
+  function healLife(who,n){const s=g[who],count=Math.min(n,MAX_LIFE-s.life);s.life+=count;if(count)pushLog(`${owner(who)}のライフ＋${count}`)}
+  function unitAt(who,lane){return g[who].field.find(u=>u.lane===lane)||null}
+  function canSummon(who,id,lane){return Number.isInteger(lane)&&lane>=0&&lane<3&&CARDS[id]?.type==='monster'&&!unitAt(who,lane)}
+  function atk(u){return Math.max(0,CARDS[u.id].atk+u.mod)}
+  function maxAttacks(u){return CARDS[u.id].ability==='double'?2:1}
+  function ready(who,u){return g[who].turns>u.summonedTurn&&u.attacksUsed<maxAttacks(u)}
+  function availableAttacks(who,u){return Math.max(0,maxAttacks(u)-u.attacksUsed)}
+  function resolveDeaths(){const dead=[];for(const who of ['player','cpu']){const living=[];for(const u of g[who].field){if(u.hp<=0)dead.push({who,u});else living.push(u)}g[who].field=living}for(const {who,u} of dead)pushLog(`${owner(who)}の${u.id}が破壊された`);for(const {who,u} of dead){const c=CARDS[u.id];if(c.ability==='legacy'){pushLog(`${u.id}の遺志${c.n}が発動`);draw(who,c.n)}}}
+  function damage(who,n,targetSid=null){const targets=g[who].field.filter(u=>targetSid===null||u.sid===targetSid);for(const u of targets)u.hp-=n;if(targets.length)pushLog(`${owner(who)}の${targets.length}体に${n}ダメージ`);resolveDeaths()}
+  function noCards(who){const s=g[who];return s.deck.length===0&&s.hand.length===0&&s.field.length===0}
+  function hasFutureAttacker(who){const s=g[who];return s.field.length>0||s.hand.some(id=>CARDS[id].type==='monster')||s.deck.some(id=>CARDS[id].type==='monster')}
+  function winnerCheck(){if(g.over)return true;if(g.player.life<=0||g.cpu.life<=0){finish(g.player.life<=0&&g.cpu.life<=0?'draw':g.cpu.life<=0?'win':'lose');return true}const a=noCards('player'),b=noCards('cpu');if(a||b){finish(a&&b?'draw':b?'win':'lose');return true}if(!hasFutureAttacker('player')&&!hasFutureAttacker('cpu')){finish('draw');return true}return false}
+  function summon(who,handIndex,lane){if(g.over||g.turn!==who)return false;const s=g[who],id=s.hand[handIndex],c=CARDS[id];if(!c||c.type!=='monster'||s.mana<c.cost||!canSummon(who,id,lane))return false;s.hand.splice(handIndex,1);s.mana-=c.cost;s.field.push({id,sid:++seq,lane,hp:c.hp,mod:0,attacksUsed:0,summonedTurn:s.turns});pushLog(`${owner(who)}が${LANE_NAMES[lane]}レーンに${id}を召喚`);switch(c.ability){case'draw':pushLog(`${id}のドロー${c.n}発動`);draw(who,c.n);break;case'heal':pushLog(`${id}の治癒${c.n}発動`);healLife(who,c.n);break;case'blast':pushLog(`${id}の爆炎${c.n}発動`);damage(other(who),c.n);break}g.selected=null;winnerCheck();return true}
+  const needsTarget=c=>['dmg','dmgDraw','buff','debuff'].includes(c.ability);
+  function cast(who,handIndex,targetSid){if(g.over||g.turn!==who)return false;const s=g[who],id=s.hand[handIndex],c=CARDS[id];if(!c||c.type!=='spell'||s.mana<c.cost)return false;const foe=other(who),targetSide=c.ability==='buff'?who:foe;const target=needsTarget(c)?g[targetSide].field.find(u=>u.sid===targetSid):null;if(needsTarget(c)&&!target)return false;s.hand.splice(handIndex,1);s.mana-=c.cost;pushLog(`${owner(who)}が魔法${id}を使用！`);switch(c.ability){case'dmg':damage(foe,c.n,target.sid);break;case'aoe':damage(foe,c.n);break;case'draw':draw(who,c.n);break;case'heal':healLife(who,c.n);break;case'buff':target.mod+=c.n;break;case'debuff':target.mod-=c.n;break;case'dmgDraw':damage(foe,c.n,target.sid);draw(who,1);break}g.selected=null;winnerCheck();return true}
+  // Normal attacks only hit an opposing unit in the SAME lane. When vacant, hit shared hero life for 1.
+  function fight(who,sid,targetSid=null){if(g.over||g.turn!==who)return false;const foe=other(who),u=g[who].field.find(x=>x.sid===sid);if(!u||!ready(who,u))return false;const facing=unitAt(foe,u.lane);if(facing&&facing.sid!==targetSid)return false;if(!facing&&targetSid!==null)return false;u.attacksUsed++;if(facing){const a=atk(u),b=atk(facing);u.hp-=b;facing.hp-=a;pushLog(`${LANE_NAMES[u.lane]}：${u.id}が${facing.id}へ攻撃！ ${a}ダメ／反撃${b}`);resolveDeaths()}else{g[foe].life=Math.max(0,g[foe].life-1);pushLog(`${LANE_NAMES[u.lane]}：${u.id}の直接攻撃！ ${owner(foe)}のライフ－1`)}g.selected=null;winnerCheck();return true}
+  function startTurn(who){if(g.over)return;g.turn=who;const s=g[who];s.turns++;s.maxMana=Math.min(s.turns,10);s.mana=s.maxMana;for(const u of s.field)u.attacksUsed=0;g.selected=null;pushLog(`── ${owner(who)}の${s.turns}ターン目 ──`);draw(who,1);render();if(winnerCheck())return;if(who==='cpu'){const current=session;setTimeout(()=>cpuPlay(current),650)}}
+  function endTurn(){if(g.over)return;for(const who of ['player','cpu'])for(const u of g[who].field)u.mod=0;g.selected=null;startTurn(other(g.turn))}
+  function handTap(index){if(g.over||g.turn!=='player')return;const id=g.player.hand[index],c=CARDS[id];if(!c)return;if(g.player.mana<c.cost){toast('マナが足りないよ');return}if(c.type==='monster'){if(g.player.field.length>=3){toast('3本とも埋まっているよ');return}g.selected={kind:'summon',index};render();return}if(needsTarget(c)){const pool=c.ability==='buff'?g.player.field:g.cpu.field;if(!pool.length){toast(c.ability==='buff'?'味方モンスターがいないよ':'敵モンスターがいないよ');return}g.selected={kind:'spell',index};render();return}cast('player',index);render()}
+  function ownSlotTap(lane){if(g.over||g.turn!=='player')return;const u=unitAt('player',lane),sel=g.selected;if(sel?.kind==='summon'){if(u){toast('ここにはもうモンスターがいるよ');return}if(summon('player',sel.index,lane))render();else toast('召喚できないよ');return}if(sel?.kind==='spell'){const c=CARDS[g.player.hand[sel.index]];if(c?.ability==='buff'&&u){if(cast('player',sel.index,u.sid))render()}else toast('魔法の対象を確認してね');return}if(!u){toast('手札のモンスターを選んで、このレーンをタップしてね');return}if(!ready('player',u)){toast(g.player.turns<=u.summonedTurn?'召喚したターンは攻撃できないよ':'このターンは攻撃済みだよ');return}g.selected={kind:'attack',sid:u.sid,lane};render()}
+  function enemySlotTap(lane){if(g.over||g.turn!=='player')return;const u=unitAt('cpu',lane),sel=g.selected;if(sel?.kind==='spell'){const c=CARDS[g.player.hand[sel.index]];if(c?.ability==='buff'){toast('味方モンスターを選んでね');return}if(!u){toast('魔法の対象がいないよ');return}if(cast('player',sel.index,u.sid))render();return}if(sel?.kind==='attack'){if(sel.lane!==lane){toast('正面の同じレーンしか攻撃できないよ');return}const did=fight('player',sel.sid,u?.sid??null);if(!did)toast('攻撃できないよ');render();return}toast('攻撃する味方モンスターを先に選んでね')}
+  function cpuOptions(){const s=g.cpu,foe=g.player,list=[];for(let i=0;i<s.hand.length;i++){const c=CARDS[s.hand[i]];if(c.cost>s.mana)continue;if(c.type==='monster'){for(let lane=0;lane<3;lane++){if(!canSummon('cpu',c.id,lane))continue;const threat=unitAt('player',lane);const strong=threat?Math.max(0,c.hp-atk(threat))*.12:0;const block=threat?3.0+(ready('player',threat)?1:0):1.1;const kills=threat&&atk(threat)>0&&c.atk>=threat.hp?1.2:0;let score=3+c.cost*.35+block+strong+kills+(c.ability==='draw'&&s.hand.length<6?c.n:0)+(c.ability==='blast'?foe.field.filter(u=>u.hp<=c.n).length*1.5:0)+(c.ability==='heal'&&s.life<7?.7:0);list.push({index:i,lane,score:score+Math.random()*.1})}continue}
+   if(c.ability==='draw'){if(s.hand.length>=MAX_HAND||!s.deck.length)continue;list.push({index:i,score:s.hand.length<=3?6:s.hand.length<=5?4.3:1.5});continue}
+   if(c.ability==='heal'){if(s.life>=MAX_LIFE)continue;list.push({index:i,score:s.life<=4?8:4});continue}
+   if(c.ability==='aoe'){if(!foe.field.length)continue;const kills=foe.field.filter(u=>u.hp<=c.n).length;list.push({index:i,score:2.2+foe.field.length*.7+kills*2.6});continue}
+   if(c.ability==='dmg'||c.ability==='dmgDraw'){for(const t of foe.field){const kills=t.hp<=c.n;list.push({index:i,target:t.sid,score:2.1+Math.min(c.n,t.hp)*.45+(kills?3.5:0)+(c.ability==='dmgDraw'&&s.hand.length<MAX_HAND?1:0)})}continue}
+   if(c.ability==='buff'){for(const u of s.field.filter(u=>ready('cpu',u))){const foeUnit=unitAt('player',u.lane);if(foeUnit&&foeUnit.hp>atk(u)&&foeUnit.hp<=atk(u)+c.n)list.push({index:i,target:u.sid,score:6});}continue}
+   if(c.ability==='debuff'){for(const t of foe.field){if(atk(t)>0&&unitAt('cpu',t.lane))list.push({index:i,target:t.sid,score:3.1+atk(t)*.3})}continue}
   }return list.sort((a,b)=>b.score-a.score)}
-  function cpuAttackChoice(){const ready=game.cpu.field.filter(u=>attackReady(u,'cpu'));let best=null;for(const u of ready){for(const t of legalUnitTargets('cpu',u)){const a=effectiveATK(u),b=effectiveATK(t),kills=t.hp<=a,survive=u.hp>b;const block=isBlocker(t);let score=(kills?6.5:1.5)+(survive?2.4:-1.5)+Math.min(a,t.hp)*.6+(block?2.5:0)+(kills&&survive?1:0);if(a===0)score-=3;if(!best||score>best.score)best={sid:u.sid,target:t.sid,score}}
-      if(canTargetHero('cpu',u)){const score=game.player.life<=2?18:game.player.life<=4?9.2:5.4;if(!best||score>best.score)best={sid:u.sid,target:null,score}}
-    }return best}
-  function cpuPlay(){if(game.over||game.turn!=='cpu')return;let count=0;while(count++<25&&!game.over){const actions=cpuCandidates();if(!actions.length)break;const act=actions[0];const card=CARDS[game.cpu.hand[act.index]];if(card.type==='monster')summon('cpu',act.index);else cast('cpu',act.index,act.target)}let a=0;while(a++<15&&!game.over){const move=cpuAttackChoice();if(!move)break;if(!fight('cpu',move.sid,move.target))break}render();if(!game.over)cpuTimer=setTimeout(endTurn,450)}
-  function escapeHTML(t){return String(t).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
-
-  function abilityIcon(c){
-    if(hasTrait(c.id,'blocker'))return '🛡';
-    return ({legacy:'🕯',draw:'📖',double:'⚔',heal:'💚',blast:'🔥',dmg:'🔥',aoe:'💥',buff:'⬆',debuff:'⬇',dmgDraw:'✨'})[c.ability]||'◇';
-  }
-  function abilityDescription(c){
-    if(hasTrait(c.id,'blocker'))return '前列に配置する。相手モンスターは通常攻撃時、前列にブロッカーがいる場合はそのブロッカーを攻撃しなければならない。このモンスターは相手プレイヤーに直接攻撃できない。';
-    if(c.type==='monster')return ({
-      '':'特殊能力は持たない。',
-      legacy:`破壊されたとき、自分の山札からカードを${c.n}枚引く（手札上限7枚）。`,
-      draw:`召喚したとき、自分の山札からカードを${c.n}枚引く（手札上限7枚）。`,
-      double:'召喚した次の自分のターンから、1ターンに2回まで攻撃できる。',
-      heal:`召喚したとき、自分のライフを${c.n}回復する（最大10）。`,
-      blast:`召喚したとき、相手の場のモンスター全体に${c.n}ダメージを与える。`
-    })[c.ability]||'';
-    return ({
-      dmg:`相手のモンスター1体を選び、${c.n}ダメージを与える。`,
-      aoe:`相手の場のモンスター全体に${c.n}ダメージを与える。`,
-      draw:`自分の山札からカードを${c.n}枚引く（手札上限7枚）。`,
-      heal:`自分のライフを${c.n}回復する（最大10）。`,
-      buff:`自分のモンスター1体を選び、このターン中ATKを${c.n}上げる。`,
-      debuff:`相手のモンスター1体を選び、このターン中ATKを${c.n}下げる（最低0）。`,
-      dmgDraw:'相手のモンスター1体に3ダメージを与え、自分の山札からカードを1枚引く。'
-    })[c.ability]||'';
-  }
-  function openCardDetail(c,u,who){
-    const name=c.id==='M-01'?'森の狼':c.id;
-    el('detailTitle').textContent=name+'｜'+c.id;
-    el('detailOwner').textContent=who==='cpu'?'CPUの場':who==='player'?'自分の場':'自分の手札';
-    el('detailPicture').innerHTML=c.id==='M-01'?'<img src="assets/m01_card.webp" alt="森の狼・M-01のカード全体画像">':`<div class="detailFake ${c.type==='spell'?'spell':''}"><div class="fakeTop"><span>${escapeHTML(c.id)}</span><span>💠 ${c.cost}</span></div><div class="fakeArt">${art(c)}</div><div class="fakeAbility">${escapeHTML(abilityLabel(c))}</div>${c.type==='monster'?`<div class="fakeTop"><span>⚔ ${c.atk}</span><span>♥ ${c.hp}</span></div>`:'<div class="fakeTop">✦ 魔法</div>'}</div>`;
-    const curATK=u?effectiveATK(u):c.atk;
-    const curHP=u?u.hp:c.hp;
-    let pills=`<span class="detailPill important">💠 コスト ${c.cost}</span>`;
-    if(c.type==='monster'){
-      pills+=`<span class="detailPill">⚔ ATK ${curATK}</span><span class="detailPill">♥ HP ${curHP}/${c.hp}</span>`;
-      if(u)pills+=`<span class="detailPill">${attackReady(u,who)?'攻撃可能':'攻撃不可'}・残${Math.max(0,maxAttacks(u)-u.attacksUsed)}回</span>`;
-      if(isBlocker({id:c.id}))pills+='<span class="detailPill important">🛡 前列</span>';
-    }else pills+='<span class="detailPill">✦ 魔法</span>';
-    const state=u?`<div class="detailSection"><h3>現在の状態</h3><p>${game[who].turns<=u.summonedTurn?'召喚したターンは攻撃できない。':'攻撃回数を使い切ると次の自分のターンまで攻撃不可。'}${u.mod?' 一時ATK補正：'+(u.mod>0?'+':'')+u.mod+'。':''} HPのダメージはターンをまたいでも残る。</p></div>`:'';
-    el('detailInfo').innerHTML=`<div class="detailPills">${pills}</div><div class="detailSection"><h3>${escapeHTML(abilityIcon(c)+' '+abilityLabel(c))}</h3><p>${escapeHTML(abilityDescription(c))}</p></div>${state}<div class="detailFooter">カードを短くタップすると通常操作。長押しで詳細を表示。詳細モード中はタップでも拡大し、通常操作は実行されないよ。</div>`;
-    el('detailOverlay').classList.add('show');
-    el('detailOverlay').setAttribute('aria-hidden','false');
-    el('detailClose').focus({preventScroll:true});
-  }
-  function hideCardDetail(){el('detailOverlay').classList.remove('show');el('detailOverlay').setAttribute('aria-hidden','true')}
-  // In normal mode, a completed short tap ONLY performs the game action.
-  // Long-press and inspect mode ONLY open details. The click event generated
-  // after pointerup is never allowed to execute a second, unintended action.
-  function attachCardEvents(touchNode,action,details,keyboardNode=touchNode){
-    let active=false, pointerId=null, longPress=false, moved=false;
-    let originX=0,originY=0, timer=0;
-    const clearTimer=()=>{if(timer){clearTimeout(timer);timer=0}};
-    const reset=()=>{clearTimer();active=false;pointerId=null};
-    const run=()=>{if(inspectMode)details();else action()};
-    touchNode.addEventListener('pointerdown',e=>{
-      if(e.button!==0||!e.isPrimary)return;
-      reset();active=true;pointerId=e.pointerId;longPress=false;moved=false;
-      originX=e.clientX;originY=e.clientY;
-      timer=setTimeout(()=>{
-        timer=0;
-        if(active&&!moved){longPress=true;details()}
-      },540);
-    });
-    touchNode.addEventListener('pointermove',e=>{
-      if(!active||e.pointerId!==pointerId)return;
-      if(Math.hypot(e.clientX-originX,e.clientY-originY)>13){moved=true;clearTimer()}
-    });
-    touchNode.addEventListener('pointerup',e=>{
-      if(!active||e.pointerId!==pointerId)return;
-      const shortTap=!longPress&&!moved&&Math.hypot(e.clientX-originX,e.clientY-originY)<=13;
-      reset();
-      if(shortTap){e.preventDefault();run()}
-    });
-    touchNode.addEventListener('pointercancel',reset);
-    touchNode.addEventListener('pointerleave',e=>{if(e.pointerType==='mouse')reset()});
-    touchNode.addEventListener('contextmenu',e=>e.preventDefault());
-    // Keyboard and assistive tech trigger without a pointer sequence.
-    keyboardNode.addEventListener('click',e=>{if(e.detail===0){e.preventDefault();run()}});
-    keyboardNode.addEventListener('keydown',e=>{
-      if(e.target!==keyboardNode)return;
-      if(e.key==='Enter'||e.key===' '){e.preventDefault();run()}
-      else if(e.key==='i'||e.key==='I'){e.preventDefault();details()}
-    });
-  }
-
-  function cardHTML(c,u,side){
-    const hand=!u;
-    const selected=hand?game.selected?.kind==='spell'&&game.selected.index===side:game.selected?.kind==='attack'&&game.selected.sid===u.sid;
-    const playerTurn=game.turn==='player'&&!game.over;
-    let targetable=false;
-    if(!hand&&playerTurn){
-      const sel=game.selected;
-      if(side==='cpu'&&sel?.kind==='attack'){const attacker=game.player.field.find(x=>x.sid===sel.sid);targetable=!!attacker&&legalUnitTargets('player',attacker).some(t=>t.sid===u.sid)}
-      else if(side==='cpu'&&sel?.kind==='spell'){const spell=CARDS[game.player.hand[sel.index]];targetable=spell?.ability!=='buff'}
-      else if(side==='player'&&sel?.kind==='spell'){const spell=CARDS[game.player.hand[sel.index]];targetable=spell?.ability==='buff'}
-    }
-    const ready=!hand&&side==='player'&&playerTurn&&attackReady(u,'player');
-    const unplayable=hand&&(game.player.mana<c.cost||(c.type==='monster'&&!canSummon('player',c.id)));
-    const classes=[hand?'handCard':'unit',c.id==='M-01'?'m01Illustrated':'',hand&&c.type==='spell'?'spell':'',!hand&&side==='cpu'?'enemyUnit':'',!hand&&isBlocker(u)?'blocker':'',!hand&&!attackReady(u,side)?'fresh':'',ready?'ready':'',selected?'selected':'',targetable?'targetable':'',unplayable?'unplayable':''].filter(Boolean).join(' ');
-    const label=abilityLabel(c),sym=abilityIcon(c);
-    const arty=c.id==='M-01'?'<img loading="eager" src="assets/m01_art.webp" alt="森の狼">':art(c);
-    const stats=c.type==='monster'?`<div class="stats" aria-label="ATK ${hand?c.atk:effectiveATK(u)}、HP ${hand?c.hp:u.hp}/${c.hp}"><span class="statA"><span class="statIcon">⚔</span><span class="statNum">${hand?c.atk:effectiveATK(u)}</span></span><span class="statH ${!hand&&u.hp<c.hp?'damaged':''}" title="HP ${hand?c.hp:u.hp}/${c.hp}"><span class="statIcon">♥</span><span class="statNum">${hand?c.hp:u.hp}</span></span></div>`:'<div class="stats"><span style="color:#ffdfaa">✦ 魔法</span></div>';
-    const attack=!hand&&u.attacksUsed?`<span class="atkCount">残${Math.max(0,maxAttacks(u)-u.attacksUsed)}</span>`:'';
-    return `<div class="${classes}" role="button" tabindex="0" aria-label="${escapeHTML(c.id+' '+label)}。長押しで詳細"><div class="idrow"><span class="id">${c.id}</span><span class="cost">${c.cost}</span></div><div class="art">${arty}</div><div class="effect ${c.ability||hasTrait(c.id,'blocker')?'':'noAbility'}"><span class="efIcon">${sym}</span><span>${escapeHTML(label)}</span></div>${stats}${attack}</div>`;
-  }
-
-  function makeSlots(who,lane){
-    const frag=document.createDocumentFragment(),units=game[who].field.filter(u=>laneOf(CARDS[u.id])===lane),limit=lane==='front'?MAX_FRONT:MAX_REAR;
-    for(let i=0;i<limit;i++){
-      const slot=document.createElement('div');slot.className='slot';
-      const u=units[i];
-      if(u){
-        slot.innerHTML=cardHTML(CARDS[u.id],u,who);
-        const card=slot.firstChild;
-        attachCardEvents(slot,()=>who==='player'?clickOwnUnit(u.sid):clickEnemyUnit(u.sid),()=>openCardDetail(CARDS[u.id],u,who),card);
-      }
-      frag.append(slot);
-    }
-    return frag;
-  }
-
-  function loadRecord(){try{return JSON.parse(localStorage.getItem('bvb_record_v1'))||{win:0,lose:0,draw:0}}catch{return {win:0,lose:0,draw:0}}}
-  function updateRecord(){const r=loadRecord();el('record').textContent=`勝敗記録：${r.win||0}勝 / ${r.lose||0}敗 / ${r.draw||0}分`}
-  function render(){if(!game)return;el('turnChip').textContent=game.over?'対戦終了':game.turn==='player'?'🟢 あなたのターン':'🟣 CPUのターン';el('manaTop').textContent=`💠 ${game.player.mana}/${game.player.maxMana}`;el('manaHand').textContent=`マナ ${game.player.mana}/${game.player.maxMana}`;el('cpuLife').innerHTML=`♥ ${game.cpu.life} <span>/10</span>`;el('playerLife').innerHTML=`♥ ${game.player.life} <span>/10</span>`;el('cpuInfo').textContent=`山札${game.cpu.deck.length}・手札${game.cpu.hand.length}`;el('playerInfo').textContent=`山札${game.player.deck.length}・手札${game.player.hand.length}`;el('handCount').textContent=`${game.player.hand.length}/7`;el('phase').textContent=game.turn==='player'?'🙂 あなたの番':'🤖 CPUの番';el('endBtn').disabled=game.turn!=='player'||game.over;el('cancelBtn').disabled=!game.selected;const attacker=game.player.field.find(u=>game.selected?.kind==='attack'&&game.selected.sid===u.sid);el('cpuHero').classList.toggle('targetable',game.turn==='player'&&!game.over&&!!attacker&&canTargetHero('player',attacker));for(const who of ['cpu','player'])for(const lane of ['front','rear'])el(who+(lane==='front'?'Front':'Rear')).replaceChildren(makeSlots(who,lane));let hint=inspectMode?'🔎 詳細モード中：カードをタップすると拡大':'タップで行動｜長押しでカード詳細';if(game.over)hint='対戦終了。やり直すと再戦できるよ';else if(inspectMode)hint='🔎 詳細モード中：敵味方と手札をタップで確認｜操作に戻るで解除';else if(game.turn==='cpu')hint='CPUが行動中…';else if(game.selected?.kind==='attack')hint=game.cpu.field.some(isBlocker)&&attacker&&!bypassFront(attacker)?'🛡 まず敵の前列ブロッカーを攻撃':'後列モンスターかCPUのライフを選んで攻撃';else if(game.selected?.kind==='spell'){const c=CARDS[game.player.hand[game.selected.index]];hint=c?.ability==='buff'?'強化する味方モンスターを選択':'魔法を当てる敵モンスターを選択（前列・後列どちらも可）'}el('hint').textContent=hint;el('inspectModeBtn').textContent=inspectMode?'✓ 操作に戻る':'🔎 詳細モード';el('inspectModeBtn').classList.toggle('active',inspectMode);el('inspectModeBtn').setAttribute('aria-pressed',String(inspectMode));el('app').classList.toggle('inspect-active',inspectMode);const hf=document.createDocumentFragment();game.player.hand.forEach((id,i)=>{const w=document.createElement('div');w.innerHTML=cardHTML(CARDS[id],null,i);const card=w.firstChild;attachCardEvents(card,()=>clickHand(i),()=>openCardDetail(CARDS[id],null,'hand'));hf.append(card)});el('hand').replaceChildren(hf);el('log').innerHTML=game.logs.slice(0,6).map(s=>`<div>${escapeHTML(s)}</div>`).join('');updateRecord()}
-  function finish(result){game.over=true;game.result=result;clearTimeout(cpuTimer);const r=loadRecord();r[result]=(r[result]||0)+1;try{localStorage.setItem('bvb_record_v1',JSON.stringify(r))}catch{}const title=result==='win'?'🎉 勝利！':result==='lose'?'💫 敗北！':'🤝 引き分け';log(title);render();showModal(title,`<p>あなた ${game.player.life} ライフ ／ CPU ${game.cpu.life} ライフ</p><p>Ver.0.4.1：操作・表示を修正。対戦ルールは従来どおり。</p>`,true)}
-  function showModal(title,content,rematch=false){el('modalTitle').textContent=title;el('modalContent').innerHTML=content;el('modalAlt').style.display=rematch?'inline-block':'none';el('modal').classList.add('show')}
+  function cpuBestAttack(){let best=null;for(const u of g.cpu.field.filter(u=>ready('cpu',u))){const foe=unitAt('player',u.lane);let score;if(foe){const damage=atk(u),counter=atk(foe);score=(foe.hp<=damage?5.7:1.2)+(u.hp>counter?2.1:-1.2)+Math.min(damage,foe.hp)*.43;if(damage===0)score-=4}else score=g.player.life<=3?14:7.4;const candidate={sid:u.sid,target:foe?.sid??null,score};if(!best||score>best.score)best=candidate}return best}
+  const sleep=ms=>new Promise(resolve=>setTimeout(resolve,ms));
+  async function cpuPlay(id){if(id!==session||g.over||g.turn!=='cpu')return;let n=0;while(n++<20&&id===session&&!g.over){const options=cpuOptions();if(!options.length)break;const action=options[0],card=CARDS[g.cpu.hand[action.index]];const success=card.type==='monster'?summon('cpu',action.index,action.lane):cast('cpu',action.index,action.target);if(!success)break;render();toast(g.status);await sleep(670)}n=0;while(n++<10&&id===session&&!g.over){const action=cpuBestAttack();if(!action)break;if(!fight('cpu',action.sid,action.target))break;render();toast(g.status);await sleep(760)}if(id===session&&!g.over){await sleep(430);if(id===session&&!g.over&&g.turn==='cpu')endTurn()}}
+  function abilityName(c){if(c.type==='spell')return ({dmg:`敵1体${c.n}ダメ`,aoe:`敵全体${c.n}ダメ`,draw:`${c.n}枚ドロー`,heal:`ライフ${c.n}回復`,buff:`ATK＋${c.n}`,debuff:`ATK－${c.n}`,dmgDraw:'3ダメ＋ドロー'})[c.ability];return ({'':'能力なし',legacy:`遺志${c.n}`,draw:`ドロー${c.n}`,double:'連撃',heal:`治癒${c.n}`,blast:`爆炎${c.n}`})[c.ability]}
+  function abilityDesc(c){if(c.type==='spell')return ({dmg:`敵モンスター1体に${c.n}ダメージ。レーンは問わない。`,aoe:`敵の場の全モンスターに${c.n}ダメージ。`,draw:`${c.n}枚ドローする（手札上限7枚）。`,heal:`自分のライフを${c.n}回復する（最大10）。`,buff:`味方モンスター1体のATKをこのターン中${c.n}上げる。`,debuff:`敵モンスター1体のATKをこのターン中${c.n}下げる（最低0）。`,dmgDraw:'敵モンスター1体に3ダメージ、その後1枚ドロー。'})[c.ability];return ({'':'特殊能力なし。自分のレーンの前方を守りながら攻撃できる。',legacy:`破壊されたとき、自分は${c.n}枚ドローする。`,draw:`召喚したとき、自分は${c.n}枚ドローする。`,double:'自分のターンに2回まで攻撃できる。1回目で正面の敵を倒した場合、2回目は直接攻撃もできる（試作ルール）。',heal:`召喚したとき、自分のライフを${c.n}回復する。`,blast:`召喚したとき、敵のすべてのレーンのモンスターに${c.n}ダメージ。`})[c.ability]}
+  function artIcon(c){return c.type==='spell'?({dmg:'🔥',aoe:'💥',draw:'📖',heal:'💚',buff:'⬆️',debuff:'🌫️',dmgDraw:'✨'})[c.ability]:({'':'⚔️',legacy:'🕯️',draw:'📖',double:'⚔️',heal:'💚',blast:'🔥'})[c.ability]}
+  function abilityIcon(c){return c.type==='spell'?({dmg:'🔥',aoe:'💥',draw:'📖',heal:'💚',buff:'⬆️',debuff:'⬇️',dmgDraw:'✨'})[c.ability]:({'':'◇',legacy:'🕯',draw:'📖',double:'⚔',heal:'💚',blast:'🔥'})[c.ability]}
+  const escapeHTML=s=>String(s).replace(/[&<>"']/g,x=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[x]));
+  function cardName(id){return id==='M-01'?'森の狼':id}
+  function cardHTML(c,u,who,selected=false){const isHand=!u,ability=abilityName(c),sp=c.type==='spell';const disabled=isHand&&g.player.mana<c.cost;const cls=[isHand?'handCard':'unitCard',sp?'spell':'',who==='cpu'?'enemyCard':'',selected?'selected':'',disabled?'disabled':'',u&&!ready(who,u)?'notReady':'',u&&ready(who,u)?'ready':''].filter(Boolean).join(' ');const art=c.id==='M-01'?'<img src="assets/m01_art.webp" alt="森の狼">':artIcon(c);const stats=sp?'<div class="cardStats" style="font-size:10px;color:#f1dbad">✦ 魔法カード</div>':`<div class="cardStats"><span class="atk">⚔${u?atk(u):c.atk}</span><span class="hp ${u&&u.hp<c.hp?'damaged':''}">♥${u?u.hp:c.hp}</span></div>`;return `<div class="${cls}" tabindex="0" role="button" aria-label="${escapeHTML(c.id+' '+ability)}。長押しで詳細"><div class="cardTop"><span class="cardId">${c.id}</span><span class="cardCost">${c.cost}</span></div><div class="cardArt">${art}</div><div class="cardName">${cardName(c.id)}</div><div class="cardAbility ${c.ability?'':'none'}">${abilityIcon(c)} ${escapeHTML(ability)}</div>${stats}${u&&u.attacksUsed?`<span class="attackMark">残${availableAttacks(who,u)}</span>`:''}</div>`}
+  function showDetail(c,u,where){el('detailTitle').textContent=`${cardName(c.id)}｜${c.id}`;el('detailArt').innerHTML=c.id==='M-01'?'<img src="assets/m01_art.webp" alt="森の狼のイラスト">':artIcon(c);const lane=u?`<span class="pill">${LANE_NAMES[u.lane]}レーン</span>`:'';const basic=c.type==='monster'?`<span class="pill">⚔ ATK ${u?atk(u):c.atk}</span><span class="pill">♥ HP ${u?u.hp:c.hp}/${c.hp}</span>`:'<span class="pill">✦ 魔法</span>';const acts=u?`<p>攻撃：${ready(where,u)?'可能':'不可'}／残り${availableAttacks(where,u)}回</p>`:'';el('detailInfo').innerHTML=`<p><strong>${where==='hand'?'自分の手札':where==='cpu'?'CPUの場':'自分の場'}</strong></p><span class="pill">💠 コスト ${c.cost}</span>${lane}${basic}<p><strong>${escapeHTML(abilityName(c))}</strong></p><p>${escapeHTML(abilityDesc(c))}</p>${acts}${c.id==='M-01'||c.id==='M-03'?'<p style="color:#ecd8a2">※ブロッカー廃止に伴い、今は能力なしとして試験中。</p>':''}`;el('detailOverlay').classList.add('show');el('detailOverlay').setAttribute('aria-hidden','false')}
+  function hideDetail(){el('detailOverlay').classList.remove('show');el('detailOverlay').setAttribute('aria-hidden','true')}
+  function bindCard(node,onTap,onHold){let timer=null,start=null,held=false,moved=false;const clear=()=>{if(timer!==null){clearTimeout(timer);timer=null}};node.addEventListener('pointerdown',e=>{if(e.button!==0)return;held=false;moved=false;node.dataset.suppressClick='0';start={x:e.clientX,y:e.clientY,id:e.pointerId};clear();timer=setTimeout(()=>{timer=null;if(start&&!moved){held=true;onHold()}},520)});node.addEventListener('pointermove',e=>{if(!start||start.id!==e.pointerId)return;if(Math.hypot(e.clientX-start.x,e.clientY-start.y)>11){moved=true;clear()}});node.addEventListener('pointerup',e=>{clear();if(held){e.preventDefault();node.dataset.suppressClick='1'}start=null});node.addEventListener('pointercancel',()=>{clear();start=null});node.addEventListener('contextmenu',e=>e.preventDefault());node.addEventListener('click',e=>{if(node.dataset.suppressClick==='1'||held){e.preventDefault();node.dataset.suppressClick='0';held=false;return}if(inspect)onHold();else onTap()});node.addEventListener('keydown',e=>{if(e.key==='i'||e.key==='I'){e.preventDefault();onHold()}})}
+  function makeCell(who,lane){const cell=document.createElement('div');cell.className='zoneCell';const u=unitAt(who,lane);if(u){const c=CARDS[u.id];const chosen=who==='player'&&g.selected?.kind==='attack'&&g.selected.sid===u.sid;cell.innerHTML=cardHTML(c,u,who,chosen);bindCard(cell.firstChild,()=>who==='player'?ownSlotTap(lane):enemySlotTap(lane),()=>showDetail(c,u,who))}else{let hint='空き';let special='';if(who==='player'&&g.turn==='player'&&g.selected?.kind==='summon'){hint='＋ ここに召喚';special='available'}else if(who==='cpu'&&g.turn==='player'&&g.selected?.kind==='attack'&&g.selected.lane===lane){hint='♥ 直接攻撃';special='attackHere'}else if(who==='player')hint='＋ 空き';const box=document.createElement('div');box.className=`emptySlot ${special}`;box.innerHTML=`<div class="plus">${special==='attackHere'?'♥':'＋'}</div><div>${escapeHTML(hint)}</div>`;box.setAttribute('role','button');box.tabIndex=0;box.setAttribute('aria-label',`${LANE_NAMES[lane]}レーン ${hint}`);box.addEventListener('click',()=>who==='player'?ownSlotTap(lane):enemySlotTap(lane));box.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();box.click()}});cell.append(box)}return cell}
+  function updateRecord(){let r={win:0,lose:0,draw:0};try{r={...r,...JSON.parse(localStorage.getItem('bvb_3lane_record_v1')||'{}')}}catch{}el('record').textContent=`戦績：${r.win||0}勝 ${r.lose||0}敗 ${r.draw||0}分`}
+  function render(){if(!g)return;el('phaseChip').textContent=g.over?'対戦終了':g.turn==='player'?'🟢 自分の番':'🟣 CPUの番';el('cpuHp').textContent=g.cpu.life;el('playerHp').textContent=g.player.life;el('cpuInfo').textContent=`山札${g.cpu.deck.length}・手札${g.cpu.hand.length}`;el('playerInfo').textContent=`山札${g.player.deck.length}・手札${g.player.hand.length}`;el('handCount').textContent=`${g.player.hand.length}/${MAX_HAND}`;el('mana').textContent=`💠 ${g.player.mana}/${g.player.maxMana}`;el('endBtn').disabled=g.turn!=='player'||g.over;el('cancelBtn').disabled=!g.selected;el('inspectBtn').classList.toggle('active',inspect);el('inspectBtn').setAttribute('aria-pressed',String(inspect));el('inspectBtn').textContent=inspect?'✓ 操作へ':'🔎 詳細';let message='手札からカードを選ぶか、味方をタップ';if(g.over)message='対戦終了！再戦で新しい試合へ';else if(inspect)message='詳細モード：カードをタップして確認';else if(g.turn==='cpu')message=g.status||'CPUが考え中…';else if(g.selected?.kind==='summon')message='召喚先の空きレーンをタップ';else if(g.selected?.kind==='attack')message=`${LANE_NAMES[g.selected.lane]}レーンの正面をタップして攻撃`;else if(g.selected?.kind==='spell')message=CARDS[g.player.hand[g.selected.index]]?.ability==='buff'?'強化する味方をタップ':'魔法を使う敵をタップ';el('hint').textContent=message;
+    const lanes=document.createDocumentFragment();for(let lane=0;lane<3;lane++){const track=document.createElement('div');track.className='laneTrack';const title=document.createElement('div');title.className='laneTitle';title.innerHTML=`<span class="laneNumber">${lane+1}</span>${LANE_NAMES[lane]}レーン`;track.append(title,makeCell('cpu',lane));const mid=document.createElement('div');mid.className='laneCenter';mid.innerHTML='<span>⇅</span>';track.append(mid,makeCell('player',lane));lanes.append(track)}el('lanes').replaceChildren(lanes);
+    const hand=document.createDocumentFragment();g.player.hand.forEach((id,index)=>{const c=CARDS[id],chosen=g.selected?.index===index&&['summon','spell'].includes(g.selected.kind);const wrapper=document.createElement('div');wrapper.innerHTML=cardHTML(c,null,'hand',chosen);const card=wrapper.firstChild;bindCard(card,()=>handTap(index),()=>showDetail(c,null,'hand'));hand.append(card)});el('hand').replaceChildren(hand);updateRecord()}
+  function showModal(title,content,replay=false){el('modalTitle').textContent=title;el('modalBody').innerHTML=content;el('modalReplay').style.display=replay?'inline-block':'none';el('modal').classList.add('show')}
   function hideModal(){el('modal').classList.remove('show')}
-  function newGame(){clearTimeout(cpuTimer);hideCardDetail();inspectMode=false;uid=0;game={player:newSide(),cpu:newSide(),turn:null,selected:null,over:false,result:null,logs:[]};draw('player',5);draw('cpu',5);log('デッキB vs デッキB｜Ver.0.4.1 対戦開始！');hideModal();startTurn(Math.random()<.5?'player':'cpu')}
-  el('detailClose').addEventListener('click',hideCardDetail);
-  el('detailOverlay').addEventListener('click',e=>{if(e.target===el('detailOverlay'))hideCardDetail()});
-  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&el('detailOverlay').classList.contains('show'))hideCardDetail()});
-  el('endBtn').addEventListener('click',()=>{if(game.turn==='player'&&!game.over)endTurn()});
-  el('cpuHero').addEventListener('click',clickEnemyHero);
-  el('cancelBtn').addEventListener('click',()=>{game.selected=null;render()});
-  el('inspectModeBtn').addEventListener('click',()=>{inspectMode=!inspectMode;render()});
-  el('rulesBtn').addEventListener('click',()=>showModal('📘 Ver.0.4.1のルール',`<ul><li>同じデッキB 50枚（モンスター35枚＋魔法15枚）同士。初期ライフ10、初期手札5枚。先攻・後攻はランダム。</li><li>各自のターン開始時に1枚ドロー。マナは自分のターンごとに1→最大10へ増加、全回復。</li><li>手札は最大7枚。<b>前列ブロッカー1体・後列通常モンスター3体</b>まで。満員の列には追加召喚できず、入れ替えもできない。</li><li><b>M-01・M-03はブロッカー。</b>ブロッカーは敵モンスターに攻撃できるが、敵プレイヤーには直接攻撃できない。</li><li><b>敵ブロッカーがいる間、攻撃先はそのブロッカーだけ。</b>敵の前列が空なら、後列モンスターや敵プレイヤーを自由に攻撃できる。</li><li>召喚したターンは攻撃できない。連撃は次の自ターンから2回攻撃可能。</li><li>戦闘ダメージは双方同時。<b>HPはターン終了時に回復せず、ダメージが残る。</b>HP0以下で破壊。</li><li>魔法は自分のターンに使用。ダメージ魔法はブロッカーを無視して後列にも使用可能。ATK増減は使用したターンが終わると解除。</li><li>直接攻撃1回につきライフ1ダメージ。ライフ0で敗北。山札切れだけでは負けず、山札・手札・フィールドが全て空になったら敗北。</li><li>双方ともプレイヤーに攻撃できるモンスターが今後出せなくなった場合、引き分け。</li></ul>`));
-  el('modalOk').addEventListener('click',hideModal);el('modalAlt').addEventListener('click',newGame);
-  el('newBtn').addEventListener('click',()=>showModal('🔄 対戦をやり直す？','<p>現在の試合を終了して、新しくデッキB同士の対戦を始めます。</p>',true));
-  window.addEventListener('contextmenu',e=>e.preventDefault());
+  function finish(result){g.over=true;g.result=result;pushLog(result==='win'?'あなたの勝利！':result==='lose'?'CPUの勝利！':'引き分け！');let r={win:0,lose:0,draw:0};try{r={...r,...JSON.parse(localStorage.getItem('bvb_3lane_record_v1')||'{}')}}catch{}r[result]=(r[result]||0)+1;try{localStorage.setItem('bvb_3lane_record_v1',JSON.stringify(r))}catch{}render();showModal(result==='win'?'🎉 勝利！':result==='lose'?'💫 敗北！':'🤝 引き分け',`<p>あなた：ライフ${g.player.life}／CPU：ライフ${g.cpu.life}</p><p>3本の独立したレーンで戦う、新しいルールの試作版だよ。</p>`,true)}
+  function newGame(){session++;hideDetail();hideModal();inspect=false;seq=0;g={player:side(),cpu:side(),turn:null,selected:null,over:false,result:null,status:'',logs:[]};draw('player',5);draw('cpu',5);pushLog('3レーン制の対戦開始！');startTurn(Math.random()<.5?'player':'cpu')}
+  el('rulesBtn').addEventListener('click',()=>showModal('📘 3レーン試作版のルール',`<ul><li>フィールドは独立した<b>左・中央・右の3本のレーン</b>。各プレイヤーは各レーンに1体ずつ、計3体まで召喚可能。</li><li>召喚時に空いているレーンを選ぶ。<b>召喚した後は移動できない。</b></li><li>攻撃できる相手は<b>同じレーンの正面の敵1体のみ</b>。敵がいなければ、そのレーンから共通のCPU／プレイヤーライフへ直接攻撃でき、1ダメージを与える。</li><li>各プレイヤーは1人ずつ、ライフは<b>3レーン共通の10</b>。敵のライフを0にすれば勝利。</li><li>ブロッカー能力は廃止。M-01/M-03は今のところ能力なし。攻防は全モンスターが自分のレーンで担当する。</li><li>召喚したターンは攻撃不可。通常は1ターン1回、連撃は2回攻撃可能。連撃で正面の敵を倒したら、同じターンの残りの攻撃で直接攻撃できる（仮ルール）。</li><li>戦闘時はお互いのATK分のダメージを同時に与え、HPは自動回復しない。HP0以下で破壊。</li><li>魔法は自分のターンのみ使用。単体魔法はどのレーンの対象でも選べる。範囲魔法は敵の全レーンが対象。</li><li>デッキBは従来と同じ50枚。初期手札5枚、手札上限7枚。毎自ターン開始時1枚ドロー。マナは自ターンごとに1ずつ増えて最大10。</li><li>山札切れだけでは負けない。山札・手札・場がすべて空なら敗北。両者とも今後ライフを減らせるモンスターがなくなった場合は引き分け。</li><li>カードは<b>短くタップで操作、長押しで詳細</b>。詳細モード中のタップではカードを使用しない。</li></ul>`));
+  el('restartBtn').addEventListener('click',()=>showModal('🔄 最初から対戦する？','<p>今の対戦を終了して、デッキをシャッフルして始めるよ。</p>',true));
+  el('modalClose').addEventListener('click',hideModal);el('modalReplay').addEventListener('click',newGame);
+  el('detailClose').addEventListener('click',hideDetail);el('detailOverlay').addEventListener('click',e=>{if(e.target===el('detailOverlay'))hideDetail()});document.addEventListener('keydown',e=>{if(e.key==='Escape'){hideDetail();hideModal()}});
+  el('inspectBtn').addEventListener('click',()=>{inspect=!inspect;g.selected=null;render()});el('cancelBtn').addEventListener('click',()=>{g.selected=null;render()});el('endBtn').addEventListener('click',()=>{if(!g.over&&g.turn==='player')endTurn()});
   newGame();
-  // 手動・自動動作確認用（通常のゲーム操作には不要）
-  window.__BVB_TEST__={openCardDetail,hideCardDetail,getState:()=>JSON.parse(JSON.stringify(game)),getMutableState:()=>game,cards:CARDS,deck:DECK_B,newGame,startTurn,endTurn,draw,summon,cast,fight,attackReady,resolveDeaths,canSummon,canTargetHero,legalUnitTargets,cpuPlay,render};
+  window.__LANE_TEST__={getState:()=>JSON.parse(JSON.stringify(g)),getMutableState:()=>g,cards:CARDS,deck:DECK_B,newGame,summon,cast,fight,ready,unitAt,startTurn,endTurn,cpuPlay,render,handTap,ownSlotTap,enemySlotTap};
 })();
 </script>
 </body>
