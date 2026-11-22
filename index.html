@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#0b1421">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<title>CARD DUEL｜B vs B Ver.0.4 UI試遊版</title>
+<title>CARD DUEL｜B vs B Ver.0.4.1 UI操作修正版</title>
 <style>
 :root{--bg:#0b1421;--panel:#15283b;--panel2:#1b3347;--line:#3b596d;--ink:#eff8ff;--muted:#bdd1e0;--aqua:#8de5d4;--gold:#f5d08e;--green:#a8e5a9;--red:#ffa5a5}
 *{box-sizing:border-box}html,body{height:100%;margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Noto Sans JP",sans-serif}button{font:inherit;color:inherit;cursor:pointer;touch-action:manipulation}button:disabled{opacity:.4;cursor:default}button:focus-visible,[role=button]:focus-visible{outline:2px solid #ffdf9b;outline-offset:2px}
@@ -142,16 +142,59 @@
 }
 @media(prefers-reduced-motion:reduce){.overlay,.unit,.handCard{animation:none!important;transition:none!important}}
 
+
+/* Ver.0.4.1 UX revision: mirrored field rows, hero on right, and generous touch areas. */
+.formations{grid-template-columns:minmax(105px,1.05fr) minmax(0,3.15fr)}
+.formations .zone.front{grid-column:1}
+.formations .zone.rear{grid-column:2}
+.lane>.hero{margin-left:0}
+.slots{justify-content:space-evenly;gap:2px;min-width:0}
+.slot,.front .slot{flex:1 1 0;max-width:102px;min-width:0;width:auto;height:100%;aspect-ratio:auto;border:none;background:transparent;border-radius:8px;display:flex;align-items:center;justify-content:center;overflow:visible;touch-action:pan-x pan-y;cursor:pointer}
+.slot:empty::after{content:"";display:block;height:min(100%,190px);aspect-ratio:2/3;border:1px dashed #54758a90;border-radius:7px;background:#15344836;pointer-events:none}
+.slot .unit{width:auto;max-width:100%;height:min(100%,190px);aspect-ratio:2/3;flex:0 1 auto;min-width:0;align-self:center;overflow:hidden}
+.slot:has(.targetable){background:#f7bf6c15;box-shadow:inset 0 0 0 1px #e3c0845c}
+.slot:has(.selected){background:#f7df6c15}
+.unit .stats,.handCard .stats{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:2px;min-height:13px;width:100%;font-variant-numeric:tabular-nums}
+.unit .statA,.unit .statH,.handCard .statA,.handCard .statH{min-width:0;display:flex;justify-content:center;align-items:center;gap:1px;padding:1px 0;font-weight:900;font-size:10px;line-height:1.2;white-space:nowrap}
+.statH.damaged{color:#ffadb5;background:#4c263aac}
+.unit .statIcon,.handCard .statIcon{font-size:10px;line-height:1}
+.unit .statNum,.handCard .statNum{font-size:10px;font-weight:950;line-height:1}
+.handCard .stats{min-height:15px}
+.unit .effect,.handCard .effect{max-width:100%}
+.unit .effect span:last-child,.handCard .effect span:last-child{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.unit .art,.handCard .art{pointer-events:none}
+.unit,.handCard{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+.inspectModeBtn{flex:none;white-space:nowrap;background:#253d54;border:1px solid #7097a8;border-radius:7px;font-size:10px;font-weight:800;padding:4px 7px;color:#ecf7ff}
+.inspectModeBtn.active{background:#cfb56b;color:#102431;border-color:#ffe49a;box-shadow:0 0 0 2px #f1c97e44}
+#app.inspect-active .unit,#app.inspect-active .handCard{cursor:zoom-in}
+@media(max-height:570px){
+ .formations{grid-template-columns:minmax(92px,1.05fr) minmax(0,3.15fr)}
+ .slot,.front .slot{height:100%;max-width:90px}
+ .slot:empty::after,.slot .unit{height:min(100%,160px)}
+ .unit .stats{min-height:11px;gap:1px}
+ .unit .statA,.unit .statH{font-size:9px;line-height:1.1}
+ .unit .statIcon,.unit .statNum{font-size:9px}
+ .unit .effect{padding:1px}
+ .hero{flex-basis:89px;max-width:89px}
+ .inspectModeBtn{font-size:9px;padding:3px 5px}
+}
+@media(max-width:710px){
+ .formations{grid-template-columns:minmax(82px,1.05fr) minmax(0,3.15fr)}
+ .slot,.front .slot{max-width:80px}
+ .hero{flex-basis:75px;max-width:75px}
+ .inspectModeBtn{font-size:8px;padding:3px 4px}
+ .centerLabel{font-size:8px}
+}
 </style>
 </head>
 <body>
-<div class="portraitNote"><div><strong>📱 横向きにして遊ぼう</strong><p>Ver.0.4前半はiPhone・iPadの横画面向けです。<br>端末を横向きにすると対戦画面が表示されます。</p></div></div>
+<div class="portraitNote"><div><strong>📱 横向きにして遊ぼう</strong><p>Ver.0.4.1はiPhone・iPadの横画面向けです。<br>端末を横向きにすると対戦画面が表示されます。</p></div></div>
 <main id="app">
- <header class="header"><div class="brand">⚔️ CARD DUEL <small>デッキB UIテスト v0.4</small></div><div class="turnInfo"><span id="turnChip" class="turnChip">準備中</span><span id="manaTop" class="resource">💠 0/0</span><button class="tinyBtn" id="rulesBtn">ルール</button><button class="tinyBtn" id="newBtn">やり直す</button></div></header>
+ <header class="header"><div class="brand">⚔️ CARD DUEL <small>デッキB UIテスト v0.4.1</small></div><div class="turnInfo"><span id="turnChip" class="turnChip">準備中</span><span id="manaTop" class="resource">💠 0/0</span><button class="tinyBtn" id="rulesBtn">ルール</button><button class="tinyBtn" id="newBtn">やり直す</button></div></header>
  <section class="battle">
-  <div class="lane"><button class="hero enemy" id="cpuHero" aria-label="CPUプレイヤーを攻撃"><div class="heroName">🤖 CPU｜B</div><div class="heroLife" id="cpuLife">♥ 10 <span>/10</span></div><div class="heroMini" id="cpuInfo">山札50・手札0</div></button><div class="formations"><div class="zone rear"><div class="zoneLabel">後列<b>攻撃役 ×3</b></div><div class="slots" id="cpuRear"></div></div><div class="zone front"><div class="zoneLabel">🛡 前列<b>壁役 ×1</b></div><div class="slots" id="cpuFront"></div></div></div></div>
-  <div class="centerBar"><span class="centerLabel" id="phase">⚔️ バトル</span><span class="hint" id="hint">手札から召喚・魔法、味方をタップして攻撃</span><button class="cancelBtn" id="cancelBtn">選択解除</button></div>
-  <div class="lane"><button class="hero" id="playerHero" aria-label="自分のプレイヤー"><div class="heroName">🙂 あなた｜B</div><div class="heroLife" id="playerLife">♥ 10 <span>/10</span></div><div class="heroMini" id="playerInfo">山札50・手札0</div></button><div class="formations"><div class="zone front"><div class="zoneLabel">🛡 前列<b>壁役 ×1</b></div><div class="slots" id="playerFront"></div></div><div class="zone rear"><div class="zoneLabel">後列<b>攻撃役 ×3</b></div><div class="slots" id="playerRear"></div></div></div></div>
+  <div class="lane"><div class="formations"><div class="zone front"><div class="zoneLabel">🛡 前列<b>壁役 ×1</b></div><div class="slots" id="cpuFront"></div></div><div class="zone rear"><div class="zoneLabel">後列<b>攻撃役 ×3</b></div><div class="slots" id="cpuRear"></div></div></div><button class="hero enemy" id="cpuHero" aria-label="CPUプレイヤーを攻撃"><div class="heroName">🤖 CPU｜B</div><div class="heroLife" id="cpuLife">♥ 10 <span>/10</span></div><div class="heroMini" id="cpuInfo">山札50・手札0</div></button></div>
+  <div class="centerBar"><span class="centerLabel" id="phase">⚔️ バトル</span><span class="hint" id="hint">手札から召喚・魔法、味方をタップして攻撃</span><button class="inspectModeBtn" id="inspectModeBtn" type="button" aria-pressed="false">🔎 詳細モード</button><button class="cancelBtn" id="cancelBtn">選択解除</button></div>
+  <div class="lane"><div class="formations"><div class="zone front"><div class="zoneLabel">🛡 前列<b>壁役 ×1</b></div><div class="slots" id="playerFront"></div></div><div class="zone rear"><div class="zoneLabel">後列<b>攻撃役 ×3</b></div><div class="slots" id="playerRear"></div></div></div><button class="hero" id="playerHero" aria-label="自分のプレイヤー"><div class="heroName">🙂 あなた｜B</div><div class="heroLife" id="playerLife">♥ 10 <span>/10</span></div><div class="heroMini" id="playerInfo">山札50・手札0</div></button></div>
  </section>
  <section class="handBar"><div class="handArea"><div class="handLabel"><span>🃏 手札 <b id="handCount">0/7</b></span><span class="resource" id="manaHand">マナ 0/0</span></div><div class="handList" id="hand"></div></div><aside class="rightTools"><button class="endBtn" id="endBtn">ターン終了 ▶</button><div class="log" id="log" aria-live="polite"></div></aside></section>
  <div class="footer"><span id="record">勝敗記録：0勝 / 0敗 / 0分</span><span>B50枚｜1枚ドロー｜前列1・後列3</span></div>
@@ -195,7 +238,7 @@
   const maxAttacks=u=>CARDS[u.id].ability==='double'?2:1;
   const art=c=>c.type==='spell'?({dmg:'🔥',aoe:'💥',draw:'📖',heal:'💚',buff:'⚔️',debuff:'🌫️',dmgDraw:'✨'})[c.ability]:(hasTrait(c.id,'blocker')?'🛡️':({'':'⚔️',legacy:'🕯️',draw:'📖',double:'⚔️',heal:'💚',blast:'🔥'})[c.ability]);
   function abilityLabel(c){if(c.type==='spell')return ({dmg:`敵1体 ${c.n}ダメ`,aoe:`敵全体 ${c.n}ダメ`,draw:`${c.n}枚ドロー`,heal:`ライフ${c.n}回復`,buff:`味方ATK＋${c.n}`,debuff:`敵ATK－${c.n}`,dmgDraw:'敵1体3ダメ＋1ドロー'})[c.ability];if(hasTrait(c.id,'blocker'))return 'ブロッカー';return ({'':'能力なし',legacy:`遺志${c.n}`,draw:`ドロー${c.n}`,double:'連撃',heal:`治癒${c.n}`,blast:`爆炎${c.n}`})[c.ability]}
-  let game=null,uid=0,cpuTimer=0,toastTimer=0;
+  let game=null,uid=0,cpuTimer=0,toastTimer=0,inspectMode=false;
   function shuffle(a){for(let i=a.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
   function newSide(){const deck=[];for(const [id,n] of Object.entries(DECK_B))for(let i=0;i<n;i++)deck.push(id);return {life:MAX_LIFE,deck:shuffle(deck),hand:[],field:[],turns:0,mana:0,maxMana:0}}
   function log(msg){game.logs.unshift(msg);if(game.logs.length>60)game.logs.length=60}
@@ -278,29 +321,50 @@
       if(isBlocker({id:c.id}))pills+='<span class="detailPill important">🛡 前列</span>';
     }else pills+='<span class="detailPill">✦ 魔法</span>';
     const state=u?`<div class="detailSection"><h3>現在の状態</h3><p>${game[who].turns<=u.summonedTurn?'召喚したターンは攻撃できない。':'攻撃回数を使い切ると次の自分のターンまで攻撃不可。'}${u.mod?' 一時ATK補正：'+(u.mod>0?'+':'')+u.mod+'。':''} HPのダメージはターンをまたいでも残る。</p></div>`:'';
-    el('detailInfo').innerHTML=`<div class="detailPills">${pills}</div><div class="detailSection"><h3>${escapeHTML(abilityIcon(c)+' '+abilityLabel(c))}</h3><p>${escapeHTML(abilityDescription(c))}</p></div>${state}<div class="detailFooter">カードを短くタップすると通常操作。長押し・虫眼鏡では詳細を見るだけで行動しないよ。</div>`;
+    el('detailInfo').innerHTML=`<div class="detailPills">${pills}</div><div class="detailSection"><h3>${escapeHTML(abilityIcon(c)+' '+abilityLabel(c))}</h3><p>${escapeHTML(abilityDescription(c))}</p></div>${state}<div class="detailFooter">カードを短くタップすると通常操作。長押しで詳細を表示。詳細モード中はタップでも拡大し、通常操作は実行されないよ。</div>`;
     el('detailOverlay').classList.add('show');
     el('detailOverlay').setAttribute('aria-hidden','false');
     el('detailClose').focus({preventScroll:true});
   }
   function hideCardDetail(){el('detailOverlay').classList.remove('show');el('detailOverlay').setAttribute('aria-hidden','true')}
-  function attachCardEvents(node,action,details){
-    const btn=node.querySelector('.inspectBtn');
-    btn.addEventListener('click',e=>{e.stopPropagation();e.preventDefault();details()});
-    let timer=0,pressed=false,suppressed=false,originX=0,originY=0;
-    const cancel=()=>{clearTimeout(timer);timer=0;pressed=false};
-    node.addEventListener('pointerdown',e=>{
-      if(e.target.closest('.inspectBtn')||e.button>0)return;
-      cancel();pressed=true;originX=e.clientX;originY=e.clientY;
-      timer=setTimeout(()=>{timer=0;if(!pressed)return;suppressed=true;openByPress()},460);
-      function openByPress(){details()}
+  // In normal mode, a completed short tap ONLY performs the game action.
+  // Long-press and inspect mode ONLY open details. The click event generated
+  // after pointerup is never allowed to execute a second, unintended action.
+  function attachCardEvents(touchNode,action,details,keyboardNode=touchNode){
+    let active=false, pointerId=null, longPress=false, moved=false;
+    let originX=0,originY=0, timer=0;
+    const clearTimer=()=>{if(timer){clearTimeout(timer);timer=0}};
+    const reset=()=>{clearTimer();active=false;pointerId=null};
+    const run=()=>{if(inspectMode)details();else action()};
+    touchNode.addEventListener('pointerdown',e=>{
+      if(e.button!==0||!e.isPrimary)return;
+      reset();active=true;pointerId=e.pointerId;longPress=false;moved=false;
+      originX=e.clientX;originY=e.clientY;
+      timer=setTimeout(()=>{
+        timer=0;
+        if(active&&!moved){longPress=true;details()}
+      },540);
     });
-    node.addEventListener('pointermove',e=>{if(pressed&&(Math.abs(e.clientX-originX)>11||Math.abs(e.clientY-originY)>11))cancel()});
-    node.addEventListener('pointerup',cancel);
-    node.addEventListener('pointercancel',cancel);
-    node.addEventListener('pointerleave',e=>{if(e.pointerType==='mouse')cancel()});
-    node.addEventListener('click',e=>{if(suppressed){suppressed=false;e.preventDefault();return}action()});
-    node.addEventListener('keydown',e=>{if(e.target!==node)return;if(e.key==='Enter'||e.key===' '){e.preventDefault();action()}else if(e.key==='i'||e.key==='I'){e.preventDefault();details()}});
+    touchNode.addEventListener('pointermove',e=>{
+      if(!active||e.pointerId!==pointerId)return;
+      if(Math.hypot(e.clientX-originX,e.clientY-originY)>13){moved=true;clearTimer()}
+    });
+    touchNode.addEventListener('pointerup',e=>{
+      if(!active||e.pointerId!==pointerId)return;
+      const shortTap=!longPress&&!moved&&Math.hypot(e.clientX-originX,e.clientY-originY)<=13;
+      reset();
+      if(shortTap){e.preventDefault();run()}
+    });
+    touchNode.addEventListener('pointercancel',reset);
+    touchNode.addEventListener('pointerleave',e=>{if(e.pointerType==='mouse')reset()});
+    touchNode.addEventListener('contextmenu',e=>e.preventDefault());
+    // Keyboard and assistive tech trigger without a pointer sequence.
+    keyboardNode.addEventListener('click',e=>{if(e.detail===0){e.preventDefault();run()}});
+    keyboardNode.addEventListener('keydown',e=>{
+      if(e.target!==keyboardNode)return;
+      if(e.key==='Enter'||e.key===' '){e.preventDefault();run()}
+      else if(e.key==='i'||e.key==='I'){e.preventDefault();details()}
+    });
   }
 
   function cardHTML(c,u,side){
@@ -319,9 +383,9 @@
     const classes=[hand?'handCard':'unit',c.id==='M-01'?'m01Illustrated':'',hand&&c.type==='spell'?'spell':'',!hand&&side==='cpu'?'enemyUnit':'',!hand&&isBlocker(u)?'blocker':'',!hand&&!attackReady(u,side)?'fresh':'',ready?'ready':'',selected?'selected':'',targetable?'targetable':'',unplayable?'unplayable':''].filter(Boolean).join(' ');
     const label=abilityLabel(c),sym=abilityIcon(c);
     const arty=c.id==='M-01'?'<img loading="eager" src="assets/m01_art.webp" alt="森の狼">':art(c);
-    const stats=c.type==='monster'?`<div class="stats"><span class="statA">⚔ ${hand?c.atk:effectiveATK(u)}</span><span class="statH">♥ ${hand?c.hp:u.hp}/${c.hp}</span></div>`:'<div class="stats"><span style="color:#ffdfaa">✦ 魔法</span></div>';
+    const stats=c.type==='monster'?`<div class="stats" aria-label="ATK ${hand?c.atk:effectiveATK(u)}、HP ${hand?c.hp:u.hp}/${c.hp}"><span class="statA"><span class="statIcon">⚔</span><span class="statNum">${hand?c.atk:effectiveATK(u)}</span></span><span class="statH ${!hand&&u.hp<c.hp?'damaged':''}" title="HP ${hand?c.hp:u.hp}/${c.hp}"><span class="statIcon">♥</span><span class="statNum">${hand?c.hp:u.hp}</span></span></div>`:'<div class="stats"><span style="color:#ffdfaa">✦ 魔法</span></div>';
     const attack=!hand&&u.attacksUsed?`<span class="atkCount">残${Math.max(0,maxAttacks(u)-u.attacksUsed)}</span>`:'';
-    return `<div class="${classes}" role="button" tabindex="0" aria-label="${escapeHTML(c.id+' '+label)}。長押しで詳細"><div class="idrow"><span class="id">${c.id}</span><span class="cost">${c.cost}</span></div><div class="art">${arty}</div><div class="effect ${c.ability||hasTrait(c.id,'blocker')?'':'noAbility'}"><span class="efIcon">${sym}</span><span>${escapeHTML(label)}</span></div>${stats}${attack}<button type="button" class="inspectBtn" aria-label="${escapeHTML(c.id)}の詳細を見る" title="カード詳細">⌕</button></div>`;
+    return `<div class="${classes}" role="button" tabindex="0" aria-label="${escapeHTML(c.id+' '+label)}。長押しで詳細"><div class="idrow"><span class="id">${c.id}</span><span class="cost">${c.cost}</span></div><div class="art">${arty}</div><div class="effect ${c.ability||hasTrait(c.id,'blocker')?'':'noAbility'}"><span class="efIcon">${sym}</span><span>${escapeHTML(label)}</span></div>${stats}${attack}</div>`;
   }
 
   function makeSlots(who,lane){
@@ -332,7 +396,7 @@
       if(u){
         slot.innerHTML=cardHTML(CARDS[u.id],u,who);
         const card=slot.firstChild;
-        attachCardEvents(card,()=>who==='player'?clickOwnUnit(u.sid):clickEnemyUnit(u.sid),()=>openCardDetail(CARDS[u.id],u,who));
+        attachCardEvents(slot,()=>who==='player'?clickOwnUnit(u.sid):clickEnemyUnit(u.sid),()=>openCardDetail(CARDS[u.id],u,who),card);
       }
       frag.append(slot);
     }
@@ -341,18 +405,19 @@
 
   function loadRecord(){try{return JSON.parse(localStorage.getItem('bvb_record_v1'))||{win:0,lose:0,draw:0}}catch{return {win:0,lose:0,draw:0}}}
   function updateRecord(){const r=loadRecord();el('record').textContent=`勝敗記録：${r.win||0}勝 / ${r.lose||0}敗 / ${r.draw||0}分`}
-  function render(){if(!game)return;el('turnChip').textContent=game.over?'対戦終了':game.turn==='player'?'🟢 あなたのターン':'🟣 CPUのターン';el('manaTop').textContent=`💠 ${game.player.mana}/${game.player.maxMana}`;el('manaHand').textContent=`マナ ${game.player.mana}/${game.player.maxMana}`;el('cpuLife').innerHTML=`♥ ${game.cpu.life} <span>/10</span>`;el('playerLife').innerHTML=`♥ ${game.player.life} <span>/10</span>`;el('cpuInfo').textContent=`山札${game.cpu.deck.length}・手札${game.cpu.hand.length}`;el('playerInfo').textContent=`山札${game.player.deck.length}・手札${game.player.hand.length}`;el('handCount').textContent=`${game.player.hand.length}/7`;el('phase').textContent=game.turn==='player'?'🙂 あなたの番':'🤖 CPUの番';el('endBtn').disabled=game.turn!=='player'||game.over;el('cancelBtn').disabled=!game.selected;const attacker=game.player.field.find(u=>game.selected?.kind==='attack'&&game.selected.sid===u.sid);el('cpuHero').classList.toggle('targetable',game.turn==='player'&&!game.over&&!!attacker&&canTargetHero('player',attacker));for(const who of ['cpu','player'])for(const lane of ['front','rear'])el(who+(lane==='front'?'Front':'Rear')).replaceChildren(makeSlots(who,lane));let hint='タップで行動｜長押し・⌕で敵味方のカード詳細';if(game.over)hint='対戦終了。やり直すと再戦できるよ';else if(game.turn==='cpu')hint='CPUが行動中…';else if(game.selected?.kind==='attack')hint=game.cpu.field.some(isBlocker)&&attacker&&!bypassFront(attacker)?'🛡 まず敵の前列ブロッカーを攻撃':'後列モンスターかCPUのライフを選んで攻撃';else if(game.selected?.kind==='spell'){const c=CARDS[game.player.hand[game.selected.index]];hint=c?.ability==='buff'?'強化する味方モンスターを選択':'魔法を当てる敵モンスターを選択（前列・後列どちらも可）'}el('hint').textContent=hint;const hf=document.createDocumentFragment();game.player.hand.forEach((id,i)=>{const w=document.createElement('div');w.innerHTML=cardHTML(CARDS[id],null,i);const card=w.firstChild;attachCardEvents(card,()=>clickHand(i),()=>openCardDetail(CARDS[id],null,'hand'));hf.append(card)});el('hand').replaceChildren(hf);el('log').innerHTML=game.logs.slice(0,6).map(s=>`<div>${escapeHTML(s)}</div>`).join('');updateRecord()}
-  function finish(result){game.over=true;game.result=result;clearTimeout(cpuTimer);const r=loadRecord();r[result]=(r[result]||0)+1;try{localStorage.setItem('bvb_record_v1',JSON.stringify(r))}catch{}const title=result==='win'?'🎉 勝利！':result==='lose'?'💫 敗北！':'🤝 引き分け';log(title);render();showModal(title,`<p>あなた ${game.player.life} ライフ ／ CPU ${game.cpu.life} ライフ</p><p>Ver.0.4前半：カード縦長表示と詳細表示を追加。対戦ルールは従来どおり。</p>`,true)}
+  function render(){if(!game)return;el('turnChip').textContent=game.over?'対戦終了':game.turn==='player'?'🟢 あなたのターン':'🟣 CPUのターン';el('manaTop').textContent=`💠 ${game.player.mana}/${game.player.maxMana}`;el('manaHand').textContent=`マナ ${game.player.mana}/${game.player.maxMana}`;el('cpuLife').innerHTML=`♥ ${game.cpu.life} <span>/10</span>`;el('playerLife').innerHTML=`♥ ${game.player.life} <span>/10</span>`;el('cpuInfo').textContent=`山札${game.cpu.deck.length}・手札${game.cpu.hand.length}`;el('playerInfo').textContent=`山札${game.player.deck.length}・手札${game.player.hand.length}`;el('handCount').textContent=`${game.player.hand.length}/7`;el('phase').textContent=game.turn==='player'?'🙂 あなたの番':'🤖 CPUの番';el('endBtn').disabled=game.turn!=='player'||game.over;el('cancelBtn').disabled=!game.selected;const attacker=game.player.field.find(u=>game.selected?.kind==='attack'&&game.selected.sid===u.sid);el('cpuHero').classList.toggle('targetable',game.turn==='player'&&!game.over&&!!attacker&&canTargetHero('player',attacker));for(const who of ['cpu','player'])for(const lane of ['front','rear'])el(who+(lane==='front'?'Front':'Rear')).replaceChildren(makeSlots(who,lane));let hint=inspectMode?'🔎 詳細モード中：カードをタップすると拡大':'タップで行動｜長押しでカード詳細';if(game.over)hint='対戦終了。やり直すと再戦できるよ';else if(inspectMode)hint='🔎 詳細モード中：敵味方と手札をタップで確認｜操作に戻るで解除';else if(game.turn==='cpu')hint='CPUが行動中…';else if(game.selected?.kind==='attack')hint=game.cpu.field.some(isBlocker)&&attacker&&!bypassFront(attacker)?'🛡 まず敵の前列ブロッカーを攻撃':'後列モンスターかCPUのライフを選んで攻撃';else if(game.selected?.kind==='spell'){const c=CARDS[game.player.hand[game.selected.index]];hint=c?.ability==='buff'?'強化する味方モンスターを選択':'魔法を当てる敵モンスターを選択（前列・後列どちらも可）'}el('hint').textContent=hint;el('inspectModeBtn').textContent=inspectMode?'✓ 操作に戻る':'🔎 詳細モード';el('inspectModeBtn').classList.toggle('active',inspectMode);el('inspectModeBtn').setAttribute('aria-pressed',String(inspectMode));el('app').classList.toggle('inspect-active',inspectMode);const hf=document.createDocumentFragment();game.player.hand.forEach((id,i)=>{const w=document.createElement('div');w.innerHTML=cardHTML(CARDS[id],null,i);const card=w.firstChild;attachCardEvents(card,()=>clickHand(i),()=>openCardDetail(CARDS[id],null,'hand'));hf.append(card)});el('hand').replaceChildren(hf);el('log').innerHTML=game.logs.slice(0,6).map(s=>`<div>${escapeHTML(s)}</div>`).join('');updateRecord()}
+  function finish(result){game.over=true;game.result=result;clearTimeout(cpuTimer);const r=loadRecord();r[result]=(r[result]||0)+1;try{localStorage.setItem('bvb_record_v1',JSON.stringify(r))}catch{}const title=result==='win'?'🎉 勝利！':result==='lose'?'💫 敗北！':'🤝 引き分け';log(title);render();showModal(title,`<p>あなた ${game.player.life} ライフ ／ CPU ${game.cpu.life} ライフ</p><p>Ver.0.4.1：操作・表示を修正。対戦ルールは従来どおり。</p>`,true)}
   function showModal(title,content,rematch=false){el('modalTitle').textContent=title;el('modalContent').innerHTML=content;el('modalAlt').style.display=rematch?'inline-block':'none';el('modal').classList.add('show')}
   function hideModal(){el('modal').classList.remove('show')}
-  function newGame(){clearTimeout(cpuTimer);hideCardDetail();uid=0;game={player:newSide(),cpu:newSide(),turn:null,selected:null,over:false,result:null,logs:[]};draw('player',5);draw('cpu',5);log('デッキB vs デッキB｜Ver.0.4前半 対戦開始！');hideModal();startTurn(Math.random()<.5?'player':'cpu')}
+  function newGame(){clearTimeout(cpuTimer);hideCardDetail();inspectMode=false;uid=0;game={player:newSide(),cpu:newSide(),turn:null,selected:null,over:false,result:null,logs:[]};draw('player',5);draw('cpu',5);log('デッキB vs デッキB｜Ver.0.4.1 対戦開始！');hideModal();startTurn(Math.random()<.5?'player':'cpu')}
   el('detailClose').addEventListener('click',hideCardDetail);
   el('detailOverlay').addEventListener('click',e=>{if(e.target===el('detailOverlay'))hideCardDetail()});
   document.addEventListener('keydown',e=>{if(e.key==='Escape'&&el('detailOverlay').classList.contains('show'))hideCardDetail()});
   el('endBtn').addEventListener('click',()=>{if(game.turn==='player'&&!game.over)endTurn()});
   el('cpuHero').addEventListener('click',clickEnemyHero);
   el('cancelBtn').addEventListener('click',()=>{game.selected=null;render()});
-  el('rulesBtn').addEventListener('click',()=>showModal('📘 Ver.0.4前半のルール',`<ul><li>同じデッキB 50枚（モンスター35枚＋魔法15枚）同士。初期ライフ10、初期手札5枚。先攻・後攻はランダム。</li><li>各自のターン開始時に1枚ドロー。マナは自分のターンごとに1→最大10へ増加、全回復。</li><li>手札は最大7枚。<b>前列ブロッカー1体・後列通常モンスター3体</b>まで。満員の列には追加召喚できず、入れ替えもできない。</li><li><b>M-01・M-03はブロッカー。</b>ブロッカーは敵モンスターに攻撃できるが、敵プレイヤーには直接攻撃できない。</li><li><b>敵ブロッカーがいる間、攻撃先はそのブロッカーだけ。</b>敵の前列が空なら、後列モンスターや敵プレイヤーを自由に攻撃できる。</li><li>召喚したターンは攻撃できない。連撃は次の自ターンから2回攻撃可能。</li><li>戦闘ダメージは双方同時。<b>HPはターン終了時に回復せず、ダメージが残る。</b>HP0以下で破壊。</li><li>魔法は自分のターンに使用。ダメージ魔法はブロッカーを無視して後列にも使用可能。ATK増減は使用したターンが終わると解除。</li><li>直接攻撃1回につきライフ1ダメージ。ライフ0で敗北。山札切れだけでは負けず、山札・手札・フィールドが全て空になったら敗北。</li><li>双方ともプレイヤーに攻撃できるモンスターが今後出せなくなった場合、引き分け。</li></ul>`));
+  el('inspectModeBtn').addEventListener('click',()=>{inspectMode=!inspectMode;render()});
+  el('rulesBtn').addEventListener('click',()=>showModal('📘 Ver.0.4.1のルール',`<ul><li>同じデッキB 50枚（モンスター35枚＋魔法15枚）同士。初期ライフ10、初期手札5枚。先攻・後攻はランダム。</li><li>各自のターン開始時に1枚ドロー。マナは自分のターンごとに1→最大10へ増加、全回復。</li><li>手札は最大7枚。<b>前列ブロッカー1体・後列通常モンスター3体</b>まで。満員の列には追加召喚できず、入れ替えもできない。</li><li><b>M-01・M-03はブロッカー。</b>ブロッカーは敵モンスターに攻撃できるが、敵プレイヤーには直接攻撃できない。</li><li><b>敵ブロッカーがいる間、攻撃先はそのブロッカーだけ。</b>敵の前列が空なら、後列モンスターや敵プレイヤーを自由に攻撃できる。</li><li>召喚したターンは攻撃できない。連撃は次の自ターンから2回攻撃可能。</li><li>戦闘ダメージは双方同時。<b>HPはターン終了時に回復せず、ダメージが残る。</b>HP0以下で破壊。</li><li>魔法は自分のターンに使用。ダメージ魔法はブロッカーを無視して後列にも使用可能。ATK増減は使用したターンが終わると解除。</li><li>直接攻撃1回につきライフ1ダメージ。ライフ0で敗北。山札切れだけでは負けず、山札・手札・フィールドが全て空になったら敗北。</li><li>双方ともプレイヤーに攻撃できるモンスターが今後出せなくなった場合、引き分け。</li></ul>`));
   el('modalOk').addEventListener('click',hideModal);el('modalAlt').addEventListener('click',newGame);
   el('newBtn').addEventListener('click',()=>showModal('🔄 対戦をやり直す？','<p>現在の試合を終了して、新しくデッキB同士の対戦を始めます。</p>',true));
   window.addEventListener('contextmenu',e=>e.preventDefault());
