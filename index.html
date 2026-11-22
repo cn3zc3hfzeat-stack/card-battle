@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#0b1421">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<title>CARD DUEL｜B vs B テスト版 Ver.0.3</title>
+<title>CARD DUEL｜B vs B Ver.0.4 UI試遊版</title>
 <style>
 :root{--bg:#0b1421;--panel:#15283b;--panel2:#1b3347;--line:#3b596d;--ink:#eff8ff;--muted:#bdd1e0;--aqua:#8de5d4;--gold:#f5d08e;--green:#a8e5a9;--red:#ffa5a5}
 *{box-sizing:border-box}html,body{height:100%;margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Noto Sans JP",sans-serif}button{font:inherit;color:inherit;cursor:pointer;touch-action:manipulation}button:disabled{opacity:.4;cursor:default}button:focus-visible,[role=button]:focus-visible{outline:2px solid #ffdf9b;outline-offset:2px}
@@ -20,12 +20,134 @@
 @media(max-height:570px){#app{gap:3px}.header{flex-basis:31px;padding:2px 6px}.battle{grid-template-rows:minmax(78px,1fr) 25px minmax(78px,1fr)}.lane{gap:4px}.hero{flex:0 0 87px;max-width:87px;padding:4px 5px;gap:2px}.heroName{font-size:10px}.heroLife{font-size:17px}.heroMini{font-size:9px}.formations{gap:2px}.zone{padding:1px 4px;gap:4px}.zoneLabel{flex-basis:44px;font-size:9px}.zoneLabel b{display:none}.slots{gap:4px}.slot{flex:0 1 96px;max-width:96px}.front .slot{flex:0 1 105px}.unit{padding:2px 4px;gap:0;justify-content:space-between}.unit .art{display:none}.unit .effect{font-size:8px}.unit .stats{font-size:9px}.unit .cost{min-width:15px;height:15px;font-size:9px}.unit .id{font-size:9px}.unit .atkCount{font-size:7px;bottom:11px}.handBar{flex-basis:104px;padding:4px 6px}.handCard{flex-basis:clamp(67px,9vw,94px);padding:3px}.handCard .art{font-size:16px}.handCard .cost{min-width:17px;height:17px;font-size:10px}.handCard .id{font-size:9px}.handCard .effect{font-size:8px}.rightTools{flex-basis:114px;width:114px}.endBtn{min-height:32px;font-size:11px}.footer{flex-basis:13px;font-size:8px}.centerBar{padding:0 6px}.centerLabel,.hint{font-size:9px}.handLabel{font-size:9px}}
 @media(max-width:710px){.brand small{display:none}.brand{font-size:12px}.turnInfo{gap:4px}.tinyBtn{font-size:10px;padding:5px}.slot{max-width:85px}.hero{flex-basis:76px;max-width:76px}.zoneLabel{flex-basis:32px}.rightTools{width:96px;flex-basis:96px}.handCard{flex-basis:68px}.hint{font-size:8px}}
 @media(orientation:portrait) and (max-width:650px){.portraitNote{display:grid;position:fixed;inset:0;place-items:center;z-index:20;text-align:center;padding:26px;background:#0c1b2b}.portraitNote strong{font-size:22px}.portraitNote p{line-height:1.7;color:#bfd3e3}}
+
+/* M-01 only: art trial. All M-02+ remain the original placeholder cards. */
+.m01Illustrated{isolation:isolate}
+.m01Illustrated .art{position:relative;overflow:hidden;background:#142d38}
+.m01Illustrated .art img{display:block;width:100%;height:100%;object-fit:cover;object-position:55% 45%;border-radius:3px}
+.m01Illustrated.unit::before{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg,#0c1b2cba,#0c1b2c67),url("assets/m01_art.webp") center/cover no-repeat;opacity:.72}
+.m01Illustrated.unit .idrow,.m01Illustrated.unit .effect,.m01Illustrated.unit .stats,.m01Illustrated.unit .atkCount{position:relative;text-shadow:0 1px 3px #061522,0 0 5px #061522}
+.m01Illustrated.handCard{border-color:#d9b97e;box-shadow:inset 0 0 0 1px #d9b97e90,0 2px 7px #020912aa}
+
+
+/* Ver.0.4 first stage — landscape portrait cards and detailed inspection */
+#app{background:radial-gradient(ellipse at 50% 45%,#204652 0%,#122a3c 49%,#091321 94%)}
+.battle{grid-template-rows:minmax(72px,1fr) 26px minmax(72px,1fr);gap:3px}
+.formations{display:grid;grid-template-columns:minmax(0,3.15fr) minmax(108px,1.1fr);grid-template-rows:minmax(0,1fr);gap:5px;min-height:0}
+.formations .zone{grid-row:1;min-height:0;gap:5px;padding:3px 5px}
+.formations .zone.rear{grid-column:1}
+.formations .zone.front{grid-column:2}
+.zoneLabel{flex:0 0 40px;font-size:10px}
+.zoneLabel b{font-size:8px}
+.slots{align-items:center;justify-content:center;height:100%;gap:5px}
+.slot,.front .slot{flex:0 0 auto;width:auto;max-width:none;height:min(100%,190px);aspect-ratio:2 / 3;overflow:hidden;border-radius:7px;background:#132d4075;border:1px dashed #536b7a90}
+.zone.front .slot{border-color:#8bb9d388}
+.unit,.handCard{min-width:0;min-height:0;flex:none;padding:3px;gap:2px;border-radius:7px;background:linear-gradient(145deg,#325464,#112a39);border:1px solid #98b6c5;box-shadow:inset 0 0 0 1px #ebf8ff18,0 2px 6px #0008}
+.unit.enemyUnit{background:linear-gradient(155deg,#553c55,#222b43);border-color:#bba5c2}
+.unit.blocker{background:linear-gradient(155deg,#355b7d,#162e4f);border-color:#b5d9ff}
+.unit.enemyUnit.blocker{background:linear-gradient(160deg,#67425c,#302640);border-color:#dcb9d4}
+.unit.fresh{filter:none}
+.unit.fresh .art{filter:saturate(.68)}
+.unit.ready{box-shadow:inset 0 0 0 1px #9ce9da,0 0 6px #6eccc155}
+.unit.selected,.handCard.selected{border:2px solid #ffe39b;background:linear-gradient(155deg,#434f56,#253848);box-shadow:0 0 9px #ffe39b90}
+.unit.targetable{border:2px solid #ffca7b;box-shadow:0 0 10px #ffb4668c}
+.idrow{flex:none;height:16px;display:flex;flex-direction:row-reverse;gap:2px;justify-content:space-between;align-items:center}
+.id{font-size:9px;font-weight:850;letter-spacing:-.25px}
+.cost{flex:none;min-width:15px;width:16px;height:16px;font-size:10px;background:#255d88;border-color:#8ac9ec}
+.art{flex:1;min-height:10px;overflow:hidden;border-radius:4px;border:1px solid #ffffff22;background:radial-gradient(circle at 50% 25%,#4a789060,#182c4259);font-size:clamp(14px,2.2vw,29px)}
+.art img{width:100%;height:100%;display:block;object-fit:cover;object-position:center}
+.effect{flex:none;font-size:9px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.2;display:flex;align-items:center;gap:2px;color:#d8f6ef;background:#071f30ad;border-radius:3px;padding:2px 2px}
+.effect .efIcon{flex:none;font-size:10px}
+.effect.noAbility{color:#9bb8c7}
+.stats{flex:none;font-size:10px;line-height:1.1;display:flex;justify-content:space-between;gap:2px;white-space:nowrap}
+.statA,.statH{border-radius:4px;padding:1px 2px;background:#081d2ba3}
+.statA{color:#ffbaab}.statH{color:#b8edc4}
+.atkCount{position:absolute;right:3px;top:22px;bottom:auto;background:#143b47e8;padding:1px 3px;border-radius:3px;font-size:8px;color:#fff0ac}
+.handBar{flex-basis:142px;min-height:0;gap:8px}
+.handArea{min-height:0}
+.handList{align-items:stretch;padding-bottom:2px;gap:5px}
+.handCard{flex:0 0 auto;width:auto;height:100%;aspect-ratio:2/3;max-width:125px}
+.handCard .art{font-size:clamp(17px,2.7vw,27px)}
+.handCard .idrow{height:17px}
+.handCard .effect{font-size:9px;white-space:nowrap;display:flex;line-height:1.2;-webkit-line-clamp:unset}
+.handCard .stats{font-size:10px}
+.rightTools{flex-basis:130px;width:130px}
+.m01Illustrated{border-color:#c4d7e8!important;background:linear-gradient(145deg,#2f587b,#101e35)!important}
+.m01Illustrated .art{background:#24466a}
+.m01Illustrated.unit::before{display:none}
+.inspectBtn{position:absolute;z-index:3;right:3px;top:22px;display:grid;place-items:center;width:19px;height:19px;padding:0;border-radius:50%;font-size:12px;font-weight:800;line-height:1;color:#fff3d7;background:#132c44da;border:1px solid #e1c68ecc;box-shadow:0 1px 3px #0009;touch-action:manipulation}
+.inspectBtn:active{background:#607f9a}
+.unit,.handCard{-webkit-touch-callout:none;touch-action:pan-x pan-y}
+.cardHint{display:inline-flex;gap:4px;align-items:center;white-space:nowrap;color:#ffe7b5}
+#detailOverlay{z-index:40;padding:7px;background:#060d18ed}
+#detailOverlay .detailDialog{width:min(720px,96vw);max-height:94dvh;overflow:hidden;display:flex;flex-direction:column;background:linear-gradient(135deg,#203c50,#112334);border:1px solid #a5bfd0;border-radius:14px;box-shadow:0 14px 50px #000c;padding:10px}
+.detailHeader{flex:none;display:flex;align-items:center;gap:8px;padding-bottom:7px}
+.detailHeader h2{margin:0;font-size:15px;line-height:1.2}
+.detailOwner{color:#c9dcec;font-size:10px;margin-left:auto}
+.detailClose{background:#335168;border:1px solid #7b9cae;border-radius:7px;padding:5px 10px;font-size:12px;font-weight:750}
+.detailBody{min-height:0;overflow-y:auto;display:grid;grid-template-columns:minmax(140px,35%) minmax(0,1fr);gap:14px;align-items:start;padding:2px 3px 4px}
+.detailPicture{display:grid;place-items:center;min-width:0;align-self:stretch}
+.detailPicture img{display:block;width:auto;max-width:100%;max-height:68dvh;object-fit:contain;border-radius:6px;box-shadow:0 4px 15px #0008}
+.detailFake{width:min(100%,192px);aspect-ratio:2/3;border:2px solid #9ab3c5;border-radius:12px;display:flex;flex-direction:column;gap:7px;align-items:center;padding:10px;background:linear-gradient(160deg,#355a73,#152c40);box-shadow:0 4px 20px #0008}
+.detailFake.spell{background:linear-gradient(160deg,#746040,#2b2d3a);border-color:#ebcb97}
+.detailFake .fakeTop{font-size:13px;align-self:stretch;display:flex;justify-content:space-between;font-weight:800}
+.detailFake .fakeArt{font-size:56px;display:grid;place-items:center;flex:1;width:100%;background:#071d2b52;border-radius:8px}
+.detailFake .fakeAbility{font-size:12px;font-weight:700}
+.detailInfo{display:flex;flex-direction:column;gap:10px;min-width:0}
+.detailInfo .detailPills{display:flex;gap:6px;flex-wrap:wrap}
+.detailPill{font-size:11px;padding:5px 7px;border-radius:6px;background:#24465b;border:1px solid #547a91;font-weight:700}
+.detailPill.important{border-color:#d2b87c;color:#ffe6b6}
+.detailSection{border-top:1px solid #4f708366;padding-top:8px}
+.detailSection h3{font-size:12px;color:#c6e5f4;margin:0 0 5px}
+.detailSection p{font-size:12px;line-height:1.6;margin:0;color:#f1f8ff}
+.detailFooter{font-size:10px;color:#abc6d4;line-height:1.5}
+@media(max-height:570px){
+ .battle{grid-template-rows:minmax(65px,1fr) 24px minmax(65px,1fr)}
+ .formations{grid-template-columns:minmax(0,3.15fr) minmax(104px,1.1fr);gap:3px}
+ .formations .zone{padding:2px 3px;gap:3px}
+ .zoneLabel{flex-basis:29px;font-size:9px}.zoneLabel b{display:none}
+ .slot,.front .slot{height:min(100%,160px);width:auto;max-width:none;flex:0 0 auto}
+ .unit{padding:2px;gap:1px;justify-content:initial}
+ .unit .art{display:grid;min-height:8px}
+ .unit .effect{font-size:8px;line-height:1;padding:1px}
+ .unit .idrow{height:13px}
+ .unit .cost{width:13px;min-width:13px;height:13px;font-size:8px}
+ .unit .id{font-size:8px}
+ .unit .stats{font-size:8px}
+ .unit .atkCount{top:17px;bottom:auto;font-size:7px}
+ .handBar{flex-basis:109px;padding:4px 6px}
+ .handCard{flex:0 0 auto;height:100%;width:auto;aspect-ratio:2/3;max-width:100px;padding:2px;gap:1px}
+ .handCard .art{display:grid;min-height:12px;font-size:19px}
+ .handCard .idrow{height:15px}
+ .handCard .stats{font-size:9px}
+ .handCard .effect{font-size:8px;line-height:1.1}
+ .rightTools{flex-basis:114px;width:114px}
+ .inspectBtn{width:17px;height:17px;top:17px;right:2px;font-size:11px}
+ .detailBody{grid-template-columns:minmax(130px,34%) minmax(0,1fr);gap:9px}
+ .detailPicture img{max-height:66dvh}
+ .detailFake{max-height:66dvh;gap:3px}
+ .detailFake .fakeArt{font-size:35px}
+ .detailSection p{font-size:11px}
+ .detailInfo{gap:7px}
+ .detailPill{font-size:10px;padding:3px 5px}
+}
+@media(max-width:710px){
+ .formations{grid-template-columns:minmax(0,3fr) minmax(91px,1.05fr)}
+ .zoneLabel{flex-basis:27px}
+ .slot,.front .slot{max-width:none}
+ .handCard{flex-basis:auto;width:auto}
+ .rightTools{flex-basis:96px;width:96px}
+ .hero{flex-basis:72px;max-width:72px}
+ .detailDialog{width:98vw}
+}
+@media(prefers-reduced-motion:reduce){.overlay,.unit,.handCard{animation:none!important;transition:none!important}}
+
 </style>
 </head>
 <body>
-<div class="portraitNote"><div><strong>📱 横向きにして遊ぼう</strong><p>このテスト版はiPhone・iPadの横画面向けです。<br>端末を横向きにすると対戦画面が表示されます。</p></div></div>
+<div class="portraitNote"><div><strong>📱 横向きにして遊ぼう</strong><p>Ver.0.4前半はiPhone・iPadの横画面向けです。<br>端末を横向きにすると対戦画面が表示されます。</p></div></div>
 <main id="app">
- <header class="header"><div class="brand">⚔️ CARD DUEL <small>デッキB テスト v0.3</small></div><div class="turnInfo"><span id="turnChip" class="turnChip">準備中</span><span id="manaTop" class="resource">💠 0/0</span><button class="tinyBtn" id="rulesBtn">ルール</button><button class="tinyBtn" id="newBtn">やり直す</button></div></header>
+ <header class="header"><div class="brand">⚔️ CARD DUEL <small>デッキB UIテスト v0.4</small></div><div class="turnInfo"><span id="turnChip" class="turnChip">準備中</span><span id="manaTop" class="resource">💠 0/0</span><button class="tinyBtn" id="rulesBtn">ルール</button><button class="tinyBtn" id="newBtn">やり直す</button></div></header>
  <section class="battle">
   <div class="lane"><button class="hero enemy" id="cpuHero" aria-label="CPUプレイヤーを攻撃"><div class="heroName">🤖 CPU｜B</div><div class="heroLife" id="cpuLife">♥ 10 <span>/10</span></div><div class="heroMini" id="cpuInfo">山札50・手札0</div></button><div class="formations"><div class="zone rear"><div class="zoneLabel">後列<b>攻撃役 ×3</b></div><div class="slots" id="cpuRear"></div></div><div class="zone front"><div class="zoneLabel">🛡 前列<b>壁役 ×1</b></div><div class="slots" id="cpuFront"></div></div></div></div>
   <div class="centerBar"><span class="centerLabel" id="phase">⚔️ バトル</span><span class="hint" id="hint">手札から召喚・魔法、味方をタップして攻撃</span><button class="cancelBtn" id="cancelBtn">選択解除</button></div>
@@ -36,6 +158,12 @@
 </main>
 <div class="toast" id="toast"></div>
 <div class="overlay" id="modal"><section class="dialog"><h2 id="modalTitle"></h2><div id="modalContent"></div><button class="dialogAction" id="modalOk">閉じる</button><button class="dialogSecondary" id="modalAlt" style="display:none">もう一度対戦</button></section></div>
+<div class="overlay" id="detailOverlay" aria-hidden="true" role="dialog" aria-label="カードの詳細">
+  <div class="detailDialog">
+    <div class="detailHeader"><h2 id="detailTitle">カード詳細</h2><span id="detailOwner" class="detailOwner"></span><button id="detailClose" class="detailClose" type="button">✕ 閉じる</button></div>
+    <div class="detailBody"><div class="detailPicture" id="detailPicture"></div><div class="detailInfo" id="detailInfo"></div></div>
+  </div>
+</div>
 <script>
 'use strict';
 (() => {
@@ -111,25 +239,126 @@
     }return best}
   function cpuPlay(){if(game.over||game.turn!=='cpu')return;let count=0;while(count++<25&&!game.over){const actions=cpuCandidates();if(!actions.length)break;const act=actions[0];const card=CARDS[game.cpu.hand[act.index]];if(card.type==='monster')summon('cpu',act.index);else cast('cpu',act.index,act.target)}let a=0;while(a++<15&&!game.over){const move=cpuAttackChoice();if(!move)break;if(!fight('cpu',move.sid,move.target))break}render();if(!game.over)cpuTimer=setTimeout(endTurn,450)}
   function escapeHTML(t){return String(t).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
-  function cardHTML(c,u,side){const hand=!u;const selected=hand?game.selected?.kind==='spell'&&game.selected.index===side:game.selected?.kind==='attack'&&game.selected.sid===u.sid;const playerTurn=game.turn==='player'&&!game.over;let targetable=false;if(!hand&&playerTurn){const sel=game.selected;if(side==='cpu'&&sel?.kind==='attack'){const attacker=game.player.field.find(x=>x.sid===sel.sid);targetable=!!attacker&&legalUnitTargets('player',attacker).some(t=>t.sid===u.sid)}else if(side==='cpu'&&sel?.kind==='spell'){const spell=CARDS[game.player.hand[sel.index]];targetable=spell?.ability!=='buff'}else if(side==='player'&&sel?.kind==='spell'){const spell=CARDS[game.player.hand[sel.index]];targetable=spell?.ability==='buff'}}const ready=!hand&&side==='player'&&playerTurn&&attackReady(u,'player');const unplayable=hand&&(game.player.mana<c.cost||(c.type==='monster'&&!canSummon('player',c.id)));const classes=[hand?'handCard':'unit',hand&&c.type==='spell'?'spell':'',!hand&&side==='cpu'?'enemyUnit':'',!hand&&isBlocker(u)?'blocker':'',!hand&&!attackReady(u,side)?'fresh':'',ready?'ready':'',selected?'selected':'',targetable?'targetable':'',unplayable?'unplayable':''].filter(Boolean).join(' ');const label=abilityLabel(c);return `<div class="${classes}" role="button" tabindex="0" aria-label="${escapeHTML(c.id+' '+label)}"><div class="idrow"><span class="id">${c.id}</span><span class="cost">${c.cost}</span></div><div class="art">${art(c)}</div><div class="effect ${c.ability||hasTrait(c.id,'blocker')?'':'noAbility'}">${label}</div>${c.type==='monster'?`<div class="stats"><span class="statA">⚔ ${hand?c.atk:effectiveATK(u)}</span><span class="statH">♥ ${hand?c.hp:u.hp}/${c.hp}</span></div>`:`<div class="stats"><span style="color:#ffdfaa">魔法 ✦</span></div>`}${!hand&&u.attacksUsed?`<span class="atkCount">${u.attacksUsed}/${maxAttacks(u)}回</span>`:''}</div>`}
-  function makeSlots(who,lane){const f=document.createDocumentFragment(),units=game[who].field.filter(u=>laneOf(CARDS[u.id])===lane),limit=lane==='front'?MAX_FRONT:MAX_REAR;for(let i=0;i<limit;i++){const slot=document.createElement('div');slot.className='slot';const u=units[i];if(u){slot.innerHTML=cardHTML(CARDS[u.id],u,who);const btn=slot.firstChild;const action=()=>who==='player'?clickOwnUnit(u.sid):clickEnemyUnit(u.sid);btn.addEventListener('click',action);btn.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();action()}})}f.append(slot)}return f}
+
+  function abilityIcon(c){
+    if(hasTrait(c.id,'blocker'))return '🛡';
+    return ({legacy:'🕯',draw:'📖',double:'⚔',heal:'💚',blast:'🔥',dmg:'🔥',aoe:'💥',buff:'⬆',debuff:'⬇',dmgDraw:'✨'})[c.ability]||'◇';
+  }
+  function abilityDescription(c){
+    if(hasTrait(c.id,'blocker'))return '前列に配置する。相手モンスターは通常攻撃時、前列にブロッカーがいる場合はそのブロッカーを攻撃しなければならない。このモンスターは相手プレイヤーに直接攻撃できない。';
+    if(c.type==='monster')return ({
+      '':'特殊能力は持たない。',
+      legacy:`破壊されたとき、自分の山札からカードを${c.n}枚引く（手札上限7枚）。`,
+      draw:`召喚したとき、自分の山札からカードを${c.n}枚引く（手札上限7枚）。`,
+      double:'召喚した次の自分のターンから、1ターンに2回まで攻撃できる。',
+      heal:`召喚したとき、自分のライフを${c.n}回復する（最大10）。`,
+      blast:`召喚したとき、相手の場のモンスター全体に${c.n}ダメージを与える。`
+    })[c.ability]||'';
+    return ({
+      dmg:`相手のモンスター1体を選び、${c.n}ダメージを与える。`,
+      aoe:`相手の場のモンスター全体に${c.n}ダメージを与える。`,
+      draw:`自分の山札からカードを${c.n}枚引く（手札上限7枚）。`,
+      heal:`自分のライフを${c.n}回復する（最大10）。`,
+      buff:`自分のモンスター1体を選び、このターン中ATKを${c.n}上げる。`,
+      debuff:`相手のモンスター1体を選び、このターン中ATKを${c.n}下げる（最低0）。`,
+      dmgDraw:'相手のモンスター1体に3ダメージを与え、自分の山札からカードを1枚引く。'
+    })[c.ability]||'';
+  }
+  function openCardDetail(c,u,who){
+    const name=c.id==='M-01'?'森の狼':c.id;
+    el('detailTitle').textContent=name+'｜'+c.id;
+    el('detailOwner').textContent=who==='cpu'?'CPUの場':who==='player'?'自分の場':'自分の手札';
+    el('detailPicture').innerHTML=c.id==='M-01'?'<img src="assets/m01_card.webp" alt="森の狼・M-01のカード全体画像">':`<div class="detailFake ${c.type==='spell'?'spell':''}"><div class="fakeTop"><span>${escapeHTML(c.id)}</span><span>💠 ${c.cost}</span></div><div class="fakeArt">${art(c)}</div><div class="fakeAbility">${escapeHTML(abilityLabel(c))}</div>${c.type==='monster'?`<div class="fakeTop"><span>⚔ ${c.atk}</span><span>♥ ${c.hp}</span></div>`:'<div class="fakeTop">✦ 魔法</div>'}</div>`;
+    const curATK=u?effectiveATK(u):c.atk;
+    const curHP=u?u.hp:c.hp;
+    let pills=`<span class="detailPill important">💠 コスト ${c.cost}</span>`;
+    if(c.type==='monster'){
+      pills+=`<span class="detailPill">⚔ ATK ${curATK}</span><span class="detailPill">♥ HP ${curHP}/${c.hp}</span>`;
+      if(u)pills+=`<span class="detailPill">${attackReady(u,who)?'攻撃可能':'攻撃不可'}・残${Math.max(0,maxAttacks(u)-u.attacksUsed)}回</span>`;
+      if(isBlocker({id:c.id}))pills+='<span class="detailPill important">🛡 前列</span>';
+    }else pills+='<span class="detailPill">✦ 魔法</span>';
+    const state=u?`<div class="detailSection"><h3>現在の状態</h3><p>${game[who].turns<=u.summonedTurn?'召喚したターンは攻撃できない。':'攻撃回数を使い切ると次の自分のターンまで攻撃不可。'}${u.mod?' 一時ATK補正：'+(u.mod>0?'+':'')+u.mod+'。':''} HPのダメージはターンをまたいでも残る。</p></div>`:'';
+    el('detailInfo').innerHTML=`<div class="detailPills">${pills}</div><div class="detailSection"><h3>${escapeHTML(abilityIcon(c)+' '+abilityLabel(c))}</h3><p>${escapeHTML(abilityDescription(c))}</p></div>${state}<div class="detailFooter">カードを短くタップすると通常操作。長押し・虫眼鏡では詳細を見るだけで行動しないよ。</div>`;
+    el('detailOverlay').classList.add('show');
+    el('detailOverlay').setAttribute('aria-hidden','false');
+    el('detailClose').focus({preventScroll:true});
+  }
+  function hideCardDetail(){el('detailOverlay').classList.remove('show');el('detailOverlay').setAttribute('aria-hidden','true')}
+  function attachCardEvents(node,action,details){
+    const btn=node.querySelector('.inspectBtn');
+    btn.addEventListener('click',e=>{e.stopPropagation();e.preventDefault();details()});
+    let timer=0,pressed=false,suppressed=false,originX=0,originY=0;
+    const cancel=()=>{clearTimeout(timer);timer=0;pressed=false};
+    node.addEventListener('pointerdown',e=>{
+      if(e.target.closest('.inspectBtn')||e.button>0)return;
+      cancel();pressed=true;originX=e.clientX;originY=e.clientY;
+      timer=setTimeout(()=>{timer=0;if(!pressed)return;suppressed=true;openByPress()},460);
+      function openByPress(){details()}
+    });
+    node.addEventListener('pointermove',e=>{if(pressed&&(Math.abs(e.clientX-originX)>11||Math.abs(e.clientY-originY)>11))cancel()});
+    node.addEventListener('pointerup',cancel);
+    node.addEventListener('pointercancel',cancel);
+    node.addEventListener('pointerleave',e=>{if(e.pointerType==='mouse')cancel()});
+    node.addEventListener('click',e=>{if(suppressed){suppressed=false;e.preventDefault();return}action()});
+    node.addEventListener('keydown',e=>{if(e.target!==node)return;if(e.key==='Enter'||e.key===' '){e.preventDefault();action()}else if(e.key==='i'||e.key==='I'){e.preventDefault();details()}});
+  }
+
+  function cardHTML(c,u,side){
+    const hand=!u;
+    const selected=hand?game.selected?.kind==='spell'&&game.selected.index===side:game.selected?.kind==='attack'&&game.selected.sid===u.sid;
+    const playerTurn=game.turn==='player'&&!game.over;
+    let targetable=false;
+    if(!hand&&playerTurn){
+      const sel=game.selected;
+      if(side==='cpu'&&sel?.kind==='attack'){const attacker=game.player.field.find(x=>x.sid===sel.sid);targetable=!!attacker&&legalUnitTargets('player',attacker).some(t=>t.sid===u.sid)}
+      else if(side==='cpu'&&sel?.kind==='spell'){const spell=CARDS[game.player.hand[sel.index]];targetable=spell?.ability!=='buff'}
+      else if(side==='player'&&sel?.kind==='spell'){const spell=CARDS[game.player.hand[sel.index]];targetable=spell?.ability==='buff'}
+    }
+    const ready=!hand&&side==='player'&&playerTurn&&attackReady(u,'player');
+    const unplayable=hand&&(game.player.mana<c.cost||(c.type==='monster'&&!canSummon('player',c.id)));
+    const classes=[hand?'handCard':'unit',c.id==='M-01'?'m01Illustrated':'',hand&&c.type==='spell'?'spell':'',!hand&&side==='cpu'?'enemyUnit':'',!hand&&isBlocker(u)?'blocker':'',!hand&&!attackReady(u,side)?'fresh':'',ready?'ready':'',selected?'selected':'',targetable?'targetable':'',unplayable?'unplayable':''].filter(Boolean).join(' ');
+    const label=abilityLabel(c),sym=abilityIcon(c);
+    const arty=c.id==='M-01'?'<img loading="eager" src="assets/m01_art.webp" alt="森の狼">':art(c);
+    const stats=c.type==='monster'?`<div class="stats"><span class="statA">⚔ ${hand?c.atk:effectiveATK(u)}</span><span class="statH">♥ ${hand?c.hp:u.hp}/${c.hp}</span></div>`:'<div class="stats"><span style="color:#ffdfaa">✦ 魔法</span></div>';
+    const attack=!hand&&u.attacksUsed?`<span class="atkCount">残${Math.max(0,maxAttacks(u)-u.attacksUsed)}</span>`:'';
+    return `<div class="${classes}" role="button" tabindex="0" aria-label="${escapeHTML(c.id+' '+label)}。長押しで詳細"><div class="idrow"><span class="id">${c.id}</span><span class="cost">${c.cost}</span></div><div class="art">${arty}</div><div class="effect ${c.ability||hasTrait(c.id,'blocker')?'':'noAbility'}"><span class="efIcon">${sym}</span><span>${escapeHTML(label)}</span></div>${stats}${attack}<button type="button" class="inspectBtn" aria-label="${escapeHTML(c.id)}の詳細を見る" title="カード詳細">⌕</button></div>`;
+  }
+
+  function makeSlots(who,lane){
+    const frag=document.createDocumentFragment(),units=game[who].field.filter(u=>laneOf(CARDS[u.id])===lane),limit=lane==='front'?MAX_FRONT:MAX_REAR;
+    for(let i=0;i<limit;i++){
+      const slot=document.createElement('div');slot.className='slot';
+      const u=units[i];
+      if(u){
+        slot.innerHTML=cardHTML(CARDS[u.id],u,who);
+        const card=slot.firstChild;
+        attachCardEvents(card,()=>who==='player'?clickOwnUnit(u.sid):clickEnemyUnit(u.sid),()=>openCardDetail(CARDS[u.id],u,who));
+      }
+      frag.append(slot);
+    }
+    return frag;
+  }
+
   function loadRecord(){try{return JSON.parse(localStorage.getItem('bvb_record_v1'))||{win:0,lose:0,draw:0}}catch{return {win:0,lose:0,draw:0}}}
   function updateRecord(){const r=loadRecord();el('record').textContent=`勝敗記録：${r.win||0}勝 / ${r.lose||0}敗 / ${r.draw||0}分`}
-  function render(){if(!game)return;el('turnChip').textContent=game.over?'対戦終了':game.turn==='player'?'🟢 あなたのターン':'🟣 CPUのターン';el('manaTop').textContent=`💠 ${game.player.mana}/${game.player.maxMana}`;el('manaHand').textContent=`マナ ${game.player.mana}/${game.player.maxMana}`;el('cpuLife').innerHTML=`♥ ${game.cpu.life} <span>/10</span>`;el('playerLife').innerHTML=`♥ ${game.player.life} <span>/10</span>`;el('cpuInfo').textContent=`山札${game.cpu.deck.length}・手札${game.cpu.hand.length}`;el('playerInfo').textContent=`山札${game.player.deck.length}・手札${game.player.hand.length}`;el('handCount').textContent=`${game.player.hand.length}/7`;el('phase').textContent=game.turn==='player'?'🙂 あなたの番':'🤖 CPUの番';el('endBtn').disabled=game.turn!=='player'||game.over;el('cancelBtn').disabled=!game.selected;const attacker=game.player.field.find(u=>game.selected?.kind==='attack'&&game.selected.sid===u.sid);el('cpuHero').classList.toggle('targetable',game.turn==='player'&&!game.over&&!!attacker&&canTargetHero('player',attacker));for(const who of ['cpu','player'])for(const lane of ['front','rear'])el(who+(lane==='front'?'Front':'Rear')).replaceChildren(makeSlots(who,lane));let hint='手札をタップで召喚・魔法。味方をタップで攻撃';if(game.over)hint='対戦終了。やり直すと再戦できるよ';else if(game.turn==='cpu')hint='CPUが行動中…';else if(game.selected?.kind==='attack')hint=game.cpu.field.some(isBlocker)&&attacker&&!bypassFront(attacker)?'🛡 まず敵の前列ブロッカーを攻撃':'後列モンスターかCPUのライフを選んで攻撃';else if(game.selected?.kind==='spell'){const c=CARDS[game.player.hand[game.selected.index]];hint=c?.ability==='buff'?'強化する味方モンスターを選択':'魔法を当てる敵モンスターを選択（前列・後列どちらも可）'}el('hint').textContent=hint;const hf=document.createDocumentFragment();game.player.hand.forEach((id,i)=>{const w=document.createElement('div');w.innerHTML=cardHTML(CARDS[id],null,i);const card=w.firstChild;const action=()=>clickHand(i);card.addEventListener('click',action);card.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();action()}});hf.append(card)});el('hand').replaceChildren(hf);el('log').innerHTML=game.logs.slice(0,6).map(s=>`<div>${escapeHTML(s)}</div>`).join('');updateRecord()}
-  function finish(result){game.over=true;game.result=result;clearTimeout(cpuTimer);const r=loadRecord();r[result]=(r[result]||0)+1;try{localStorage.setItem('bvb_record_v1',JSON.stringify(r))}catch{}const title=result==='win'?'🎉 勝利！':result==='lose'?'💫 敗北！':'🤝 引き分け';log(title);render();showModal(title,`<p>あなた ${game.player.life} ライフ ／ CPU ${game.cpu.life} ライフ</p><p>Ver.0.3：デッキ50枚、毎ターン1枚ドロー。HPはターンをまたいで残るよ。</p>`,true)}
+  function render(){if(!game)return;el('turnChip').textContent=game.over?'対戦終了':game.turn==='player'?'🟢 あなたのターン':'🟣 CPUのターン';el('manaTop').textContent=`💠 ${game.player.mana}/${game.player.maxMana}`;el('manaHand').textContent=`マナ ${game.player.mana}/${game.player.maxMana}`;el('cpuLife').innerHTML=`♥ ${game.cpu.life} <span>/10</span>`;el('playerLife').innerHTML=`♥ ${game.player.life} <span>/10</span>`;el('cpuInfo').textContent=`山札${game.cpu.deck.length}・手札${game.cpu.hand.length}`;el('playerInfo').textContent=`山札${game.player.deck.length}・手札${game.player.hand.length}`;el('handCount').textContent=`${game.player.hand.length}/7`;el('phase').textContent=game.turn==='player'?'🙂 あなたの番':'🤖 CPUの番';el('endBtn').disabled=game.turn!=='player'||game.over;el('cancelBtn').disabled=!game.selected;const attacker=game.player.field.find(u=>game.selected?.kind==='attack'&&game.selected.sid===u.sid);el('cpuHero').classList.toggle('targetable',game.turn==='player'&&!game.over&&!!attacker&&canTargetHero('player',attacker));for(const who of ['cpu','player'])for(const lane of ['front','rear'])el(who+(lane==='front'?'Front':'Rear')).replaceChildren(makeSlots(who,lane));let hint='タップで行動｜長押し・⌕で敵味方のカード詳細';if(game.over)hint='対戦終了。やり直すと再戦できるよ';else if(game.turn==='cpu')hint='CPUが行動中…';else if(game.selected?.kind==='attack')hint=game.cpu.field.some(isBlocker)&&attacker&&!bypassFront(attacker)?'🛡 まず敵の前列ブロッカーを攻撃':'後列モンスターかCPUのライフを選んで攻撃';else if(game.selected?.kind==='spell'){const c=CARDS[game.player.hand[game.selected.index]];hint=c?.ability==='buff'?'強化する味方モンスターを選択':'魔法を当てる敵モンスターを選択（前列・後列どちらも可）'}el('hint').textContent=hint;const hf=document.createDocumentFragment();game.player.hand.forEach((id,i)=>{const w=document.createElement('div');w.innerHTML=cardHTML(CARDS[id],null,i);const card=w.firstChild;attachCardEvents(card,()=>clickHand(i),()=>openCardDetail(CARDS[id],null,'hand'));hf.append(card)});el('hand').replaceChildren(hf);el('log').innerHTML=game.logs.slice(0,6).map(s=>`<div>${escapeHTML(s)}</div>`).join('');updateRecord()}
+  function finish(result){game.over=true;game.result=result;clearTimeout(cpuTimer);const r=loadRecord();r[result]=(r[result]||0)+1;try{localStorage.setItem('bvb_record_v1',JSON.stringify(r))}catch{}const title=result==='win'?'🎉 勝利！':result==='lose'?'💫 敗北！':'🤝 引き分け';log(title);render();showModal(title,`<p>あなた ${game.player.life} ライフ ／ CPU ${game.cpu.life} ライフ</p><p>Ver.0.4前半：カード縦長表示と詳細表示を追加。対戦ルールは従来どおり。</p>`,true)}
   function showModal(title,content,rematch=false){el('modalTitle').textContent=title;el('modalContent').innerHTML=content;el('modalAlt').style.display=rematch?'inline-block':'none';el('modal').classList.add('show')}
   function hideModal(){el('modal').classList.remove('show')}
-  function newGame(){clearTimeout(cpuTimer);uid=0;game={player:newSide(),cpu:newSide(),turn:null,selected:null,over:false,result:null,logs:[]};draw('player',5);draw('cpu',5);log('デッキB vs デッキB｜Ver.0.3 対戦開始！');hideModal();startTurn(Math.random()<.5?'player':'cpu')}
+  function newGame(){clearTimeout(cpuTimer);hideCardDetail();uid=0;game={player:newSide(),cpu:newSide(),turn:null,selected:null,over:false,result:null,logs:[]};draw('player',5);draw('cpu',5);log('デッキB vs デッキB｜Ver.0.4前半 対戦開始！');hideModal();startTurn(Math.random()<.5?'player':'cpu')}
+  el('detailClose').addEventListener('click',hideCardDetail);
+  el('detailOverlay').addEventListener('click',e=>{if(e.target===el('detailOverlay'))hideCardDetail()});
+  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&el('detailOverlay').classList.contains('show'))hideCardDetail()});
   el('endBtn').addEventListener('click',()=>{if(game.turn==='player'&&!game.over)endTurn()});
   el('cpuHero').addEventListener('click',clickEnemyHero);
   el('cancelBtn').addEventListener('click',()=>{game.selected=null;render()});
-  el('rulesBtn').addEventListener('click',()=>showModal('📘 Ver.0.3のルール',`<ul><li>同じデッキB 50枚（モンスター35枚＋魔法15枚）同士。初期ライフ10、初期手札5枚。先攻・後攻はランダム。</li><li>各自のターン開始時に1枚ドロー。マナは自分のターンごとに1→最大10へ増加、全回復。</li><li>手札は最大7枚。<b>前列ブロッカー1体・後列通常モンスター3体</b>まで。満員の列には追加召喚できず、入れ替えもできない。</li><li><b>M-01・M-03はブロッカー。</b>ブロッカーは敵モンスターに攻撃できるが、敵プレイヤーには直接攻撃できない。</li><li><b>敵ブロッカーがいる間、攻撃先はそのブロッカーだけ。</b>敵の前列が空なら、後列モンスターや敵プレイヤーを自由に攻撃できる。</li><li>召喚したターンは攻撃できない。連撃は次の自ターンから2回攻撃可能。</li><li>戦闘ダメージは双方同時。<b>HPはターン終了時に回復せず、ダメージが残る。</b>HP0以下で破壊。</li><li>魔法は自分のターンに使用。ダメージ魔法はブロッカーを無視して後列にも使用可能。ATK増減は使用したターンが終わると解除。</li><li>直接攻撃1回につきライフ1ダメージ。ライフ0で敗北。山札切れだけでは負けず、山札・手札・フィールドが全て空になったら敗北。</li><li>双方ともプレイヤーに攻撃できるモンスターが今後出せなくなった場合、引き分け。</li></ul>`));
+  el('rulesBtn').addEventListener('click',()=>showModal('📘 Ver.0.4前半のルール',`<ul><li>同じデッキB 50枚（モンスター35枚＋魔法15枚）同士。初期ライフ10、初期手札5枚。先攻・後攻はランダム。</li><li>各自のターン開始時に1枚ドロー。マナは自分のターンごとに1→最大10へ増加、全回復。</li><li>手札は最大7枚。<b>前列ブロッカー1体・後列通常モンスター3体</b>まで。満員の列には追加召喚できず、入れ替えもできない。</li><li><b>M-01・M-03はブロッカー。</b>ブロッカーは敵モンスターに攻撃できるが、敵プレイヤーには直接攻撃できない。</li><li><b>敵ブロッカーがいる間、攻撃先はそのブロッカーだけ。</b>敵の前列が空なら、後列モンスターや敵プレイヤーを自由に攻撃できる。</li><li>召喚したターンは攻撃できない。連撃は次の自ターンから2回攻撃可能。</li><li>戦闘ダメージは双方同時。<b>HPはターン終了時に回復せず、ダメージが残る。</b>HP0以下で破壊。</li><li>魔法は自分のターンに使用。ダメージ魔法はブロッカーを無視して後列にも使用可能。ATK増減は使用したターンが終わると解除。</li><li>直接攻撃1回につきライフ1ダメージ。ライフ0で敗北。山札切れだけでは負けず、山札・手札・フィールドが全て空になったら敗北。</li><li>双方ともプレイヤーに攻撃できるモンスターが今後出せなくなった場合、引き分け。</li></ul>`));
   el('modalOk').addEventListener('click',hideModal);el('modalAlt').addEventListener('click',newGame);
   el('newBtn').addEventListener('click',()=>showModal('🔄 対戦をやり直す？','<p>現在の試合を終了して、新しくデッキB同士の対戦を始めます。</p>',true));
   window.addEventListener('contextmenu',e=>e.preventDefault());
   newGame();
   // 手動・自動動作確認用（通常のゲーム操作には不要）
-  window.__BVB_TEST__={getState:()=>JSON.parse(JSON.stringify(game)),getMutableState:()=>game,cards:CARDS,deck:DECK_B,newGame,startTurn,endTurn,draw,summon,cast,fight,attackReady,resolveDeaths,canSummon,canTargetHero,legalUnitTargets,cpuPlay,render};
+  window.__BVB_TEST__={openCardDetail,hideCardDetail,getState:()=>JSON.parse(JSON.stringify(game)),getMutableState:()=>game,cards:CARDS,deck:DECK_B,newGame,startTurn,endTurn,draw,summon,cast,fight,attackReady,resolveDeaths,canSummon,canTargetHero,legalUnitTargets,cpuPlay,render};
 })();
 </script>
 </body>
