@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#0b1726">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<title>DREI KAMPF（仮）｜Ver.0.8.1 α</title>
+<title>DREI KAMPF（仮）｜Ver.0.8.2 α</title>
 <style>
 :root{--bg:#0b1726;--panel:#152c40;--line:#406477;--text:#f3f7fa;--muted:#bdd1dd;--gold:#f6d494;--cyan:#81e2e3;--red:#ff9fba;--good:#9cf0b9}
 *{box-sizing:border-box}html,body{width:100%;height:100%;margin:0;background:#07101d;color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Noto Sans JP",sans-serif;-webkit-tap-highlight-color:transparent}button{font:inherit;cursor:pointer;touch-action:manipulation;color:inherit}button:disabled{cursor:default;opacity:.45}button:focus-visible,[role=button]:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
@@ -149,7 +149,7 @@ body[data-screen="select"] .selectScreen{display:flex;align-items:center;justify
  .top{gap:3px;padding:2px 4px}.top .brand{font-size:12px}.top .version{display:none}
  .top-right{gap:3px}.top .phaseChip{font-size:9px;padding:4px 5px}.top .tinyBtn{font-size:9px;padding:4px 5px}
 }
-/* Ver.0.8.1: readable battle tempo, event cues and combat history */
+/* Ver.0.8.2: readable battle tempo, event cues and combat history */
 #app{position:relative}
 .battleActivity{display:flex;align-items:center;min-width:0;gap:5px;background:#152c40;border:1px solid #487184;border-radius:8px;padding:3px 5px;min-height:30px}
 .activityDot{font-size:11px;color:#f9d48f;flex:0 0 auto}
@@ -183,6 +183,35 @@ body[data-screen="select"] .selectScreen{display:flex;align-items:center;justify
 @media(max-width:370px){.battleActivity{padding:2px 3px;gap:3px}.activityText{font-size:10px}.activityButton{padding:4px 5px;font-size:9px;min-height:25px}.battleCue{left:5%;right:5%;padding:8px 8px}}
 @media(min-width:600px){.battleActivity{padding:5px 10px}.activityText{font-size:13px}.activityButton{font-size:12px;padding:6px 10px}.battleCue{top:41%}}
 @media(prefers-reduced-motion:reduce){.battleCue{transition:none}}
+
+/* Ver.0.8.2 alpha: improve text hierarchy without shrinking the battlefield. */
+.playerBadge>div{min-width:0}
+.playerName{font-size:14px;line-height:1.2}
+.playerName .version{font-size:11px;font-weight:850;color:#daeaf4}
+.playerPlan{font-size:10px;font-weight:700;color:#bfd1df;vertical-align:baseline}
+.playerMeta{font-size:14px;line-height:1.18;font-weight:850;letter-spacing:.015em;color:#f0f5fa;margin-top:2px;font-variant-numeric:tabular-nums}
+.battleCue{left:5%;right:5%;padding:14px 13px}
+.battleCue .cueSmall{font-size:12px;line-height:1.35;letter-spacing:.06em;margin-bottom:5px}
+.battleCue .cueMain{font-size:clamp(17px,4.65vw,21px);line-height:1.44;letter-spacing:.005em}
+.battleCue .cueSub{font-size:clamp(15px,4vw,18px);font-weight:850;line-height:1.45;margin-top:6px}
+@media(max-width:370px){
+ .playerBar{gap:5px;padding-left:6px;padding-right:6px}
+ .playerBadge{gap:5px}
+ .playerName{font-size:13px}.playerName .version{font-size:10px}
+ .playerPlan{font-size:9px}
+ .playerMeta{font-size:12px}
+ .battleCue{left:3%;right:3%;padding:12px 9px}
+ .battleCue .cueMain{font-size:17px}
+ .battleCue .cueSub{font-size:15px}
+}
+@media(min-width:600px) and (orientation:portrait){
+ .playerName{font-size:16px}.playerName .version{font-size:13px}
+ .playerPlan{font-size:12px}
+ .playerMeta{font-size:16px}
+ .battleCue .cueMain{font-size:22px}
+ .battleCue .cueSub{font-size:18px}
+}
+
 </style>
 </head>
 <body>
@@ -197,7 +226,7 @@ body[data-screen="select"] .selectScreen{display:flex;align-items:center;justify
     <p class="titleTagline">三つの戦場、四つの紋章。</p>
     <div class="titleTap"><span class="titleTapArrow">✦</span> TAP TO START <span class="titleTapArrow">✦</span></div>
   </div>
-  <div class="titleVersion">Ver.0.8.1 α ・ FOUR EMBLEMS</div>
+  <div class="titleVersion">Ver.0.8.2 α ・ FOUR EMBLEMS</div>
 </section>
 <section id="selectScreen" class="selectScreen" aria-hidden="true">
   <div class="selectInner">
@@ -217,16 +246,16 @@ body[data-screen="select"] .selectScreen{display:flex;align-items:center;justify
     <p id="resultSub" class="resultSub"></p>
     <div id="resultStats" class="resultStats"></div>
     <div class="resultActions"><button id="resultReplay">⚔ もう一度対戦</button><button id="resultTitleBtn">タイトルへ戻る</button></div>
-    <div class="resultNote">Ver.0.8.1 α：対戦データはバランス確認用</div>
+    <div class="resultNote">Ver.0.8.2 α：対戦データはバランス確認用</div>
   </div>
 </section>
 <main id="app">
-  <header class="top"><div class="brand">⚔ DREI KAMPF <span class="version">演出調整 v0.8.1 α</span></div><div class="top-right"><span class="phaseChip" id="phaseChip">準備中</span><button class="tinyBtn" id="rulesBtn">ルール</button><button class="tinyBtn" id="restartBtn">タイトル</button></div></header>
-  <section class="playerBar enemy"><div class="playerBadge"><div class="avatar">🤖</div><div><div class="playerName">CPU <span class="version" id="cpuDeckName">蒼</span></div><div class="playerMeta" id="cpuInfo">山札40・手札5</div></div></div><div class="health"><span class="heart">♥</span><span id="cpuHp">10</span><small>/<span id="cpuMaxHp">10</span></small></div></section>
+  <header class="top"><div class="brand">⚔ DREI KAMPF <span class="version">演出調整 v0.8.2 α</span></div><div class="top-right"><span class="phaseChip" id="phaseChip">準備中</span><button class="tinyBtn" id="rulesBtn">ルール</button><button class="tinyBtn" id="restartBtn">タイトル</button></div></header>
+  <section class="playerBar enemy"><div class="playerBadge"><div class="avatar">🤖</div><div><div class="playerName">CPU <span class="version" id="cpuDeckName">蒼</span> <span class="playerPlan" id="cpuPlan">魔導制御</span></div><div class="playerMeta" id="cpuInfo">山札40・手札5</div></div></div><div class="health"><span class="heart">♥</span><span id="cpuHp">10</span><small>/<span id="cpuMaxHp">10</span></small></div></section>
   <div class="bus enemyBus" aria-hidden="true"><span></span><span></span><span></span></div>
   <section id="lanes" class="lanes" aria-label="3本の独立したバトルレーン"></section><div id="battleCue" class="battleCue" aria-live="off" aria-hidden="true"></div>
   <div class="bus" aria-hidden="true"><span></span><span></span><span></span></div>
-  <section class="playerBar"><div class="playerBadge"><div class="avatar">🙂</div><div><div class="playerName">あなた <span class="version" id="playerDeckName">朱</span></div><div class="playerMeta" id="playerInfo">山札40・手札5</div></div></div><div class="health"><span class="heart">♥</span><span id="playerHp">10</span><small>/<span id="playerMaxHp">10</span></small></div></section>
+  <section class="playerBar"><div class="playerBadge"><div class="avatar">🙂</div><div><div class="playerName">あなた <span class="version" id="playerDeckName">朱</span> <span class="playerPlan" id="playerPlan">野生速攻</span></div><div class="playerMeta" id="playerInfo">山札40・手札5</div></div></div><div class="health"><span class="heart">♥</span><span id="playerHp">10</span><small>/<span id="playerMaxHp">10</span></small></div></section>
   <div class="battleActivity" aria-live="polite"><span class="activityDot">✦</span><span id="activityText" class="activityText">行動をここに表示します</span><button id="speedBtn" class="activityButton" title="CPU演出速度を変更">▶ 標準</button><button id="logBtn" class="activityButton" title="対戦の履歴を見る">☷ ログ</button></div>
   <section class="controls"><div id="hint" class="hint" aria-live="polite">カードを選ぼう</div><button id="cancelBtn" class="cancelBtn">✕ キャンセル</button><button id="inspectBtn" class="modeBtn" aria-pressed="false">🔎 詳細</button><button id="endBtn" class="endBtn">ターン終了 ▶</button></section>
   <section class="handSection"><div class="handHead"><span>🃏 手札 <span id="handCount">0/7</span></span><strong id="mana">💠 0/0</strong></div><div id="handPreview" class="handPreview" aria-live="polite"><div class="previewText"><strong>手札を選んでね</strong><span>7枚すべて表示。選択すると効果がここに出るよ。</span></div></div><div id="hand" class="handScroll" aria-label="自分の手札（横スクロールなし）"></div></section>
@@ -959,8 +988,8 @@ function render(){if(!g||screen!=='battle')return;
 
  el('phaseChip').textContent=g.turn==='player'?'🟢 自分の番':'🟣 CPUの番';
  el('cpuHp').textContent=g.cpu.life;el('cpuMaxHp').textContent=g.cpu.maxLife;el('playerHp').textContent=g.player.life;el('playerMaxHp').textContent=g.player.maxLife;
- el('cpuInfo').textContent=`${EMBLEMS[g.cpu.code].plan}｜山札${g.cpu.deck.length}・手札${g.cpu.hand.length}`;
- el('playerInfo').textContent=`${EMBLEMS[g.player.code].plan}｜山札${g.player.deck.length}・手札${g.player.hand.length}`;
+ el('cpuInfo').textContent=`山札${g.cpu.deck.length} ・ 手札${g.cpu.hand.length}`;el('cpuPlan').textContent=EMBLEMS[g.cpu.code].plan;
+ el('playerInfo').textContent=`山札${g.player.deck.length} ・ 手札${g.player.hand.length}`;el('playerPlan').textContent=EMBLEMS[g.player.code].plan;
  el('playerDeckName').textContent=EMBLEMS[g.player.code].name;el('cpuDeckName').textContent=EMBLEMS[g.cpu.code].name;
  el('handCount').textContent=`${g.player.hand.length}/${MAX_HAND}`;el('mana').textContent=`💠 ${g.player.mana}/${g.player.maxMana}`;
  el('endBtn').disabled=g.turn!=='player'||!!g.pending;el('endBtn').classList.toggle('pendingAttacks',g.turn==='player'&&pendingPlayerAttacks().length>0);
@@ -1006,7 +1035,7 @@ function render(){if(!g||screen!=='battle')return;
 }
 function showModal(title,content,action=null){el('modalTitle').textContent=title;el('modalBody').innerHTML=content;el('modalReplay').style.display=action?'inline-block':'none';el('modalReplay').textContent=action?.label||'確認';el('modalReplay').onclick=action?.run||null;el('modal').classList.add('show')}
 function hideModal(){el('modal').classList.remove('show')}
-function showRules(){showModal('📘 Ver.0.8.1 α ルール',`<ul><li>3レーンの各マスに味方・敵がそれぞれ最大1体。攻撃は原則同じレーンに限る。一部カードは隣レーンへの攻撃や直接攻撃の例外あり。</li><li>戦闘では双方が同時にATK分のダメージを与え、HPは持ち越し。直接攻撃は基本1ライフダメージ。</li><li>召喚酔いあり、原則1ターンに1回攻撃。猛進は可能な攻撃が必須。防壁は攻撃不可だがATKがあれば反撃できる。</li><li>自分の防壁が置かれたレーンには、通常モンスターを上書き召喚可能。撤去される防壁は「破壊」扱いにならず、破壊時効果も発動しない。</li><li>40枚デッキ、同名最大3枚。単色または2色（25:15〜20:20）。今回の試作では4つの単色固定デッキを選択。</li><li>純紋章能力は試合開始時の元デッキ40枚がすべて同じ紋章の場合のみ有効。試合中に変わらない。</li><li>初期ライフ10、初手5枚、手札上限7。各ターン開始に1枚ドロー、マナは毎ターン全回復し最大値が1ずつ増加（最大10）。</li><li>ライフの支払いは、支払った結果ライフ0以下になる場合は不可。最大ライフの変更は今回のカードにはなし。</li><li>自分のターンにカード使用。登場時の対象選択や生贄、レーン移動は画面に従って選ぶ。効果の見送りが許される場合はキャンセル可能。</li><li>手札タップで選択、長押し・詳細モードでカード全文。山札切れだけでは負けない。ライフ0または山札・手札・場が全て空になると敗北。両者が攻撃手段を失った場合は引き分け。</li><li>バトル画面の「▶ 標準」からCPUの演出速度を切り替え可能。「☷ ログ」から履歴を確認。ログ表示中はCPUの進行を一時停止。80種類のカード名・性能・CPU判断は試作。CPUの思考やバランスは今後調整。</li></ul>`)}
+function showRules(){showModal('📘 Ver.0.8.2 α ルール',`<ul><li>3レーンの各マスに味方・敵がそれぞれ最大1体。攻撃は原則同じレーンに限る。一部カードは隣レーンへの攻撃や直接攻撃の例外あり。</li><li>戦闘では双方が同時にATK分のダメージを与え、HPは持ち越し。直接攻撃は基本1ライフダメージ。</li><li>召喚酔いあり、原則1ターンに1回攻撃。猛進は可能な攻撃が必須。防壁は攻撃不可だがATKがあれば反撃できる。</li><li>自分の防壁が置かれたレーンには、通常モンスターを上書き召喚可能。撤去される防壁は「破壊」扱いにならず、破壊時効果も発動しない。</li><li>40枚デッキ、同名最大3枚。単色または2色（25:15〜20:20）。今回の試作では4つの単色固定デッキを選択。</li><li>純紋章能力は試合開始時の元デッキ40枚がすべて同じ紋章の場合のみ有効。試合中に変わらない。</li><li>初期ライフ10、初手5枚、手札上限7。各ターン開始に1枚ドロー、マナは毎ターン全回復し最大値が1ずつ増加（最大10）。</li><li>ライフの支払いは、支払った結果ライフ0以下になる場合は不可。最大ライフの変更は今回のカードにはなし。</li><li>自分のターンにカード使用。登場時の対象選択や生贄、レーン移動は画面に従って選ぶ。効果の見送りが許される場合はキャンセル可能。</li><li>手札タップで選択、長押し・詳細モードでカード全文。山札切れだけでは負けない。ライフ0または山札・手札・場が全て空になると敗北。両者が攻撃手段を失った場合は引き分け。</li><li>バトル画面の「▶ 標準」からCPUの演出速度を切り替え可能。「☷ ログ」から履歴を確認。ログ表示中はCPUの進行を一時停止。80種類のカード名・性能・CPU判断は試作。CPUの思考やバランスは今後調整。</li></ul>`)}
 el('titleScreen').addEventListener('click',()=>{if(screen==='title')toSelect()});
 el('titleScreen').addEventListener('keydown',e=>{if((e.key==='Enter'||e.key===' ')&&screen==='title'){e.preventDefault();toSelect()}});
 el('selectBack').addEventListener('click',()=>{if(playerChoiceStep==='cpu'){playerChoiceStep='player';renderSelect()}else returnTitle()});
