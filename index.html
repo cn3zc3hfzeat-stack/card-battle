@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#0b1726">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<title>DREI KAMPF（仮）｜Ver.0.9 α</title>
+<title>DREI KAMPF（仮）｜Ver.0.9.1 α</title>
 <style>
 :root{--bg:#0b1726;--panel:#152c40;--line:#406477;--text:#f3f7fa;--muted:#bdd1dd;--gold:#f6d494;--cyan:#81e2e3;--red:#ff9fba;--good:#9cf0b9}
 *{box-sizing:border-box}html,body{width:100%;height:100%;margin:0;background:#07101d;color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Noto Sans JP",sans-serif;-webkit-tap-highlight-color:transparent}button{font:inherit;cursor:pointer;touch-action:manipulation;color:inherit}button:disabled{cursor:default;opacity:.45}button:focus-visible,[role=button]:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
@@ -234,7 +234,7 @@ body[data-screen="select"] .selectScreen{display:flex;align-items:center;justify
 @media(max-width:370px){.choiceDock{font-size:10px;padding:3px 4px}.choiceDock .choiceDockToggle{font-size:9px}}
 @media(prefers-reduced-motion:reduce){.battleCue.choosing{transition:none}}
 
-/* Ver.0.9 α — adopted title / battlefield visuals and a dedicated, ability-free Kommandant slot. */
+/* Ver.0.9.1 α — adopted title / battlefield visuals and a dedicated, ability-free Kommandant slot. */
 #app{grid-template-rows:39px 57px 7px minmax(190px,1fr) 7px 57px 33px 46px 158px 14px;
  background-image:linear-gradient(90deg,#0b1726c8,#0b1726bb),var(--boardArt);
  background-size:cover;background-position:center center}
@@ -263,6 +263,73 @@ body[data-screen="select"] .selectScreen{display:flex;align-items:center;justify
 @media(max-height:720px) and (orientation:portrait){#app{grid-template-rows:36px 48px 6px minmax(180px,1fr) 6px 48px 31px 41px 145px 12px;gap:2px}.commanderCard{height:41px;width:32px;flex-basis:32px}}
 @media(min-width:600px) and (orientation:portrait){#app{grid-template-rows:46px 66px 9px minmax(250px,1fr) 9px 66px 41px 52px 196px 16px}.commanderCard{height:57px;width:45px;flex-basis:45px}.commanderIdentity{font-size:11px}}
 
+
+/* Ver.0.9.1 α · artwork-first card frames / single battlefield drawing */
+#app{
+  background-image:radial-gradient(ellipse at 50% 40%,#17394a 0%,#101f32 51%,#081423 100%);
+}
+/* The chosen board artwork appears ONLY in the lane area; the printed labels on the
+   board are masked behind the UI lane heading / entry zone so they cannot double up. */
+.lanes{position:relative;isolation:isolate;overflow:hidden;background-image:linear-gradient(180deg,#09162242,#09162233),var(--boardArt)}
+.laneTrack{position:relative;isolation:isolate}
+.laneTrack::before{
+ content:"";position:absolute;z-index:0;left:0;right:0;top:6%;height:23%;
+ pointer-events:none;background:linear-gradient(180deg,#102033fa 0%,#102338f8 72%,#10233803 100%);
+}
+.laneTrack>.laneTitle,.laneTrack>.zoneCell,.laneTrack>.laneCenter{position:relative;z-index:1}
+.laneTitle{background:linear-gradient(90deg,transparent,#102335b8 12%,#112438ca 88%,transparent);border-bottom:1px solid #d5b37c66;border-radius:3px}
+/* Full-bleed art is the canvas for EVERY card, even unillustrated cards. */
+.unitCard,.handCard{display:block;isolation:isolate;padding:0;gap:0;}
+.unitCard .cardArt,.handCard .cardArt{position:absolute;inset:1px;z-index:0;border:0;border-radius:6px;display:grid;place-items:center;overflow:hidden;}
+.unitCard .cardArt img,.handCard .cardArt img{width:100%;height:100%;object-fit:cover;object-position:50% 30%;display:block;}
+.unitCard .cardArt::after,.handCard .cardArt::after{
+ content:"";pointer-events:none;position:absolute;inset:0;z-index:1;
+ background:linear-gradient(180deg,#05111aca 0%,#06121b25 23%,#06121b00 48%,#06111c58 64%,#06131de9 90%,#061522f5 100%);
+}
+.unitCard .cardTop,.handCard .cardTop{position:absolute;z-index:3;top:3px;left:4px;right:4px;min-width:0;color:#f3f4f7;text-shadow:0 1px 3px #000d;line-height:1}
+.cardTop .cardId{color:#f7f8fb}
+.unitCard .cardName,.unitCard .cardAbility,.unitCard .cardStats,.handCard .cardStats{position:absolute;z-index:3;left:4px;right:4px;min-width:0;text-shadow:0 1px 3px #000d;}
+.unitCard .cardName{bottom:32px;font-size:10px;font-weight:950;line-height:1.12;white-space:nowrap;text-align:center;overflow:hidden;text-overflow:ellipsis;color:#fff8ee}
+.unitCard .cardAbility{bottom:20px;min-height:10px;justify-content:center;font-size:9px;color:#cde4ea}
+.unitCard .cardStats{bottom:3px;min-height:16px;font-size:13px;padding:0 2px}
+.unitCard .unitStatus{z-index:4;top:22px;left:3px;right:3px}
+.unitCard .attackMark{z-index:4;bottom:55px;right:3px}
+.handScroll .handCard{padding:0!important;}
+.handScroll .handCard .cardTop{top:3px;left:3px;right:3px;z-index:3}
+.handScroll .handCard .cardStats{position:absolute;bottom:3px;left:2px;right:2px;z-index:3;min-height:13px;font-size:10px;}
+.handScroll .handCard .cardName,.handScroll .handCard .cardAbility{display:none}
+.handScroll .handCard .cardArt{inset:1px}
+.handScroll .handCard .cardCost{box-shadow:0 0 3px #000b}
+.noArtwork .cardArt{background:radial-gradient(ellipse at 50% 36%,#567181aa 0%,transparent 61%),linear-gradient(155deg,color-mix(in srgb,var(--card-color),#10283a 56%),#102b3d 72%)}
+.noArtwork .cardArt::before{content:'✦';position:absolute;inset:auto;top:10%;font-size:52px;opacity:.12;color:#fff;line-height:1}
+.artPlaceholderIcon{z-index:1;font-size:clamp(24px,6vw,42px);filter:drop-shadow(0 2px 5px #000a)!important}
+.handScroll .artPlaceholderIcon{font-size:clamp(18px,4vw,32px)}
+/* The commander illustrations are identified by their frames, not a KOM label. */
+.commanderCard .commanderTag{display:none!important}
+.commanderCard img{object-position:center 30%}
+/* Artwork viewing in detail is an explicit, non-gameplay interaction. */
+.detailArt{position:relative;isolation:isolate}
+.detailArt.canZoom img{cursor:zoom-in}
+.artZoomActivator{position:absolute;z-index:2;right:6px;bottom:6px;border:1px solid #d5c391af;background:#081a2ce8;color:#fff0cc;border-radius:6px;font-size:11px;font-weight:900;min-height:31px;padding:5px 10px;box-shadow:0 2px 8px #0008}
+.artZoomOverlay{display:none;position:fixed;inset:0;z-index:55;background:#02050df5;padding:max(12px,env(safe-area-inset-top)) 10px max(12px,env(safe-area-inset-bottom));align-items:center;justify-content:center}
+.artZoomOverlay.show{display:flex}
+.artZoomPanel{height:100%;width:min(100%,700px);min-height:0;display:flex;flex-direction:column;gap:8px;align-items:center;justify-content:center}
+.artZoomTop{width:100%;display:flex;gap:12px;align-items:center;justify-content:space-between;color:#f7e5c9;font-size:13px;padding:2px 4px}
+.artZoomTop strong{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.artZoomTop button{flex:0 0 auto;background:#233d4c;border:1px solid #758d98;border-radius:8px;padding:9px 12px;font-size:12px;font-weight:850}
+.artZoomPanel img{max-width:100%;max-height:calc(100% - 85px);min-height:0;min-width:0;object-fit:contain;border-radius:8px;box-shadow:0 12px 36px #000a;cursor:zoom-out}
+.artZoomPanel p{font-size:11px;color:#a7bbc9;margin:1px 0 0}
+.commanderSkills{display:grid;gap:6px;margin:12px 0 15px}
+.commanderSkills p{display:flex;align-items:center;justify-content:space-between;margin:0;border-bottom:1px solid #667b874d;padding-bottom:5px}
+.commanderSkills b{color:#f5dfad;font-size:12px}
+.commanderSkills small{color:#bfcbd5;font-size:11px}
+.loreBlock{padding:10px 11px;border-left:3px solid #c7ac75;background:#0f2234ab;border-radius:3px 9px 9px 3px}
+.loreLabel{font-size:10px;letter-spacing:.12em;color:#e1c68d;font-weight:850}
+.loreBlock blockquote{margin:8px 0 5px;font-size:12px;line-height:1.65;color:#eef4f5}
+.loreSource{text-align:right;font-size:10px;line-height:1.5;color:#bcd0d6}
+@media(max-width:370px){.unitCard .cardName{font-size:9px;bottom:29px}.unitCard .cardAbility{font-size:8px;bottom:18px}.unitCard .cardStats{font-size:11px;bottom:2px}.unitCard .unitStatus{top:21px}.handScroll .handCard .cardTop{top:2px;left:2px;right:2px}.handScroll .handCard .cardStats{font-size:9px}.artZoomTop{font-size:12px}}
+@media(min-width:600px){.unitCard .cardName{font-size:12px;bottom:37px}.unitCard .cardAbility{font-size:11px;bottom:22px}.unitCard .cardStats{font-size:16px}.unitCard .unitStatus{top:29px}.artPlaceholderIcon{font-size:48px}}
+
 </style>
 </head>
 <body>
@@ -285,16 +352,16 @@ body[data-screen="select"] .selectScreen{display:flex;align-items:center;justify
     <p id="resultSub" class="resultSub"></p>
     <div id="resultStats" class="resultStats"></div>
     <div class="resultActions"><button id="resultReplay">⚔ もう一度対戦</button><button id="resultTitleBtn">タイトルへ戻る</button></div>
-    <div class="resultNote">Ver.0.9 α：対戦データはバランス確認用</div>
+    <div class="resultNote">Ver.0.9.1 α：対戦データはバランス確認用</div>
   </div>
 </section>
 <main id="app">
-  <header class="top"><div class="brand">⚔ DREI KAMPF <span class="version">対象選択UI v0.9 α</span></div><div class="top-right"><span class="phaseChip" id="phaseChip">準備中</span><button class="tinyBtn" id="rulesBtn">ルール</button><button class="tinyBtn" id="restartBtn">タイトル</button></div></header>
-  <section class="playerBar enemy"><div class="playerBadge"><button id="cpuCommander" class="commanderCard" type="button" aria-label="CPUのコマンダント詳細を見る"><span class="commanderTag">KOM</span></button><div><div class="playerName">CPU <span class="version" id="cpuDeckName">蒼</span> <span class="playerPlan" id="cpuPlan">魔導制御</span></div><div class="playerMeta" id="cpuInfo">山札40・手札5</div><div class="commanderIdentity" id="cpuCommanderLabel">コマンダント：未設定</div></div></div><div class="health"><span class="heart">♥</span><span id="cpuHp">10</span><small>/<span id="cpuMaxHp">10</span></small></div></section>
+  <header class="top"><div class="brand">⚔ DREI KAMPF <span class="version">対象選択UI v0.9.1 α</span></div><div class="top-right"><span class="phaseChip" id="phaseChip">準備中</span><button class="tinyBtn" id="rulesBtn">ルール</button><button class="tinyBtn" id="restartBtn">タイトル</button></div></header>
+  <section class="playerBar enemy"><div class="playerBadge"><button id="cpuCommander" class="commanderCard" type="button" aria-label="CPUのコマンダント詳細を見る"></button><div><div class="playerName">CPU <span class="version" id="cpuDeckName">蒼</span> <span class="playerPlan" id="cpuPlan">魔導制御</span></div><div class="playerMeta" id="cpuInfo">山札40・手札5</div><div class="commanderIdentity" id="cpuCommanderLabel">コマンダント：未設定</div></div></div><div class="health"><span class="heart">♥</span><span id="cpuHp">10</span><small>/<span id="cpuMaxHp">10</span></small></div></section>
   <div class="bus enemyBus" aria-hidden="true"><span></span><span></span><span></span></div>
   <section id="lanes" class="lanes" aria-label="3つの共通戦場「リーニエⅠ・Ⅱ・Ⅲ」"></section><div id="battleCue" class="battleCue" aria-live="off" aria-hidden="true"></div>
   <div class="bus" aria-hidden="true"><span></span><span></span><span></span></div>
-  <section class="playerBar"><div class="playerBadge"><button id="playerCommander" class="commanderCard" type="button" aria-label="自分のコマンダント詳細を見る"><span class="commanderTag">KOM</span></button><div><div class="playerName">あなた <span class="version" id="playerDeckName">朱</span> <span class="playerPlan" id="playerPlan">野生速攻</span></div><div class="playerMeta" id="playerInfo">山札40・手札5</div><div class="commanderIdentity" id="playerCommanderLabel">コマンダント：未設定</div></div></div><div class="health"><span class="heart">♥</span><span id="playerHp">10</span><small>/<span id="playerMaxHp">10</span></small></div></section>
+  <section class="playerBar"><div class="playerBadge"><button id="playerCommander" class="commanderCard" type="button" aria-label="自分のコマンダント詳細を見る"></button><div><div class="playerName">あなた <span class="version" id="playerDeckName">朱</span> <span class="playerPlan" id="playerPlan">野生速攻</span></div><div class="playerMeta" id="playerInfo">山札40・手札5</div><div class="commanderIdentity" id="playerCommanderLabel">コマンダント：未設定</div></div></div><div class="health"><span class="heart">♥</span><span id="playerHp">10</span><small>/<span id="playerMaxHp">10</span></small></div></section>
   <div class="battleActivity" aria-live="polite"><span class="activityDot">✦</span><span id="activityText" class="activityText">行動をここに表示します</span><button id="choiceDock" class="choiceDock" type="button" aria-label="対象選択の説明を開く" hidden></button><button id="speedBtn" class="activityButton" title="CPU演出速度を変更">▶ 標準</button><button id="logBtn" class="activityButton" title="対戦の履歴を見る">☷ ログ</button></div>
   <section class="controls"><div id="hint" class="hint" aria-live="polite">カードを選ぼう</div><button id="cancelBtn" class="cancelBtn">✕ キャンセル</button><button id="inspectBtn" class="modeBtn" aria-pressed="false">🔎 詳細</button><button id="endBtn" class="endBtn">ターン終了 ▶</button></section>
   <section class="handSection"><div class="handHead"><span>🃏 手札 <span id="handCount">0/7</span></span><strong id="mana">💠 0/0</strong></div><div id="handPreview" class="handPreview" aria-live="polite"><div class="previewText"><strong>手札を選んでね</strong><span>7枚すべて表示。選択すると効果がここに出るよ。</span></div></div><div id="hand" class="handScroll" aria-label="自分の手札（横スクロールなし）"></div></section>
@@ -316,6 +383,13 @@ body[data-screen="select"] .selectScreen{display:flex;align-items:center;justify
 </div>
 <div class="overlay" id="logOverlay" role="dialog" aria-label="対戦ログ" aria-modal="true" aria-hidden="true"><div class="dialog historyDialog"><div class="historyHead"><h2>📜 対戦ログ</h2><button class="tinyBtn" id="logClose">✕ 閉じる</button></div><p class="historyHelp">新しい行動が上に表示されます。ログを開いている間、CPUの進行は一時停止します。</p><div id="logEntries" class="logEntries"></div></div></div>
 <div class="overlay" id="detailOverlay" role="dialog" aria-label="カード詳細" aria-hidden="true"><div class="detail"><div class="detailHead"><h2 id="detailTitle">カード詳細</h2><button id="detailClose" class="tinyBtn">✕ 閉じる</button></div><div class="detailBody"><div id="detailArt" class="detailArt"></div><div id="detailInfo" class="detailInfo"></div></div></div></div>
+<div id="artZoomOverlay" class="artZoomOverlay" role="dialog" aria-modal="true" aria-label="イラストを大きく見る" aria-hidden="true">
+ <div class="artZoomPanel">
+  <div class="artZoomTop"><strong id="artZoomTitle">CARD ART</strong><button id="artZoomClose" type="button" aria-label="拡大画像を閉じる">✕ 閉じる</button></div>
+  <img id="artZoomImage" alt="カードイラストの拡大表示">
+  <p>イラストをタップしても閉じられます</p>
+ </div>
+</div>
 <script>
 'use strict';
 (()=>{
@@ -421,12 +495,43 @@ function validateKommandantBuild(deck,kommandant){
  if(!main.flags[kommandant.emblem])throw Error('コマンダントの紋章が構築デッキに含まれない');
  return {total:main.count+1,main:main.count,kommandant:1,pure:main.pure,flags:main.flags};
 }
+
+const KOMMANDANT_FLAVOR={
+ R:{quote:'あの娘が駆け出すと、群れの足並みが自然と揃う。誰も命じられていないのにな。',source:'《群れを導く灰狼》'},
+ A:{quote:'あの歌声を聞いた日から、潮の流れが変わった。海が彼女に耳を傾けているのだろうか。',source:'深海の記録官・エルディオ'},
+ W:{quote:'あの男が立ち上がったら、門を開けろ。戦う必要はない。我らの仕事はもう終わった。',source:'《鉄壁の門番巨人》'},
+ Y:{quote:'死後の長い年月でも、あの方に名を呼ばれた夜だけは忘れられぬ。',source:'《灰墓の従兵》'}
+};
+let zoomReturnFocus=null;
+function openArtZoom(source,title){
+ if(!source)return;
+ zoomReturnFocus=document.activeElement;
+ el('artZoomImage').src=source;
+ el('artZoomImage').alt=title+'のイラスト';
+ el('artZoomTitle').textContent=title;
+ const layer=el('artZoomOverlay');layer.classList.add('show');layer.setAttribute('aria-hidden','false');
+ el('artZoomClose').focus();
+}
+function closeArtZoom(){
+ const layer=el('artZoomOverlay');if(!layer.classList.contains('show'))return;
+ layer.classList.remove('show');layer.setAttribute('aria-hidden','true');
+ el('artZoomImage').removeAttribute('src');
+ if(zoomReturnFocus?.isConnected)zoomReturnFocus.focus();zoomReturnFocus=null;
+}
+function detailArtContent(src,name,content){
+ return content+(src?'<button type="button" class="artZoomActivator" aria-label="イラストを拡大する">⌕ 拡大</button>':'');
+}
+function attachDetailArtworkZoom(src,name){
+ const box=el('detailArt');box.dataset.zoomTitle=name;
+ box.dataset.zoomSource=src||'';
+ box.classList.toggle('canZoom',!!src);
+}
 function renderKommandant(which){
  const side=g[which],k=side.kommandant;
  const name=el(which+'CommanderLabel');name.textContent=`コマンダント：${k.tribe}（能力なし）`;
  const button=el(which+'Commander');
  if(button.dataset.kid!==k.id){
-  button.innerHTML=`<img src="${MEDIA[side.code]}" alt="${esc(k.appearance)}"><span class="commanderTag">KOM</span>`;
+  button.innerHTML=`<img src="${MEDIA[side.code]}" alt="${esc(k.appearance)}">`;
   button.dataset.kid=k.id;
   button.style.borderColor=EMBLEMS[side.code].color;
  }
@@ -437,8 +542,8 @@ function showKommandantDetail(who){
  const k=g[who].kommandant,em=EMBLEMS[k.emblem];
  el('detailTitle').textContent=`${k.name}｜${k.id}`;
  const art=el('detailArt');art.classList.add('commanderDetail');art.style.borderColor=em.color;
- art.innerHTML=`<img src="${MEDIA[k.emblem]}" alt="${esc(k.appearance)}">`;
- el('detailInfo').innerHTML=`<p><strong>${who==='player'?'自分':'CPU'}のコマンダント</strong></p><span class="pill">${em.name}の紋章</span><span class="pill">指揮種族：${esc(k.tribe)}</span><p>${esc(k.appearance)}</p><p><strong>常在能力：</strong>未実装</p><p><strong>起動能力：</strong>未実装</p><p>このカードは構築41枚のうちの1枚。対戦開始時にデッキから取り出して専用エリアに表向き配置され、攻撃や通常ドローの対象にはなりません。</p><p>※固有名・二つ名・能力は今後決定。</p>`;
+ art.innerHTML=detailArtContent(MEDIA[k.emblem],k.name,`<img src="${MEDIA[k.emblem]}" alt="${esc(k.appearance)}">`);attachDetailArtworkZoom(MEDIA[k.emblem],k.name);
+ el('detailInfo').innerHTML=`<p><strong>${who==='player'?'自分':'CPU'}のコマンダント</strong></p><span class="pill">${em.name}の紋章</span><span class="pill">指揮種族：${esc(k.tribe)}</span><div class="commanderSkills"><p><b>常在能力</b><small>未実装</small></p><p><b>起動能力</b><small>未実装</small></p></div><div class="loreBlock"><span class="loreLabel">FLAVOR · 仮テキスト</span><blockquote>「${esc(KOMMANDANT_FLAVOR[k.emblem].quote)}」</blockquote><div class="loreSource">―― ${esc(KOMMANDANT_FLAVOR[k.emblem].source)}</div></div>`;
  el('detailOverlay').classList.add('show');el('detailOverlay').setAttribute('aria-hidden','false');
 }
 
@@ -1065,7 +1170,7 @@ function finish(result){if(!g||g.over)return;g.over=true;g.result=result;g.pendi
  hideEndConfirm();hideDetail();hideModal();setScreen('result');updateRecord();
 }
 function esc(s){return String(s).replace(/[&<>"']/g,x=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[x]))}
-function artIcon(c){return MEDIA[c.id]?`<img src="${MEDIA[c.id]}" alt="${esc(c.name)}" loading="lazy">`:`<span aria-hidden="true">${c.icon}</span>`}
+function artIcon(c){return MEDIA[c.id]?`<img src="${MEDIA[c.id]}" alt="${esc(c.name)}" loading="lazy">`:`<span class="artPlaceholderIcon" aria-label="イラスト未制作">${c.icon}</span>`}
 function ownAttackStatus(u){if(!g||g.over||g.turn!=='player')return null;if(isWall(u))return {kind:'spent',text:'🛡 防壁'};
  if(u.effects.some(e=>e.kind==='freeze'))return {kind:'spent',text:'❄ 攻撃禁止'};
  if(g.player.turns<=u.summonedTurn)return {kind:'sick',text:'💤 召喚酔い'};
@@ -1073,18 +1178,18 @@ function ownAttackStatus(u){if(!g||g.over||g.turn!=='player')return null;if(isWa
  return {kind:'spent',text:'✓ 攻撃済'};
 }
 function cardHTML(c,u,who,chosen=false){const inHand=!u,sp=c.type==='spell',disabled=inHand&&!canPay('player',c),status=u&&who==='player'?ownAttackStatus(u):null;
- const cls=[inHand?'handCard':'unitCard',sp?'spell':'',who==='cpu'?'enemyCard':'',chosen?'selected':'',disabled?'disabled':'',u&&!ready(who,u)?'notReady':'',u&&ready(who,u)?'ready':'',status?'own'+(status.kind==='can'?'Ready':status.kind==='sick'?'Sick':'Spent'):''].filter(Boolean).join(' ');
+ const cls=[inHand?'handCard':'unitCard',MEDIA[c.id]?'hasArtwork':'noArtwork',sp?'spell':'',who==='cpu'?'enemyCard':'',chosen?'selected':'',disabled?'disabled':'',u&&!ready(who,u)?'notReady':'',u&&ready(who,u)?'ready':'',status?'own'+(status.kind==='can'?'Ready':status.kind==='sick'?'Sick':'Spent'):''].filter(Boolean).join(' ');
  const stats=sp?'<div class="cardStats" style="font-size:10px;color:#f1dbad">✦ 魔法</div>':`<div class="cardStats"><span class="atk">⚔${u?atk(u):c.atk}</span><span class="hp ${u&&u.hp<u.maxHp?'damaged':''}">♥${u?u.hp:c.hp}</span></div>`;
  return `<div class="${cls}" data-emblem="${c.emblem}" style="--card-color:${EMBLEMS[c.emblem].color}" tabindex="0" role="button" aria-label="${esc(c.name)}。長押しで詳細"><div class="cardTop"><span class="cardId">${c.id}</span><span class="cardCost">${c.cost}</span></div><div class="cardArt">${artIcon(c)}</div>${status?`<div class="unitStatus ${status.kind}">${status.text}</div>`:''}<div class="cardName">${esc(c.name)}</div><div class="cardAbility">${c.pure?'✦ ':''}${esc(c.tribe)}</div>${stats}${u&&u.attacksUsed?`<span class="attackMark">残${availableAttacks(who,u)}</span>`:''}</div>`;
 }
-function showDetail(c,u,where){el('detailArt').classList.remove('commanderDetail');el('detailTitle').textContent=`${c.name}｜${c.id}`;el('detailArt').innerHTML=artIcon(c);el('detailArt').style.borderColor=EMBLEMS[c.emblem].color;
+function showDetail(c,u,where){el('detailArt').classList.remove('commanderDetail');el('detailTitle').textContent=`${c.name}｜${c.id}`;el('detailArt').innerHTML=detailArtContent(MEDIA[c.id],c.name,artIcon(c));attachDetailArtworkZoom(MEDIA[c.id],c.name);el('detailArt').style.borderColor=EMBLEMS[c.emblem].color;
  const basic=c.type==='monster'?`<span class="pill">⚔ ATK ${u?atk(u):c.atk}</span><span class="pill">♥ HP ${u?u.hp:c.hp}/${u?u.maxHp:c.hp}</span>`:'<span class="pill">✦ 魔法</span>';
  const lane=u?`<span class="pill">${LANE_NAMES[u.lane]}</span>`:'';
  const atkStatus=u?`<p>攻撃：${isWall(u)?'不可（防壁）':ready(where,u)?'可能':'現在は不可'}／残り${availableAttacks(where,u)}回</p>`:'';
  el('detailInfo').innerHTML=`<p><strong>${where==='hand'?'自分の手札':where==='cpu'?'CPUの場':'自分の場'}</strong></p><span class="pill">${esc(EMBLEMS[c.emblem].name)}の紋章</span><span class="pill">${esc(c.tribe)}</span><span class="pill">💠 ${c.cost}</span>${lane}${basic}<p class="abilityCategory">${c.abilityMeta.map(([type,timing])=>`<span class="pill abilityType">${esc(type)}｜${esc(timing)}</span>`).join('')}</p><p>${esc(c.desc)}</p>${c.pure?`<p class="pureDesc">${esc(c.pure)} ${where==='hand'&&g.player.pure===c.emblem?'（この対戦では有効）':''}</p>`:''}${atkStatus}`;
  el('detailOverlay').classList.add('show');el('detailOverlay').setAttribute('aria-hidden','false');
 }
-function hideDetail(){el('detailOverlay').classList.remove('show');el('detailOverlay').setAttribute('aria-hidden','true')}
+function hideDetail(){closeArtZoom();el('detailOverlay').classList.remove('show');el('detailOverlay').setAttribute('aria-hidden','true')}
 function bindCard(node,onTap,onHold){let timer=null,start=null,held=false,moved=false;const clear=()=>{if(timer!==null){clearTimeout(timer);timer=null}};
  node.addEventListener('pointerdown',e=>{if(e.button!==0)return;held=false;moved=false;node.dataset.suppressClick='0';start={x:e.clientX,y:e.clientY,id:e.pointerId};clear();timer=setTimeout(()=>{timer=null;if(start&&!moved){held=true;onHold()}},520)});
  node.addEventListener('pointermove',e=>{if(!start||start.id!==e.pointerId)return;if(Math.hypot(e.clientX-start.x,e.clientY-start.y)>11){moved=true;clear()}});
@@ -1258,7 +1363,7 @@ function render(){if(!g||screen!=='battle')return;
 }
 function showModal(title,content,action=null){el('modalTitle').textContent=title;el('modalBody').innerHTML=content;el('modalReplay').style.display=action?'inline-block':'none';el('modalReplay').textContent=action?.label||'確認';el('modalReplay').onclick=action?.run||null;el('modal').classList.add('show')}
 function hideModal(){el('modal').classList.remove('show')}
-function showRules(){showModal('📘 Ver.0.9 α ルール',`<ul><li>3つのリーニエそれぞれの味方枠・敵枠に味方・敵がそれぞれ最大1体。攻撃は原則同じリーニエに限る。一部カードは隣接するリーニエへの攻撃や直接攻撃の例外あり。</li><li>戦闘では双方が同時にATK分のダメージを与え、HPは持ち越し。直接攻撃は基本1ライフダメージ。</li><li>召喚酔いあり、原則1ターンに1回攻撃。猛進は可能な攻撃が必須。防壁は攻撃不可だがATKがあれば反撃できる。</li><li>自分の防壁が置かれたリーニエには、通常モンスターを上書き召喚可能。撤去される防壁は「破壊」扱いにならず、破壊時効果も発動しない。</li><li>41枚構築（通常カード40枚＋コマンダント1枚）。コマンダントは開始時に専用場へ置き、残り40枚をシャッフルして初手5枚。コマンダントの能力は今回未実装。同名通常カード最大3枚。単色または2色（25:15〜20:20）。今回の試作では4つの単色固定デッキを選択。</li><li>純紋章能力は試合開始時の元デッキ40枚がすべて同じ紋章の場合のみ有効。試合中に変わらない。</li><li>能力は常在能力・誘発能力・起動能力の3分類。猛進や防壁は個別キーワードで、登場時・破壊時は誘発タイミング。現在のカードには起動能力を持つモンスターはありません。</li><li>初期ライフ10、初手5枚、手札上限7。各ターン開始に1枚ドロー、マナは毎ターン全回復し最大値が1ずつ増加（最大10）。</li><li>ライフの支払いは、支払った結果ライフ0以下になる場合は不可。最大ライフの変更は今回のカードにはなし。</li><li>自分のターンにカード使用。登場時の対象選択や生贄、リーニエ移動は画面に従って選ぶ。効果の見送りが許される場合はキャンセル可能。</li><li>手札タップで選択、長押し・詳細モードでカード全文。山札切れだけでは負けない。ライフ0または山札・手札・場が全て空になると敗北。両者が攻撃手段を失った場合は引き分け。</li><li>バトル画面の「▶ 標準」からCPUの演出速度を切り替え可能。「☷ ログ」から履歴を確認。ログ表示中はCPUの進行を一時停止。80種類のカード名・性能・CPU判断は試作。CPUの思考やバランスは今後調整。</li></ul>`)}
+function showRules(){showModal('📘 Ver.0.9.1 α ルール',`<ul><li>3つのリーニエそれぞれの味方枠・敵枠に味方・敵がそれぞれ最大1体。攻撃は原則同じリーニエに限る。一部カードは隣接するリーニエへの攻撃や直接攻撃の例外あり。</li><li>戦闘では双方が同時にATK分のダメージを与え、HPは持ち越し。直接攻撃は基本1ライフダメージ。</li><li>召喚酔いあり、原則1ターンに1回攻撃。猛進は可能な攻撃が必須。防壁は攻撃不可だがATKがあれば反撃できる。</li><li>自分の防壁が置かれたリーニエには、通常モンスターを上書き召喚可能。撤去される防壁は「破壊」扱いにならず、破壊時効果も発動しない。</li><li>41枚構築（通常カード40枚＋コマンダント1枚）。コマンダントは開始時に専用場へ置き、残り40枚をシャッフルして初手5枚。コマンダントの能力は今回未実装。同名通常カード最大3枚。単色または2色（25:15〜20:20）。今回の試作では4つの単色固定デッキを選択。</li><li>純紋章能力は試合開始時の元デッキ40枚がすべて同じ紋章の場合のみ有効。試合中に変わらない。</li><li>能力は常在能力・誘発能力・起動能力の3分類。猛進や防壁は個別キーワードで、登場時・破壊時は誘発タイミング。現在のカードには起動能力を持つモンスターはありません。</li><li>初期ライフ10、初手5枚、手札上限7。各ターン開始に1枚ドロー、マナは毎ターン全回復し最大値が1ずつ増加（最大10）。</li><li>ライフの支払いは、支払った結果ライフ0以下になる場合は不可。最大ライフの変更は今回のカードにはなし。</li><li>自分のターンにカード使用。登場時の対象選択や生贄、リーニエ移動は画面に従って選ぶ。効果の見送りが許される場合はキャンセル可能。</li><li>手札タップで選択、長押し・詳細モードでカード全文。山札切れだけでは負けない。ライフ0または山札・手札・場が全て空になると敗北。両者が攻撃手段を失った場合は引き分け。</li><li>バトル画面の「▶ 標準」からCPUの演出速度を切り替え可能。「☷ ログ」から履歴を確認。ログ表示中はCPUの進行を一時停止。80種類のカード名・性能・CPU判断は試作。CPUの思考やバランスは今後調整。</li></ul>`)}
 el('playerCommander').addEventListener('click',()=>showKommandantDetail('player'));
 el('cpuCommander').addEventListener('click',()=>showKommandantDetail('cpu'));
 el('titleScreen').addEventListener('click',()=>{if(screen==='title')toSelect()});
@@ -1268,8 +1373,15 @@ el('rulesBtn').addEventListener('click',showRules);
 el('choiceDock').addEventListener('click',toggleChoiceCue);el('speedBtn').addEventListener('click',cycleSpeed);el('logBtn').addEventListener('click',showLog);el('logClose').addEventListener('click',hideLog);el('logOverlay').addEventListener('click',e=>{if(e.target===el('logOverlay'))hideLog()});
 el('restartBtn').addEventListener('click',()=>showModal('タイトルへ戻る？','<p>現在の対戦は中断され、戦績には記録されません。</p>',{label:'タイトルへ',run:returnTitle}));
 el('modalClose').addEventListener('click',hideModal);el('resultReplay').addEventListener('click',newGame);el('resultTitleBtn').addEventListener('click',returnTitle);
+el('detailArt').addEventListener('click',e=>{
+ if(!el('detailArt').dataset.zoomSource)return;
+ if(e.target.closest('.artZoomActivator')||e.target.closest('img'))openArtZoom(el('detailArt').dataset.zoomSource,el('detailArt').dataset.zoomTitle);
+});
+el('artZoomClose').addEventListener('click',closeArtZoom);
+el('artZoomImage').addEventListener('click',closeArtZoom);
+el('artZoomOverlay').addEventListener('click',e=>{if(e.target===el('artZoomOverlay'))closeArtZoom()});
 el('detailClose').addEventListener('click',hideDetail);el('detailOverlay').addEventListener('click',e=>{if(e.target===el('detailOverlay'))hideDetail()});
-document.addEventListener('keydown',e=>{if(e.key==='Escape'){hideLog();hideDetail();hideModal();hideEndConfirm()}});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){if(el('artZoomOverlay').classList.contains('show')){closeArtZoom();return}hideLog();hideDetail();hideModal();hideEndConfirm()}});
 el('inspectBtn').addEventListener('click',()=>{inspect=!inspect;g.selected=null;render()});
 el('cancelBtn').addEventListener('click',()=>{if(g.pending){skipPending();return}g.selected=null;render()});
 el('endBtn').addEventListener('click',requestEndTurn);el('endConfirmBack').addEventListener('click',hideEndConfirm);
