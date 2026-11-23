@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#0b1726">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<title>DREI KAMPF（仮）｜Ver.0.9.3 α</title>
+<title>DREI KAMPF（仮）｜Ver.0.9.4 α</title>
 <style>
 :root{--bg:#0b1726;--panel:#152c40;--line:#406477;--text:#f3f7fa;--muted:#bdd1dd;--gold:#f6d494;--cyan:#81e2e3;--red:#ff9fba;--good:#9cf0b9}
 *{box-sizing:border-box}html,body{width:100%;height:100%;margin:0;background:#07101d;color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Noto Sans JP",sans-serif;-webkit-tap-highlight-color:transparent}button{font:inherit;cursor:pointer;touch-action:manipulation;color:inherit}button:disabled{cursor:default;opacity:.45}button:focus-visible,[role=button]:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
@@ -234,7 +234,7 @@ body[data-screen="select"] .selectScreen{display:flex;align-items:center;justify
 @media(max-width:370px){.choiceDock{font-size:10px;padding:3px 4px}.choiceDock .choiceDockToggle{font-size:9px}}
 @media(prefers-reduced-motion:reduce){.battleCue.choosing{transition:none}}
 
-/* Ver.0.9.3 α — adopted title / battlefield visuals and a dedicated, ability-free Kommandant slot. */
+/* Ver.0.9.4 α — adopted title / battlefield visuals and a dedicated, ability-free Kommandant slot. */
 #app{grid-template-rows:39px 57px 7px minmax(190px,1fr) 7px 57px 33px 46px 158px 14px;
  background-image:linear-gradient(90deg,#0b1726c8,#0b1726bb),var(--boardArt);
  background-size:cover;background-position:center center}
@@ -257,14 +257,15 @@ body[data-screen="select"] .selectScreen{display:flex;align-items:center;justify
 .titleScreen{padding:0;display:flex;align-items:center;justify-content:center;overflow:hidden;background-color:#081727;background-image:var(--titleArt);background-position:center;background-repeat:no-repeat;background-size:cover}
 .titleScreen::before{content:'';position:absolute;inset:-22px;z-index:-1;background:var(--titleArt) center/cover no-repeat;filter:blur(11px) brightness(.58);pointer-events:none}
 .titleImage{position:relative;display:block;width:100%;height:100dvh;object-fit:contain;object-position:center;pointer-events:none}
-.titleAmbient,.titleContent,.titleVersion{display:none!important}
+.titleAmbient,.titleContent{display:none!important}
+.titleVersion{position:absolute;right:max(14px,calc(env(safe-area-inset-right) + 10px));bottom:max(12px,calc(env(safe-area-inset-bottom) + 8px));z-index:2;padding:4px 9px;border:1px solid #d9c49866;border-radius:5px;background:#081727bf;color:#f4e6c6;font:600 11px/1.35 system-ui,sans-serif;letter-spacing:.04em;text-shadow:0 1px 3px #000;pointer-events:none;white-space:nowrap}
 .detailArt.commanderDetail{aspect-ratio:3/4;max-width:270px}
 @media(max-width:370px){#app{grid-template-rows:36px 52px 6px minmax(190px,1fr) 6px 52px 31px 43px 144px 12px;gap:2px}.commanderCard{height:43px;width:34px;flex-basis:34px}.playerBadge{gap:4px}.playerBar{padding-left:5px;padding-right:5px}.commanderIdentity{font-size:8px}.playerMeta{font-size:11px}}
 @media(max-height:720px) and (orientation:portrait){#app{grid-template-rows:36px 48px 6px minmax(180px,1fr) 6px 48px 31px 41px 145px 12px;gap:2px}.commanderCard{height:41px;width:32px;flex-basis:32px}}
 @media(min-width:600px) and (orientation:portrait){#app{grid-template-rows:46px 66px 9px minmax(250px,1fr) 9px 66px 41px 52px 196px 16px}.commanderCard{height:57px;width:45px;flex-basis:45px}.commanderIdentity{font-size:11px}}
 
 
-/* Ver.0.9.3 α · artwork-first card frames / single battlefield drawing */
+/* Ver.0.9.4 α · artwork-first card frames / single battlefield drawing */
 #app{
   background-image:radial-gradient(ellipse at 50% 40%,#17394a 0%,#101f32 51%,#081423 100%);
 }
@@ -331,7 +332,7 @@ body[data-screen="select"] .selectScreen{display:flex;align-items:center;justify
 @media(min-width:600px){.unitCard .cardName{font-size:12px;bottom:37px}.unitCard .cardAbility{font-size:11px;bottom:22px}.unitCard .cardStats{font-size:16px}.unitCard .unitStatus{top:29px}.artPlaceholderIcon{font-size:48px}}
 
 
-/* Ver.0.9.3: selection highlights take precedence over emblem, readiness and transient effects. */
+/* Ver.0.9.4: selection highlights take precedence over emblem, readiness and transient effects. */
 .zoneCell .unitCard.selected{border:3px solid #90e5ff!important;box-shadow:inset 0 0 0 1px #90e5ff,0 0 11px #56c7ff!important;filter:none!important}
 .zoneCell .unitCard.hitTarget{border:3px solid #ffe083!important;box-shadow:inset 0 0 0 1px #fff0b8,0 0 12px #ffcf55!important;filter:none!important}
 .zoneCell .unitCard.hitTarget::after{content:'選択可能';position:absolute;z-index:6;top:23px;left:3px;right:3px;background:#3d3117f5;color:#fff1ad;border:1px solid #ffe083;border-radius:4px;text-align:center;font-size:10px;font-weight:900;line-height:1.45;pointer-events:none;text-shadow:0 1px 2px #000}
@@ -344,7 +345,7 @@ body[data-screen="select"] .selectScreen{display:flex;align-items:center;justify
 </style>
 </head>
 <body>
-<section id="titleScreen" class="titleScreen" tabindex="0" role="button" aria-label="DREI KAMPF、TAP TO START。画面をタップして開始" aria-hidden="false"><img id="titleArtwork" class="titleImage" alt="DREI KAMPF / TAP TO START"></section>
+<section id="titleScreen" class="titleScreen" tabindex="0" role="button" aria-label="DREI KAMPF、TAP TO START。画面をタップして開始" aria-hidden="false"><img id="titleArtwork" class="titleImage" alt="DREI KAMPF / TAP TO START"><span id="titleVersion" class="titleVersion"></span></section>
 <section id="selectScreen" class="selectScreen" aria-hidden="true">
   <div class="selectInner">
    <div class="titleEyebrow">FOUR EMBLEMS · DECK SELECT</div>
@@ -363,11 +364,11 @@ body[data-screen="select"] .selectScreen{display:flex;align-items:center;justify
     <p id="resultSub" class="resultSub"></p>
     <div id="resultStats" class="resultStats"></div>
     <div class="resultActions"><button id="resultReplay">⚔ もう一度対戦</button><button id="resultTitleBtn">タイトルへ戻る</button></div>
-    <div class="resultNote">Ver.0.9.3 α：対戦データはバランス確認用</div>
+    <div class="resultNote">Ver.0.9.4 α：対戦データはバランス確認用</div>
   </div>
 </section>
 <main id="app">
-  <header class="top"><div class="brand">⚔ DREI KAMPF <span class="version">対象選択UI v0.9.3 α</span></div><div class="top-right"><span class="phaseChip" id="phaseChip">準備中</span><button class="tinyBtn" id="rulesBtn">ルール</button><button class="tinyBtn" id="restartBtn">タイトル</button></div></header>
+  <header class="top"><div class="brand">⚔ DREI KAMPF <span class="version">対象選択UI v0.9.4 α</span></div><div class="top-right"><span class="phaseChip" id="phaseChip">準備中</span><button class="tinyBtn" id="rulesBtn">ルール</button><button class="tinyBtn" id="restartBtn">タイトル</button></div></header>
   <section class="playerBar enemy"><div class="playerBadge"><button id="cpuCommander" class="commanderCard" type="button" aria-label="CPUのコマンダント詳細を見る"></button><div><div class="playerName">CPU <span class="version" id="cpuDeckName">蒼</span> <span class="playerPlan" id="cpuPlan">魔導制御</span></div><div class="playerMeta" id="cpuInfo">山札40・手札5</div><div class="commanderIdentity" id="cpuCommanderLabel">コマンダント：未設定</div></div></div><div class="health"><span class="heart">♥</span><span id="cpuHp">10</span><small>/<span id="cpuMaxHp">10</span></small></div></section>
   <div class="bus enemyBus" aria-hidden="true"><span></span><span></span><span></span></div>
   <section id="lanes" class="lanes" aria-label="3つの共通戦場「リーニエⅠ・Ⅱ・Ⅲ」"></section><div id="battleCue" class="battleCue" aria-live="off" aria-hidden="true"></div>
@@ -408,6 +409,7 @@ const MEDIA={"title":"data:image/webp;base64,UklGRi6sBABXRUJQVlA4ICKsBAAw5g6dASq
 document.documentElement.style.setProperty('--titleArt',`url("${MEDIA.title}")`);
 document.documentElement.style.setProperty('--boardArt',`url("${MEDIA.board}")`);
 document.getElementById('titleArtwork').src=MEDIA.title;
+document.getElementById('titleVersion').textContent=document.title.split('｜').pop().trim();
 
 // 第1弾カード80種類。カード名・数値・効果は試験用の仮設定。
 const CARD_ROWS = String.raw`
@@ -1374,7 +1376,7 @@ function render(){if(!g||screen!=='battle')return;
 }
 function showModal(title,content,action=null){el('modalTitle').textContent=title;el('modalBody').innerHTML=content;el('modalReplay').style.display=action?'inline-block':'none';el('modalReplay').textContent=action?.label||'確認';el('modalReplay').onclick=action?.run||null;el('modal').classList.add('show')}
 function hideModal(){el('modal').classList.remove('show')}
-function showRules(){showModal('📘 Ver.0.9.3 α ルール',`<ul><li>3つのリーニエそれぞれの味方枠・敵枠に味方・敵がそれぞれ最大1体。攻撃は原則同じリーニエに限る。一部カードは隣接するリーニエへの攻撃や直接攻撃の例外あり。</li><li>戦闘では双方が同時にATK分のダメージを与え、HPは持ち越し。直接攻撃は基本1ライフダメージ。</li><li>召喚酔いあり、原則1ターンに1回攻撃。猛進は可能な攻撃が必須。防壁は攻撃不可だがATKがあれば反撃できる。</li><li>自分の防壁が置かれたリーニエには、通常モンスターを上書き召喚可能。撤去される防壁は「破壊」扱いにならず、破壊時効果も発動しない。</li><li>41枚構築（通常カード40枚＋コマンダント1枚）。コマンダントは開始時に専用場へ置き、残り40枚をシャッフルして初手5枚。コマンダントの能力は今回未実装。同名通常カード最大3枚。単色または2色（25:15〜20:20）。今回の試作では4つの単色固定デッキを選択。</li><li>純紋章能力は試合開始時の元デッキ40枚がすべて同じ紋章の場合のみ有効。試合中に変わらない。</li><li>能力は常在能力・誘発能力・起動能力の3分類。猛進や防壁は個別キーワードで、登場時・破壊時は誘発タイミング。現在のカードには起動能力を持つモンスターはありません。</li><li>初期ライフ10、初手5枚、手札上限7。各ターン開始に1枚ドロー、マナは毎ターン全回復し最大値が1ずつ増加（最大10）。</li><li>ライフの支払いは、支払った結果ライフ0以下になる場合は不可。最大ライフの変更は今回のカードにはなし。</li><li>自分のターンにカード使用。登場時の対象選択や生贄、リーニエ移動は画面に従って選ぶ。効果の見送りが許される場合はキャンセル可能。</li><li>手札タップで選択、長押し・詳細モードでカード全文。山札切れだけでは負けない。ライフ0または山札・手札・場が全て空になると敗北。両者が攻撃手段を失った場合は引き分け。</li><li>バトル画面の「▶ 標準」からCPUの演出速度を切り替え可能。「☷ ログ」から履歴を確認。ログ表示中はCPUの進行を一時停止。80種類のカード名・性能・CPU判断は試作。CPUの思考やバランスは今後調整。</li></ul>`)}
+function showRules(){showModal('📘 Ver.0.9.4 α ルール',`<ul><li>3つのリーニエそれぞれの味方枠・敵枠に味方・敵がそれぞれ最大1体。攻撃は原則同じリーニエに限る。一部カードは隣接するリーニエへの攻撃や直接攻撃の例外あり。</li><li>戦闘では双方が同時にATK分のダメージを与え、HPは持ち越し。直接攻撃は基本1ライフダメージ。</li><li>召喚酔いあり、原則1ターンに1回攻撃。猛進は可能な攻撃が必須。防壁は攻撃不可だがATKがあれば反撃できる。</li><li>自分の防壁が置かれたリーニエには、通常モンスターを上書き召喚可能。撤去される防壁は「破壊」扱いにならず、破壊時効果も発動しない。</li><li>41枚構築（通常カード40枚＋コマンダント1枚）。コマンダントは開始時に専用場へ置き、残り40枚をシャッフルして初手5枚。コマンダントの能力は今回未実装。同名通常カード最大3枚。単色または2色（25:15〜20:20）。今回の試作では4つの単色固定デッキを選択。</li><li>純紋章能力は試合開始時の元デッキ40枚がすべて同じ紋章の場合のみ有効。試合中に変わらない。</li><li>能力は常在能力・誘発能力・起動能力の3分類。猛進や防壁は個別キーワードで、登場時・破壊時は誘発タイミング。現在のカードには起動能力を持つモンスターはありません。</li><li>初期ライフ10、初手5枚、手札上限7。各ターン開始に1枚ドロー、マナは毎ターン全回復し最大値が1ずつ増加（最大10）。</li><li>ライフの支払いは、支払った結果ライフ0以下になる場合は不可。最大ライフの変更は今回のカードにはなし。</li><li>自分のターンにカード使用。登場時の対象選択や生贄、リーニエ移動は画面に従って選ぶ。効果の見送りが許される場合はキャンセル可能。</li><li>手札タップで選択、長押し・詳細モードでカード全文。山札切れだけでは負けない。ライフ0または山札・手札・場が全て空になると敗北。両者が攻撃手段を失った場合は引き分け。</li><li>バトル画面の「▶ 標準」からCPUの演出速度を切り替え可能。「☷ ログ」から履歴を確認。ログ表示中はCPUの進行を一時停止。80種類のカード名・性能・CPU判断は試作。CPUの思考やバランスは今後調整。</li></ul>`)}
 el('playerCommander').addEventListener('click',()=>showKommandantDetail('player'));
 el('cpuCommander').addEventListener('click',()=>showKommandantDetail('cpu'));
 el('titleScreen').addEventListener('click',()=>{if(screen==='title')toSelect()});
